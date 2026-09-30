@@ -8,7 +8,7 @@ checklists from Singapore IMDA's AI Verify (AIVTF) and MindForge, and frontier
 governance templates inspired by the OpenAI Frontier Governance Framework
 (Frontier Risk Tier + Transparency Report) and an original-wording agentic
 use-case governance checklist. Red-team runs can be judged by an optional NVIDIA
-NeMo Guardrails sidecar. Current release: **v0.23.0** · 28 modules.
+NeMo Guardrails sidecar. Current release: **v0.24.0** · 28 modules.
 
 > **On the name & scope.** "AIGP-Lite" is the original project codename, not a
 > statement of size. This is a **full multi-module governance platform** —
@@ -397,6 +397,7 @@ key rotation, SSRF on egress, audit-chain guarantees vs. DB-admin trust).
 | ✅ M24    | v0.21.0 | Background job queue — BullMQ + Redis worker, inline fallback                                                               |
 | ✅ M25    | v0.22.0 | Operability hardening — AuditSink AES-256-GCM encryption + BullMQ delivery queue + metrics                                  |
 | ✅ M26    | v0.23.0 | 22→27 modules · 3→7 framework catalogs · enterprise hardening · Anthropic-alignment roadmap 9/9 (details below + CHANGELOG) |
+| ✅ M27    | v0.24.0 | First public release (Apache-2.0) · Trust Center (module #28) · MCP tool-drift guard · production deploy hardening          |
 
 **Shipped in v0.23.0:** MITRE ATLAS catalog · AI Verify Moonshot
 red-team engine · framework version tracking · SSO self-service UI · NIST AI RMF

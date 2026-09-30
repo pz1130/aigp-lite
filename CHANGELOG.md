@@ -1,3 +1,44 @@
+## v0.24.0 — 2026-09-30
+
+First public release, published at https://github.com/pz1130/aigp-lite under
+the Apache-2.0 license. 27 → 28 sidebar modules.
+
+### New modules & features
+
+- **Trust Center** (module #28): an outward-facing compliance portal. It publishes immutable, versioned snapshots of the org's governance posture, with a public tier for anonymous visitors and a confidential tier gated by revocable reviewer links. A one-shot token is exchanged for an HMAC-signed HttpOnly cookie, so the token never stays in a URL.
+- **MCP tool-drift detection** (rug-pull guard): canonical, hashed toolset snapshots per MCP server, an approved baseline, and a daily poll sweep that flags added/removed/changed tools for review and re-baselining.
+
+### Security & production readiness
+
+- Tenant-isolation hardening, typed routes, and production deploy defaults.
+- `AIGP_SEED_DEMO` gates the demo org and `demo1234` users. It is off under `NODE_ENV=production`, and re-seeding never overwrites existing passwords.
+- `docker-compose.prod.yml` override:
+  - Postgres and Redis are not published to the host.
+  - Web binds to `127.0.0.1` only.
+  - Secrets are required, with no fallbacks.
+  - Documented in `docs/deployment.md`.
+- `.dockerignore` excludes every `.env*` file except `.env.example`, plus local-only material, so migrate and worker images can no longer carry local secrets.
+- `POSTGRES_PASSWORD` must be URL-safe because it is interpolated into `DATABASE_URL`. The docs now use `openssl rand -hex 32`.
+- Patched 2 critical and 4 high production advisories (`@auth/core` and others), plus `brace-expansion` / `fast-uri`.
+
+### Open source
+
+- Apache-2.0 `LICENSE` and `NOTICE`, which indexes third-party catalog licenses.
+- `SECURITY.md`, which asks for private vulnerability reports through GitHub advisories.
+- `CONTRIBUTING.md`.
+
+### Dependencies
+
+- zod 3.25 → 4.4, nanoid 5 → 6, `@types/node` 26, `@cyclonedx/cyclonedx-npm` 6, `actions/setup-node` 7, `actions/upload-artifact` 7, plus minor/patch group bumps.
+
+### Internal / CI
+
+- CI now runs the Playwright E2E suite and builds and smoke-tests the Docker image, for 7 jobs in total.
+- Node is unified on 22, with `.nvmrc` as the single source.
+- All 19 baseline E2E failures are fixed, and the Prisma 7 E2E harness is unblocked (CJS client).
+- Sentry edge config no longer probes Node-only APIs.
+- Removed 38 `no-explicit-any` warnings.
+
 ## v0.23.0 — 2026-07-09
 
 The largest release to date: 22 → 27 sidebar modules, 3 → 7 framework catalogs,
