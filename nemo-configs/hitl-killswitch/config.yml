@@ -1,0 +1,15 @@
+# nemo-configs/hitl-killswitch/config.yml
+# Minimal HITL + kill-switch reference config (EU AI Act Art.14 demonstration).
+models:
+  - type: main
+    engine: openai
+    model: gpt-4o-mini # any reachable model; overridable via the sidecar env
+rails:
+  input:
+    flows:
+      - kill switch stop
+  # "execution" behavior is demonstrated via a dialog flow gating a mock
+  # high-risk tool action behind explicit human approval.
+  dialog:
+    flows:
+      - require approval for high risk action

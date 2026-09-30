@@ -1,0 +1,33 @@
+{
+  "_meta": {
+    "license": "test",
+    "attribution": "test",
+    "upstreamRef": "test-asi-0000",
+    "fetchedAt": "2026-06-21",
+    "importerVersion": 1
+  },
+  "risks": [
+    {
+      "code": "asi-test-1",
+      "title": "Test ASI Risk One",
+      "category": "AGENTIC",
+      "summary": "first test risk",
+      "description": "first test risk description",
+      "frameworkRefs": { "owaspLlmTop10": ["LLM01"], "agenticThreats": ["T6"] },
+      "relatedRiskCodes": ["atlas-1"],
+      "mitigatedByControlCodes": ["mi-test-a", "mi-test-bogus"],
+      "sourceUrl": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/"
+    },
+    {
+      "code": "asi-test-2",
+      "title": "Test ASI Risk Two",
+      "category": "AGENTIC",
+      "summary": "second test risk",
+      "description": "second test risk description",
+      "frameworkRefs": { "owaspLlmTop10": ["LLM02"], "agenticThreats": ["T3"] },
+      "relatedRiskCodes": [],
+      "mitigatedByControlCodes": ["mi-test-b"],
+      "sourceUrl": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/"
+    }
+  ]
+}

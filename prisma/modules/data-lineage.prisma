@@ -1,0 +1,48 @@
+enum Sensitivity {
+  public
+  internal
+  confidential
+  restricted
+}
+
+enum DataOrigin {
+  first_party
+  third_party
+  public_dataset
+}
+
+enum LinkDirection {
+  training
+  inference_input
+  inference_output
+}
+
+model DataSource {
+  id           String       @id @default(cuid())
+  orgId        String
+  name         String
+  description  String       @default("")
+  sensitivity  Sensitivity  @default(internal)
+  origin       DataOrigin   @default(first_party)
+  createdAt    DateTime     @default(now())
+
+  org   Organization      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  links UsecaseDataLink[]
+
+  @@unique([orgId, name])
+  @@index([orgId, sensitivity])
+  @@map("data_source")
+}
+
+model UsecaseDataLink {
+  usecaseId    String
+  dataSourceId String
+  purpose      String         @default("")
+  direction    LinkDirection  @default(training)
+
+  usecase    AiUsecase  @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+  dataSource DataSource @relation(fields: [dataSourceId], references: [id], onDelete: Cascade)
+
+  @@id([usecaseId, dataSourceId, direction])
+  @@map("usecase_data_link")
+}

@@ -1,0 +1,14 @@
+/// Tracks which upstream version of each built-in AI risk/governance framework
+/// catalog is currently seeded into this database. One row per framework,
+/// written by the corresponding importer at the end of a successful import.
+/// Lets operators answer "which edition of AIVTF/FINOS/ATLAS/IMDA do we have?"
+/// and is the foundation for an upstream-update watcher.
+model FrameworkVersion {
+  id         String   @id @default(cuid())
+  framework  String   @unique // "FINOS_AIGF" | "MITRE_ATLAS" | "AIVTF" | "IMDA"
+  version    String // upstream ref/version recorded from the catalog _meta
+  itemCount  Int // number of top-level items imported (risks / principles / mappings)
+  importedAt DateTime @updatedAt
+
+  @@map("framework_version")
+}

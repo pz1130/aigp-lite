@@ -1,0 +1,24 @@
+// SSO / OIDC — DB-backed per-org connection (env config remains the bootstrap
+// fallback; see src/lib/auth/sso/*). v1 caps at one IdP per org (orgId @unique).
+
+model SsoConnection {
+  id                    String   @id @default(cuid())
+  orgId                 String   @unique
+  issuer                String
+  clientId              String
+  // AES-256-GCM ciphertext of the OIDC client secret (encryptJson / decryptJson).
+  // Never leaves the server; tRPC returns a redacted view.
+  clientSecretEncrypted Bytes
+  buttonLabel           String?
+  allowedDomains        String[] @default([])
+  // Optional IdP groups-claim -> role map, e.g. { "groups": { "admins": "admin" } }.
+  groupRoleMap          Json?
+  enabled               Boolean  @default(true)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  createdBy             String?
+
+  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@map("sso_connection")
+}

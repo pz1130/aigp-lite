@@ -1,0 +1,47 @@
+{
+  "_meta": {
+    "upstreamRef": "frt-test",
+    "source": "test",
+    "license": "test",
+    "note": "test"
+  },
+  "categories": [
+    {
+      "code": "FRTTEST_A",
+      "order": 1,
+      "title": "Test Cat A",
+      "summary": "sa",
+      "thresholds": [
+        {
+          "code": "FRT-FRTTEST_A-T1-1",
+          "tier": 1,
+          "order": 1,
+          "statement": "Alpha one",
+          "guidance": "g1"
+        },
+        {
+          "code": "FRT-FRTTEST_A-T2-1",
+          "tier": 2,
+          "order": 1,
+          "statement": "Alpha two",
+          "guidance": null
+        }
+      ]
+    },
+    {
+      "code": "FRTTEST_B",
+      "order": 2,
+      "title": "Test Cat B",
+      "summary": "sb",
+      "thresholds": [
+        {
+          "code": "FRT-FRTTEST_B-T1-1",
+          "tier": 1,
+          "order": 1,
+          "statement": "Beta one",
+          "guidance": null
+        }
+      ]
+    }
+  ]
+}

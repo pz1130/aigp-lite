@@ -1,0 +1,50 @@
+enum IntegrationType {
+  slack_webhook
+  teams_webhook
+  servicenow
+}
+
+model EnterpriseIntegration {
+  id                   String          @id @default(cuid())
+  orgId                String
+  name                 String
+  integrationType      IntegrationType
+  config               Json            @default("{}")
+  credentialsEncrypted Bytes
+  subscribedEvents     String[]
+  isActive             Boolean         @default(true)
+  healthStatus         String?
+  lastDeliveryAt       DateTime?
+  inboundSecret        String?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  createdBy            String
+
+  org                  Organization         @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  syncLogs             IntegrationSyncLog[]
+
+  @@unique([orgId, name])
+  @@index([orgId, isActive])
+  @@map("enterprise_integration")
+}
+
+model IntegrationSyncLog {
+  id            String                @id @default(cuid())
+  integrationId String
+  direction     String
+  eventType     String?
+  resourceType  String?
+  resourceId    String?
+  externalRef   String?
+  status        String
+  attemptCount  Int                   @default(1)
+  errorMessage  String?
+  payloadHash   String?
+  occurredAt    DateTime              @default(now())
+
+  integration   EnterpriseIntegration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+
+  @@index([integrationId, occurredAt])
+  @@index([resourceType, resourceId])
+  @@map("integration_sync_log")
+}

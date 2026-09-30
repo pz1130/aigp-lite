@@ -1,0 +1,101 @@
+enum AivtfStatus {
+  draft
+  submitted
+  approved
+  archived
+}
+
+enum AivtfCheck {
+  unanswered
+  yes
+  no
+  na
+}
+
+enum AivtfAiType {
+  ALL
+  GENAI_ONLY
+  TRADITIONAL_ONLY
+}
+
+model AivtfPrinciple {
+  id       String         @id @default(cuid())
+  num      Int            @unique          // 1..11
+  key      String         @unique          // "transparency", ...
+  title    String
+  blurb    String?
+  order    Int
+  outcomes AivtfOutcome[]
+  @@map("aivtf_principle")
+}
+
+model AivtfOutcome {
+  id          String         @id @default(cuid())
+  principleId String
+  principle   AivtfPrinciple @relation(fields: [principleId], references: [id], onDelete: Cascade)
+  code        String         @unique        // "1.1", "1.2", ...
+  text        String
+  order       Int
+  processes   AivtfProcess[]
+  @@map("aivtf_outcome")
+}
+
+model AivtfProcess {
+  id               String       @id @default(cuid())
+  outcomeId        String
+  outcome          AivtfOutcome @relation(fields: [outcomeId], references: [id], onDelete: Cascade)
+  code             String       @unique      // "1.1.1", ...
+  text             String
+  typeOfAI         AivtfAiType  @default(ALL)
+  evidenceType     String?
+  evidenceGuidance String?
+  order            Int
+  @@map("aivtf_process")
+}
+
+model AivtfAssessment {
+  id             String       @id @default(cuid())
+  orgId          String
+  usecaseId      String?                      // NULL = org-level
+  version        Int          @default(1)
+  status         AivtfStatus  @default(draft)
+  title          String
+  createdById    String
+  submittedAt    DateTime?
+  submittedById  String?
+  approvedAt     DateTime?
+  approvedById   String?
+  archivedAt     DateTime?
+  archivedById   String?
+  supersededById String?      @unique
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  org          Organization      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase      AiUsecase?        @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+  createdBy    User              @relation("AivtfCreator",   fields: [createdById],   references: [id])
+  submittedBy  User?             @relation("AivtfSubmitter", fields: [submittedById], references: [id])
+  approvedBy   User?             @relation("AivtfApprover",  fields: [approvedById],  references: [id])
+  archivedBy   User?             @relation("AivtfArchiver",  fields: [archivedById],  references: [id])
+  supersededBy AivtfAssessment?  @relation("AivtfSupersede", fields: [supersededById], references: [id])
+  supersedes   AivtfAssessment[] @relation("AivtfSupersede")
+  answers      AivtfAnswer[]
+
+  @@unique([usecaseId, version])
+  @@index([orgId, usecaseId, status])
+  @@index([orgId, status, updatedAt(sort: Desc)])
+  @@map("aivtf_assessment")
+}
+
+model AivtfAnswer {
+  id           String          @id @default(cuid())
+  assessmentId String
+  assessment   AivtfAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  processCode  String                            // → AivtfProcess.code
+  status       AivtfCheck      @default(unanswered)
+  elaboration  String?
+  evidenceRefs Json            @default("[]")
+  updatedAt    DateTime        @updatedAt
+  @@unique([assessmentId, processCode])
+  @@map("aivtf_answer")
+}

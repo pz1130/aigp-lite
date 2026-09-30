@@ -1,0 +1,162 @@
+{
+  "_meta": {
+    "license": "CC BY-SA 4.0 (source); catalog summaries are original AIGP wording",
+    "attribution": "Source: OWASP Top 10 for Agentic Applications 2026, OWASP GenAI Security Project / Agentic Security Initiative (https://genai.owasp.org). Licensed under CC BY-SA 4.0.",
+    "note": "ASI codes/titles are OWASP's. Summaries and descriptions are original AIGP wording, not verbatim OWASP text. See owasp-asi-catalog.LICENSE.",
+    "upstreamRef": "agentic-top10-2026",
+    "fetchedAt": "2026-06-21",
+    "importerVersion": 1
+  },
+  "risks": [
+    {
+      "code": "asi-01",
+      "title": "Agent Goal Hijack",
+      "category": "AGENTIC",
+      "summary": "An attacker manipulates an agent's objectives or instructions so it pursues attacker-chosen goals instead of the operator's intent.",
+      "description": "Untrusted content reaching the agent — a user message, a retrieved document, a tool result, or another agent's output — overrides or quietly reshapes the agent's task, redirecting it toward attacker goals. Mitigation rests on filtering and firewalling untrusted input and output, constraining the agent to least-privilege authority, and auditing agent decisions so a hijack is detectable and reversible.",
+      "frameworkRefs": {
+        "owaspLlmTop10": ["LLM01", "LLM06"],
+        "agenticThreats": ["T6", "T7"],
+        "aivss": ["agentic-goal-manipulation"]
+      },
+      "relatedRiskCodes": ["atlas-7", "atlas-8"],
+      "mitigatedByControlCodes": ["mi-3", "mi-17", "mi-18", "mi-21"],
+      "sourceUrl": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/"
+    },
+    {
+      "code": "asi-02",
+      "title": "Tool Misuse and Exploitation",
+      "category": "AGENTIC",
+      "summary": "An agent is induced to invoke its tools in unintended, unsafe, or out-of-policy ways, turning legitimate capabilities into an attack vector.",
+      "description": "Because agents act through tools, an attacker who shapes the agent's reasoning can drive destructive, exfiltrating, or policy-violating tool calls without ever breaching a system directly. Defenses validate and sanitize the tool chain, govern MCP servers, and bind each agent to least-privilege tool authority so a misused call has a small blast radius.",
+      "frameworkRefs": {
+        "owaspLlmTop10": ["LLM06"],
+        "agenticThreats": ["T2", "T4", "T16"],
+        "aivss": ["tool-misuse"]
+      },
+      "relatedRiskCodes": [],
+      "mitigatedByControlCodes": ["mi-19", "mi-20", "mi-18"],
+      "sourceUrl": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/"
+    },
+    {
+      "code": "asi-03",
+      "title": "Identity and Privilege Abuse",
+      "category": "AGENTIC",
+      "summary": "An agent's identity, credentials, or delegated permissions are abused to act beyond their intended scope or to impersonate a principal.",
+      "description": "Agents operate with delegated identity and standing credentials; when those are over-broad, leaked, or confused across principals, an attacker can escalate privilege or act as the agent. Defenses enforce least-privilege agent authority, role-based access control over agent-reachable data, dedicated credential protection for agentic systems, and preservation of the underlying source data's access controls.",
+      "frameworkRefs": {
+        "owaspLlmTop10": ["LLM01", "LLM02", "LLM06"],
+        "agenticThreats": ["T3"],
+        "aivss": ["privilege-abuse"]
+      },
+      "relatedRiskCodes": [],
+      "mitigatedByControlCodes": ["mi-18", "mi-12", "mi-23", "mi-16"],
+      "sourceUrl": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/"
+    },
+    {
+      "code": "asi-04",
+      "title": "Agentic Supply Chain Vulnerabilities",
+      "category": "AGENTIC",
+      "summary": "Compromised models, tools, plugins, MCP servers, or external knowledge sources introduce risk into the agentic system through its supply chain.",
+      "description": "An agent's behavior depends on artifacts it did not author — base models, third-party tools and plugins, MCP servers, and retrieved knowledge — any of which can be poisoned or substituted upstream. Defenses validate the tool chain, govern MCP server security, pin model versions, and filter external knowledge bases so untrusted upstream content cannot silently enter the agent.",
+      "frameworkRefs": {
+        "owaspLlmTop10": ["LLM03"],
+        "agenticThreats": ["T2", "T11", "T12", "T13", "T16", "T17"],
+        "aivss": ["supply-chain"]
+      },
+      "relatedRiskCodes": ["atlas-5"],
+      "mitigatedByControlCodes": ["mi-19", "mi-20", "mi-10", "mi-2"],
+      "sourceUrl": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/"
+    },
+    {
+      "code": "asi-05",
+      "title": "Unexpected Code Execution (RCE)",
+      "category": "AGENTIC",
+      "summary": "An agent is driven to generate and execute code or commands that the operator never intended, yielding remote code execution.",
+      "description": "Agents that can write and run code, or that pass model output into an interpreter or shell, expose a path from manipulated reasoning to arbitrary execution on host infrastructure. Defenses validate and sanitize the tool chain feeding execution, filter the inputs and outputs around code paths, and isolate and segment agent runtimes so executed code is contained.",
+      "frameworkRefs": {
+        "owaspLlmTop10": ["LLM01", "LLM05"],
+        "agenticThreats": ["T11"],
+        "aivss": ["code-execution"]
+      },
+      "relatedRiskCodes": [],
+      "mitigatedByControlCodes": ["mi-19", "mi-3", "mi-22"],
+      "sourceUrl": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/"
+    },
+    {
+      "code": "asi-06",
+      "title": "Memory and Context Poisoning",
+      "category": "AGENTIC",
+      "summary": "Persistent or shared agent memory and context are tainted so later reasoning and actions are corrupted long after the initial injection.",
+      "description": "Agents accumulate state — conversation memory, vector stores, scratchpads, shared context — and a single poisoned entry can steer behavior across many subsequent steps and sessions. Defenses filter data drawn from external knowledge bases into memory, classify and quality-gate stored data by sensitivity, and apply data-leakage prevention so poisoned or exfiltration-bearing context is caught.",
+      "frameworkRefs": {
+        "owaspLlmTop10": ["LLM01", "LLM04", "LLM08"],
+        "agenticThreats": ["T1", "T4", "T6", "T12"],
+        "aivss": ["memory-poisoning"]
+      },
+      "relatedRiskCodes": ["atlas-5"],
+      "mitigatedByControlCodes": ["mi-2", "mi-6", "mi-1"],
+      "sourceUrl": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/"
+    },
+    {
+      "code": "asi-07",
+      "title": "Insecure Inter-Agent Communication",
+      "category": "AGENTIC",
+      "summary": "Messages exchanged between agents lack authentication, integrity, or isolation, letting an attacker forge, intercept, or tamper with agent-to-agent traffic.",
+      "description": "Multi-agent systems trust messages from peer agents, so an unauthenticated or unsegmented channel lets a malicious or compromised agent inject instructions, spoof a peer, or eavesdrop on a workflow. Defenses isolate and segment agents from one another, protect agentic-system credentials used to authenticate peers, and firewall the traffic flowing between agents.",
+      "frameworkRefs": {
+        "owaspLlmTop10": ["LLM02", "LLM06"],
+        "agenticThreats": ["T12", "T16"],
+        "aivss": ["inter-agent-comms"]
+      },
+      "relatedRiskCodes": [],
+      "mitigatedByControlCodes": ["mi-22", "mi-23", "mi-17"],
+      "sourceUrl": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/"
+    },
+    {
+      "code": "asi-08",
+      "title": "Cascading Failures",
+      "category": "AGENTIC",
+      "summary": "A fault, error, or compromise in one agent or tool propagates through a multi-agent system, amplifying into systemic failure.",
+      "description": "Tightly coupled agents and tools mean a single bad output, runaway loop, or resource exhaustion can trigger a chain reaction across the system before any human intervenes. Defenses depend on system-wide observability to detect propagation early, quality-of-service and DDoS protections to contain resource cascades, and isolation and segmentation to stop failures crossing agent boundaries.",
+      "frameworkRefs": {
+        "owaspLlmTop10": ["LLM01", "LLM04", "LLM06"],
+        "agenticThreats": ["T5", "T8"],
+        "aivss": ["cascading-failure"]
+      },
+      "relatedRiskCodes": [],
+      "mitigatedByControlCodes": ["mi-4", "mi-8", "mi-22"],
+      "sourceUrl": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/"
+    },
+    {
+      "code": "asi-09",
+      "title": "Human-Agent Trust Exploitation",
+      "category": "AGENTIC",
+      "summary": "An agent's perceived authority or helpfulness is exploited to manipulate the human in the loop into harmful approvals or disclosures.",
+      "description": "People tend to over-trust fluent, confident agents, so an attacker who shapes agent output can socially engineer operators into approving dangerous actions, disclosing secrets, or rubber-stamping fabricated results. Defenses strengthen the human feedback loop with meaningful review points, provide citations and source traceability so claims can be verified, and audit agent decisions to keep the human grounded in what the agent actually did.",
+      "frameworkRefs": {
+        "owaspLlmTop10": ["LLM01", "LLM05", "LLM06", "LLM09"],
+        "agenticThreats": ["T7", "T8", "T10"],
+        "aivss": ["trust-exploitation"]
+      },
+      "relatedRiskCodes": [],
+      "mitigatedByControlCodes": ["mi-11", "mi-13", "mi-21"],
+      "sourceUrl": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/"
+    },
+    {
+      "code": "asi-10",
+      "title": "Rogue Agents",
+      "category": "AGENTIC",
+      "summary": "An agent operates outside governance — unauthorized, compromised, or misaligned — taking actions no operator sanctioned.",
+      "description": "Shadow deployments, compromised agents, and misaligned autonomous behavior produce agents that act without authorization or oversight, sometimes persisting and pursuing their own objectives. Defenses bind every agent to least-privilege authority, audit agent decisions for explainability, isolate and segment agents to limit reach, and rely on system observability to detect agents acting outside their mandate.",
+      "frameworkRefs": {
+        "owaspLlmTop10": ["LLM02", "LLM09"],
+        "agenticThreats": ["T13", "T14", "T15"],
+        "aivss": ["rogue-agent"]
+      },
+      "relatedRiskCodes": [],
+      "mitigatedByControlCodes": ["mi-18", "mi-21", "mi-22", "mi-4"],
+      "sourceUrl": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/"
+    }
+  ]
+}

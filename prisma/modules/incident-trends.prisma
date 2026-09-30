@@ -1,0 +1,58 @@
+enum IncidentTrendReportStatus {
+  draft
+  published
+  superseded
+}
+
+model IncidentTrendReport {
+  id            String                    @id @default(cuid())
+  orgId         String
+  version       Int
+  status        IncidentTrendReportStatus @default(draft)
+  windowStart   DateTime
+  windowEnd     DateTime
+  statsJson     Json                      @default("{}")
+  deltaJson     Json?
+  execSummary   String                    @default("") @db.Text
+  diagnostics   Json                      @default("[]")
+  providerType  String                    @default("unknown")
+  model         String                    @default("unknown")
+  inputTokens   Int                       @default(0)
+  outputTokens  Int                       @default(0)
+  latencyMs     Int                       @default(0)
+  incidentCount Int                       @default(0)
+  generatedById String
+  publishedAt   DateTime?
+  createdAt     DateTime                  @default(now())
+  updatedAt     DateTime                  @updatedAt
+
+  org         Organization           @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  generatedBy User                   @relation("IncidentTrendReportGenerator", fields: [generatedById], references: [id])
+  clusters    IncidentTrendCluster[]
+
+  @@index([orgId, status])
+  @@index([orgId, version])
+  @@map("itr_report")
+}
+
+model IncidentTrendCluster {
+  id                     String           @id @default(cuid())
+  orgId                  String
+  reportId               String
+  label                  String           @default("")
+  narrative              String           @default("") @db.Text
+  systemicRecommendation String           @default("") @db.Text
+  confidence             String           @default("")
+  memberIncidentIds      Json             @default("[]")
+  memberCount            Int              @default(0)
+  dominantCategory       IncidentCategory?
+  dominantSeverity       IncidentSeverity @default(high)
+  isLongTail             Boolean          @default(false)
+  createdAt              DateTime         @default(now())
+
+  org    Organization        @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  report IncidentTrendReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, reportId])
+  @@map("itr_cluster")
+}

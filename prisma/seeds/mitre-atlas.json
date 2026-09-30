@@ -1,0 +1,145 @@
+{
+  "_meta": {
+    "license": "Apache-2.0",
+    "attribution": "Source: MITRE ATLAS™ (https://atlas.mitre.org). © The MITRE Corporation. ATLAS and ATT&CK are trademarks of The MITRE Corporation.",
+    "upstreamRef": "ATLAS v5.4",
+    "fetchedAt": "2026-06-06T00:00:00.000Z",
+    "importerVersion": 1
+  },
+  "risks": [
+    {
+      "code": "atlas-1",
+      "title": "Adversarial Evasion (Adversarial Examples)",
+      "category": "Defense Evasion",
+      "summary": "An adversary crafts perturbed inputs that are misclassified by the model while appearing normal to humans, bypassing AI-based detection or steering classification/decision outputs. Applies to any model used for fraud, AML, content, or access decisions.",
+      "description": "## Summary\n\nAn adversary crafts inputs with carefully computed perturbations so the model produces an attacker-chosen output while the input still looks legitimate to a human reviewer. This lets attackers bypass AI-driven fraud screening, transaction monitoring, KYC/biometric checks, or content classifiers, and can also be used to trigger costly downstream actions.\n\n## Description\n\nEvasion can be mounted white-box (full model access, gradient optimization), black-box (API-only, query-based optimization), or via transferability from a proxy model. Backdoor triggers embedded during poisoning are a special case: a specific imperceptible pattern flips the model's output on demand. Financial-services exposure is highest where a model gates a control (fraud, AML, sanctions, biometric auth) — a successful evasion is a direct control failure, not just a quality issue.\n\n## Governance considerations\n\n- Treat any model that enforces a control as in-scope for adversarial-robustness testing.\n- Require red-team / adversarial evaluation before go-live and on material model changes.\n- Maintain human-in-the-loop or secondary controls for high-impact automated decisions.",
+      "frameworkRefs": {
+        "mitreAtlas": [
+          "AML.T0015",
+          "AML.T0043",
+          "AML.T0043.000",
+          "AML.T0043.001",
+          "AML.T0043.002",
+          "AML.T0043.004"
+        ]
+      },
+      "relatedRiskCodes": ["ri-8", "ri-9"],
+      "mitigatedByControlCodes": ["mi-5", "mi-3", "mi-17", "mi-11"],
+      "sourceUrl": "https://atlas.mitre.org/techniques/AML.T0015"
+    },
+    {
+      "code": "atlas-2",
+      "title": "Model Extraction / Theft via Inference API",
+      "category": "Exfiltration",
+      "summary": "An adversary clones a proprietary model's functionality by systematically querying its inference API and training a surrogate on the responses, stealing IP, avoiding per-query costs, and enabling offline attack development.",
+      "description": "## Summary\n\nBy issuing a large, well-chosen set of queries and recording outputs, an adversary trains a surrogate ('proxy') model that replicates the target's behavior. The result is theft of a proprietary asset, loss of competitive advantage, and a local replica that can be used to develop transferable evasion or inversion attacks offline.\n\n## Description\n\nExtraction scales with output richness (logits/confidence scores leak far more than top-1 labels) and with unthrottled access. It is distinct from training-data IP/copyright concerns (see ri-23): here the stolen asset is the model itself. The same replication step underpins black-box adversarial attacks.\n\n## Governance considerations\n\n- Rate-limit and anomaly-monitor inference APIs; prefer returning minimal output (label only) where feasible.\n- Treat model weights and inference endpoints as protected IP in the asset register.\n- Bind API access to authenticated, attributable accounts with per-tenant quotas.",
+      "frameworkRefs": {
+        "mitreAtlas": ["AML.T0024.002", "AML.T0005.001", "AML.T0048.004"]
+      },
+      "relatedRiskCodes": ["ri-23"],
+      "mitigatedByControlCodes": ["mi-8", "mi-12", "mi-4", "mi-7"],
+      "sourceUrl": "https://atlas.mitre.org/techniques/AML.T0024"
+    },
+    {
+      "code": "atlas-3",
+      "title": "Membership Inference & Model Inversion (Privacy Attacks)",
+      "category": "Exfiltration",
+      "summary": "An adversary uses model outputs to determine whether a specific record was in the training set (membership inference) or to reconstruct sensitive training inputs (model inversion), creating a privacy breach even without direct data access.",
+      "description": "## Summary\n\nModels can leak information about their training data through their outputs. Membership inference determines whether a particular individual's record was used in training — itself a disclosure under privacy law. Model inversion reconstructs representative training inputs (e.g. faces, records) from confidence scores or repeated queries.\n\n## Description\n\nThese attacks are most effective against over-fitted models, models exposing confidence scores, and small/high-dimensional datasets. They convert an inference endpoint into a privacy-exfiltration channel and are directly relevant to GDPR/personal-data obligations and to any model trained on customer PII. Distinct from generic prompt-driven leakage (ri-1) in that the attack targets the training distribution, not in-context data.\n\n## Governance considerations\n\n- Flag models trained on personal data for privacy-attack testing and DPIA linkage.\n- Apply differential privacy / output minimization / regularization where risk is material.\n- Record this risk against use cases that process PII.",
+      "frameworkRefs": {
+        "mitreAtlas": ["AML.T0024.000", "AML.T0024.001"],
+        "owaspLlm": ["llm02-2025"]
+      },
+      "relatedRiskCodes": ["ri-1", "ri-2"],
+      "mitigatedByControlCodes": ["mi-1", "mi-6", "mi-3", "mi-8"],
+      "sourceUrl": "https://atlas.mitre.org/techniques/AML.T0024"
+    },
+    {
+      "code": "atlas-4",
+      "title": "Denial of AI Service & Cost Harvesting (Wallet Attack)",
+      "category": "Impact",
+      "summary": "An adversary floods the system with high-volume or deliberately resource-intensive requests — including prompts that make agents loop or fan out — to exhaust capacity or run up uncontrolled inference/compute bills.",
+      "description": "## Summary\n\nUnlike vendor-side availability (ri-7), this is an attacker-driven impact: excessive queries, deliberately expensive ('resource-intensive') inputs, or prompts that cause agentic systems to recurse and consume resources. The outcome is denial of service to legitimate users and/or a 'denial-of-wallet' — runaway token and compute spend.\n\n## Description\n\nAgentic architectures amplify this: a single crafted prompt can trigger long tool-call chains, retries, and sub-agent fan-out. Pay-per-token and autoscaling setups turn a load attack into a direct financial one. Maps to OWASP LLM10 Unbounded Consumption.\n\n## Governance considerations\n\n- Enforce per-tenant rate limits, token/spend budgets, and circuit breakers on agent loops and tool calls.\n- Alert on cost and request anomalies; cap maximum reasoning/tool-call depth.\n- Include cost-abuse scenarios in pre-launch testing for agentic use cases.",
+      "frameworkRefs": {
+        "mitreAtlas": [
+          "AML.T0029",
+          "AML.T0034",
+          "AML.T0034.000",
+          "AML.T0034.001",
+          "AML.T0034.002"
+        ],
+        "owaspLlm": ["llm10-2025"]
+      },
+      "relatedRiskCodes": ["ri-7", "ri-18"],
+      "mitigatedByControlCodes": ["mi-8", "mi-9", "mi-18", "mi-4"],
+      "sourceUrl": "https://atlas.mitre.org/techniques/AML.T0034"
+    },
+    {
+      "code": "atlas-5",
+      "title": "AI Model Supply Chain Compromise (Poisoned / Unsafe Model Artifacts)",
+      "category": "Supply Chain",
+      "summary": "An adversary distributes a backdoored model or a model file containing executable payloads (e.g. unsafe deserialization) through public registries; loading it can hand the attacker code execution or embed hidden malicious behavior.",
+      "description": "## Summary\n\nThird-party and open-weight models are a supply-chain surface distinct from the MCP/tooling supply chain (ri-26). Attackers publish poisoned models, tamper with widely-used models, or ship artifacts that exploit deserialization (e.g. pickle) so that merely loading the model executes attacker code.\n\n## Description\n\nRisks include hidden backdoor triggers in weights, modified architectures, and malware embedded in serialized artifacts or AI-framework dependencies. Provenance is often weak: models are pulled from hubs by name with little verification of who produced them or what they contain. Maps to OWASP LLM03 Supply Chain.\n\n## Governance considerations\n\n- Maintain an approved-model registry with provenance, hashes, and license records.\n- Prefer safe serialization formats (e.g. safetensors); scan artifacts before load; load untrusted models in sandboxes.\n- Gate adoption of external/open-weight models through review.",
+      "frameworkRefs": {
+        "mitreAtlas": [
+          "AML.T0010.003",
+          "AML.T0010.001",
+          "AML.T0058",
+          "AML.T0011.000"
+        ],
+        "owaspLlm": ["llm03-2025"]
+      },
+      "relatedRiskCodes": ["ri-8", "ri-26"],
+      "mitigatedByControlCodes": ["mi-10", "mi-5", "mi-20", "mi-7"],
+      "sourceUrl": "https://atlas.mitre.org/techniques/AML.T0010"
+    },
+    {
+      "code": "atlas-6",
+      "title": "System Prompt Leakage / Extraction",
+      "category": "Discovery",
+      "summary": "An adversary extracts the model's hidden system prompt — revealing instructions, guardrails, delimiters, and embedded secrets — which both leaks confidential logic and provides a blueprint for crafting more reliable injection or jailbreak attacks.",
+      "description": "## Summary\n\nDistinct from prompt injection (ri-10), this targets disclosure of the system prompt itself. Attackers probe for special characters, instruction keywords, and delimiter patterns, then coax the model into reproducing its full instructions. Leaked prompts often contain business logic, guardrail wording, and — dangerously — hardcoded credentials or connection details.\n\n## Description\n\nKnowing the system prompt lets an attacker reverse-engineer defenses and craft targeted injections/jailbreaks. The leak is also a confidentiality breach in its own right when prompts encode proprietary logic or secrets. Maps to OWASP LLM07 System Prompt Leakage.\n\n## Governance considerations\n\n- Never place secrets, keys, or sensitive business rules in system prompts; enforce controls outside the model.\n- Test for prompt-extraction during security review; monitor for extraction patterns.\n- Assume the system prompt is discoverable when threat-modeling.",
+      "frameworkRefs": {
+        "mitreAtlas": [
+          "AML.T0056",
+          "AML.T0069",
+          "AML.T0069.000",
+          "AML.T0069.001",
+          "AML.T0069.002"
+        ],
+        "owaspLlm": ["llm07-2025"]
+      },
+      "relatedRiskCodes": ["ri-10"],
+      "mitigatedByControlCodes": ["mi-3", "mi-17", "mi-5", "mi-23"],
+      "sourceUrl": "https://atlas.mitre.org/techniques/AML.T0056"
+    },
+    {
+      "code": "atlas-7",
+      "title": "Self-Replicating Prompts (AI Worm)",
+      "category": "ML Attack Staging",
+      "summary": "An adversary injects a prompt that causes the model's output to carry a copy of the malicious instruction, which is then ingested by other agents or systems — propagating the attack across an agent network without further attacker action.",
+      "description": "## Summary\n\nA prompt-injection payload is engineered so that the model's output reproduces the payload. When that output is consumed by another LLM/agent (shared memory, message passing, RAG indices, downstream automation), the injection propagates — an AI 'worm'. Builds on indirect prompt injection (ri-10) and extends multi-agent trust-boundary failures (ri-28).\n\n## Description\n\nMulti-agent and tool-chained architectures are the natural carrier: agent A's output becomes agent B's input. Self-replication turns a single injection into a spreading compromise that can exfiltrate data or trigger actions at each hop. An emerging, agentic-specific threat with limited tooling maturity.\n\n## Governance considerations\n\n- Treat all inter-agent and tool-returned content as untrusted input; sanitize/validate before re-ingestion.\n- Constrain what agent outputs may flow into other agents' contexts or persistent memory.\n- Add propagation/loop detection and containment to agent orchestration.",
+      "frameworkRefs": {
+        "mitreAtlas": ["AML.T0061", "AML.T0051.001"],
+        "owaspLlm": ["llm01-2025"]
+      },
+      "relatedRiskCodes": ["ri-10", "ri-28"],
+      "mitigatedByControlCodes": ["mi-22", "mi-19", "mi-3", "mi-18"],
+      "sourceUrl": "https://atlas.mitre.org/techniques/AML.T0061"
+    },
+    {
+      "code": "atlas-8",
+      "title": "Insecure Output Handling / Trusted Output Manipulation",
+      "category": "Impact",
+      "summary": "Downstream systems consume model output without validation, so attacker-influenced output is rendered or executed (XSS, SQLi, command injection, unsafe agent actions) or crafted to appear authoritative (fake citations) and mislead users.",
+      "description": "## Summary\n\nWhen LLM output is passed unsanitized into browsers, shells, databases, or code, the model becomes an injection vector — classic XSS/SQLi/command-injection, but driven by manipulated generations. Separately, attackers can manipulate trusted-looking output components (fabricated citations, authoritative formatting) so users over-trust wrong or harmful answers.\n\n## Description\n\nRoot cause is treating model output as trusted. In agentic systems this is acute: output drives tool calls and actions. Maps to OWASP LLM05 Improper Output Handling. Distinct from hallucination (ri-4) — here the danger is how output is consumed, not just whether it is correct.\n\n## Governance considerations\n\n- Validate, encode, and sandbox all model output before it reaches an interpreter, renderer, or tool.\n- Apply least privilege to actions an agent's output can trigger; require confirmation for high-impact actions.\n- Don't present model output as authoritative without provenance/verification.",
+      "frameworkRefs": {
+        "mitreAtlas": ["AML.T0067", "AML.T0067.000"],
+        "owaspLlm": ["llm05-2025"]
+      },
+      "relatedRiskCodes": ["ri-4", "ri-24"],
+      "mitigatedByControlCodes": ["mi-19", "mi-3", "mi-13", "mi-18"],
+      "sourceUrl": "https://atlas.mitre.org/techniques/AML.T0067"
+    }
+  ]
+}

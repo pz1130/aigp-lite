@@ -1,0 +1,35 @@
+enum ProviderType {
+  openai
+  anthropic
+  azure_openai
+  google_gemini
+  openai_compatible
+  anthropic_compatible
+}
+
+model ProviderConnection {
+  id                   String       @id @default(cuid())
+  orgId                String
+  name                 String
+  providerType         ProviderType
+  baseUrl              String?
+  credentialsEncrypted Bytes
+  config               Json         @default("{}")
+  isActive             Boolean      @default(true)
+  lastValidatedAt      DateTime?
+  lastValidationStatus String?
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+  createdBy            String
+
+  org         Organization    @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  invocations LlmInvocation[]
+  evaluations Evaluation[]
+
+  // Vendor back-relation
+  vendors Vendor[]
+
+  @@unique([orgId, name])
+  @@index([orgId, isActive])
+  @@map("provider_connection")
+}

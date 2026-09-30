@@ -1,0 +1,376 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  // Emit CommonJS-compatible code (no `import.meta`). Next.js and Vitest
+  // consume this fine, and it lets Playwright's CJS require-hook load the
+  // client in e2e global-setup/specs (ESM output uses `import.meta.url`,
+  // which throws under that hook). See docs/... e2e harness note.
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  admin
+  risk_officer
+  ai_owner
+  auditor
+  viewer
+}
+
+enum OrgInviteStatus {
+  pending
+  accepted
+  revoked
+  expired
+}
+
+model Organization {
+  id          String       @id @default(cuid())
+  name        String
+  plan        String       @default("free")
+  createdAt   DateTime     @default(now())
+  memberships Membership[]
+  auditLogs   AuditLog[]
+
+  // M1 back-relations
+  usecases             AiUsecase[]
+  riskAssessments      UsecaseRiskAssessment[]
+  controlStatuses      UsecaseControlStatus[]
+  maturityAssessments  GovernanceMaturityAssessment[]
+  governanceScoreSnapshots GovernanceScoreSnapshot[]
+  usecaseClassifications UsecaseClassification[]
+  usecaseMaterialities   UsecaseMateriality[]
+
+  // Fairness back-relation
+  fairnessAssessments UsecaseFairnessAssessment[]
+
+  // M2 back-relations
+  policies        Policy[]
+  policyEvals     PolicyEvaluation[]
+  invocations     LlmInvocation[]
+  apiKeys         ApiKey[]
+
+  // M3 back-relations
+  workflows WorkflowInstance[]
+  workflowTemplates WorkflowTemplate[]
+  evidences Evidence[]
+
+  // M4 back-relations
+  dataSources DataSource[]
+  webhooks    WebhookEndpoint[]
+
+  // M5 back-relations
+  incidents   Incident[]
+
+  // M8 back-relation
+  providerConnections ProviderConnection[]
+
+  // M9 back-relation
+  reports     Report[]
+
+  // M10 back-relation
+  budgets     Budget[]
+
+  // M11 back-relation
+  enterpriseIntegrations EnterpriseIntegration[]
+
+  // M12 back-relations
+  evaluations            Evaluation[]
+  redteamPromptCustoms   RedteamPromptCustom[]
+
+  // M13 back-relation
+  auditSinks  AuditSink[]
+
+  // FINOS back-relation
+  riskCatalogs RiskCatalog[]
+
+  // Notification back-relation
+  notifications Notification[]
+
+  // FRIA back-relation
+  frias UsecaseFria[]
+
+  // AIVTF back-relation
+  aivtfAssessments AivtfAssessment[]
+
+  // MindForge Checklist back-relation
+  mfChecklistAssessments MfChecklistAssessment[]
+
+  // ASI Red-Team Checklist back-relation
+  asiChkAssessments AsiChkAssessment[]
+  frtAssessments    FrtAssessment[]
+
+  // Agentic Governance Checklist back-relation
+  agChkAssessments AgChkAssessment[]
+  txrReports        TxrReport[]
+
+  // Evidence Pack back-relation
+  evidencePacks EvidencePack[]
+
+  // Policy Assistant back-relation
+  policyAssistantGenerations PolicyAssistantGeneration[]
+
+  // MCP back-relations
+  mcpServers       McpServer[]
+  mcpTools         McpTool[]
+  mcpInvocations   McpToolInvocation[]
+  mcpToolSnapshots McpToolSnapshot[]
+
+  // Drift back-relations
+  driftBenchmarks DriftBenchmark[]
+  driftPrompts    DriftPrompt[]
+  driftRuns       DriftRun[]
+  driftResults    DriftResult[]
+
+  // Risk Copilot back-relations
+  catalogRiskLinks       UsecaseCatalogRiskLink[]
+  riskCopilotSuggestions RiskCopilotSuggestion[]
+
+  // Incident RCA back-relation
+  incidentRcaDrafts IncidentRcaDraft[]
+
+  // Members back-relation
+  orgInvites  OrgInvite[]
+
+  // Incident pipeline back-relations
+  incidentMergeSuggestions    IncidentMergeSuggestion[]
+  incidentAutomationConfig    OrgIncidentAutomationConfig?
+
+  // SSO back-relation
+  ssoConnection SsoConnection?
+
+  // SCIM back-relation
+  scimConnection ScimConnection?
+
+  // Vendor back-relations
+  vendors            Vendor[]
+  vendorUsecaseLinks VendorUsecaseLink[]
+
+  // NeMo guardrail evidence back-relation
+  nemoGuardrailEvidence NemoGuardrailEvidence[]
+
+  // Go-live back-relation
+  goLiveReviews GoLiveReview[]
+
+  // Incident Trends back-relations
+  incidentTrendReports  IncidentTrendReport[]
+  incidentTrendClusters IncidentTrendCluster[]
+
+  // Usage Insights back-relations
+  usageInsightReports  UsageInsightReport[]
+  usageInsightClusters UsageInsightCluster[]
+
+  // Org hierarchy (two-level: HQ -> child). Nullable = top-level org.
+  parentOrgId String?
+  parent      Organization?  @relation("OrgHierarchy", fields: [parentOrgId], references: [id], onDelete: SetNull)
+  children    Organization[] @relation("OrgHierarchy")
+
+  redteamAttestations RedteamAttestation[]
+  externalReports     ExternalReport[]
+
+  // Alignment audit back-relations
+  alignmentAudits  AlignmentAudit[]
+  alignmentResults AlignmentResult[]
+
+  // Trust Center back-relations
+  trustProfile      TrustProfile?
+  trustSnapshots    TrustSnapshot[]
+  trustAccessTokens TrustAccessToken[]
+
+  @@map("organization")
+}
+
+model User {
+  id            String       @id @default(cuid())
+  email         String       @unique
+  name          String?
+  passwordHash  String?
+  oidcSubject   String?      @unique
+  locale        String       @default("zh")
+  createdAt     DateTime     @default(now())
+  memberships   Membership[]
+  auditLogs     AuditLog[]   @relation("AuditActor")
+
+  // M1 back-relations
+  usecasesOwned   AiUsecase[]                     @relation("UsecaseOwner")
+  assessments     UsecaseRiskAssessment[]         @relation("AssessmentAuthor")
+  maturityRecords GovernanceMaturityAssessment[]  @relation("MaturityAuthor")
+
+  // M3 back-relations
+  decidedSteps  WorkflowStep[]  @relation("StepDecider")
+  evidenceUploads Evidence[]    @relation("EvidenceUploader")
+
+  // M5 back-relations
+  incidentsOpened Incident[] @relation("IncidentOpener")
+  incidentsClosed Incident[] @relation("IncidentCloser")
+
+  // FRIA back-relations
+  friasCreated   UsecaseFria[] @relation("FriaCreator")
+  friasSubmitted UsecaseFria[] @relation("FriaSubmitter")
+  friasApproved  UsecaseFria[] @relation("FriaApprover")
+  friasArchived  UsecaseFria[] @relation("FriaArchiver")
+
+  // AIVTF back-relations
+  aivtfCreated   AivtfAssessment[] @relation("AivtfCreator")
+  aivtfSubmitted AivtfAssessment[] @relation("AivtfSubmitter")
+  aivtfApproved  AivtfAssessment[] @relation("AivtfApprover")
+  aivtfArchived  AivtfAssessment[] @relation("AivtfArchiver")
+
+  // MindForge Checklist back-relations
+  mfChkCreated   MfChecklistAssessment[] @relation("MfChkCreator")
+  mfChkSubmitted MfChecklistAssessment[] @relation("MfChkSubmitter")
+  mfChkApproved  MfChecklistAssessment[] @relation("MfChkApprover")
+  mfChkArchived  MfChecklistAssessment[] @relation("MfChkArchiver")
+
+  // ASI Red-Team Checklist back-relations
+  asiChkCreated   AsiChkAssessment[] @relation("AsiChkCreator")
+  asiChkSubmitted AsiChkAssessment[] @relation("AsiChkSubmitter")
+  asiChkApproved  AsiChkAssessment[] @relation("AsiChkApprover")
+  asiChkArchived  AsiChkAssessment[] @relation("AsiChkArchiver")
+
+  // Agentic Governance Checklist back-relations
+  agChkCreated   AgChkAssessment[] @relation("AgChkCreator")
+  agChkSubmitted AgChkAssessment[] @relation("AgChkSubmitter")
+  agChkApproved  AgChkAssessment[] @relation("AgChkApprover")
+  agChkArchived  AgChkAssessment[] @relation("AgChkArchiver")
+
+  frtCreated   FrtAssessment[] @relation("FrtCreator")
+  frtSubmitted FrtAssessment[] @relation("FrtSubmitter")
+  frtApproved  FrtAssessment[] @relation("FrtApprover")
+  frtArchived  FrtAssessment[] @relation("FrtArchiver")
+
+  // Transparency Report back-relations
+  txrCreated   TxrReport[] @relation("TxrCreator")
+  txrSubmitted TxrReport[] @relation("TxrSubmitter")
+  txrApproved  TxrReport[] @relation("TxrApprover")
+  txrPublished TxrReport[] @relation("TxrPublisher")
+
+  // Evidence Pack back-relation
+  evidencePacksCreated EvidencePack[] @relation("EvidencePackCreator")
+
+  // Materiality back-relation
+  materialityAssessments UsecaseMateriality[]
+
+  // Fairness back-relation
+  fairnessCompleted UsecaseFairnessAssessment[] @relation("FairnessCompletedBy")
+
+  // Notification back-relation
+  notifications Notification[] @relation("NotificationRecipient")
+
+  // Policy Assistant back-relation
+  policyAssistantGenerations PolicyAssistantGeneration[] @relation("PolicyAssistantAuthor")
+
+  // MCP back-relations
+  mcpServersCreated    McpServer[]          @relation("McpServerCreator")
+  mcpInvocations       McpToolInvocation[]  @relation("McpInvocationActor")
+  mcpSnapshotsCaptured McpToolSnapshot[]    @relation("McpSnapshotCapturer")
+
+  // Drift back-relation
+  driftBenchmarkCreated DriftBenchmark[] @relation("DriftBenchmarkCreator")
+
+  // Risk Copilot back-relations
+  catalogRisksAccepted        UsecaseCatalogRiskLink[]     @relation("CatalogRiskAccepter")
+  riskCopilotSuggestionsMade  RiskCopilotSuggestion[]      @relation("RiskCopilotRequester")
+  riskCopilotItemsDecided     RiskCopilotSuggestionItem[]  @relation("RiskCopilotItemDecider")
+
+  // Incident RCA back-relations
+  incidentRcaRequests IncidentRcaDraft[] @relation("IncidentRcaRequester")
+  incidentRcaAccepts  IncidentRcaDraft[] @relation("IncidentRcaAccepter")
+
+  // Members back-relations
+  invitesCreated   OrgInvite[] @relation("InviteCreatedBy")
+  invitesAccepted  OrgInvite[] @relation("InviteAcceptedBy")
+
+  // Incident pipeline back-relations
+  mergeSuggestionsDismissed   IncidentMergeSuggestion[] @relation("MergeSuggestionDismisser")
+  mergeSuggestionsAccepted    IncidentMergeSuggestion[] @relation("MergeSuggestionAccepter")
+  incidentAutomationUpdates   OrgIncidentAutomationConfig[]
+
+  // Vendor back-relation
+  vendorAssessments Vendor[] @relation("VendorAssessedBy")
+
+  // Go-live back-relations
+  goLiveDecisions GoLiveReview[] @relation("GoLiveDecider")
+  goLiveCreated   GoLiveReview[] @relation("GoLiveCreator")
+  externalReportsResolved ExternalReport[]
+  alignmentAuditsStarted AlignmentAudit[] @relation("AlignmentAuditStarter")
+
+  // Incident Trends back-relation
+  incidentTrendReports IncidentTrendReport[] @relation("IncidentTrendReportGenerator")
+
+  // Usage Insights back-relation
+  usageInsightReports UsageInsightReport[] @relation("UsageInsightReportGenerator")
+
+  // Trust Center back-relations
+  trustSnapshotsCreated   TrustSnapshot[]    @relation("TrustCreator")
+  trustSnapshotsPublished TrustSnapshot[]    @relation("TrustPublisher")
+  trustSnapshotsWithdrawn TrustSnapshot[]    @relation("TrustWithdrawer")
+  trustTokensCreated      TrustAccessToken[] @relation("TrustTokenCreator")
+  trustTokensRevoked      TrustAccessToken[] @relation("TrustTokenRevoker")
+
+  @@map("user")
+}
+
+model Membership {
+  orgId    String
+  userId   String
+  role     Role
+  joinedAt DateTime @default(now())
+
+  org      Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([orgId, userId])
+  @@index([userId])
+  @@map("membership")
+}
+
+model AuditLog {
+  id           String   @id @default(cuid())
+  orgId        String
+  actorId      String?
+  action       String
+  resourceType String
+  resourceId   String?
+  beforeJson   Json?
+  afterJson    Json?
+  ip           String?
+  userAgent    String?
+  ts           DateTime @default(now())
+  seqNum       Int      @default(0)
+  prevHash     String?  @db.Char(64)
+  selfHash     String?  @db.Char(64)
+
+  org   Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  actor User?        @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([orgId, ts(sort: Desc)])
+  @@index([orgId, resourceType, resourceId])
+  @@unique([orgId, seqNum])
+  @@map("audit_log")
+}
+
+model OrgInvite {
+  id                String          @id @default(cuid())
+  orgId             String
+  email             String
+  role              Role
+  tokenHash         String          @unique
+  expiresAt         DateTime
+  status            OrgInviteStatus @default(pending)
+  createdById       String
+  createdAt         DateTime        @default(now())
+  acceptedAt        DateTime?
+  acceptedByUserId  String?
+
+  org         Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  createdBy   User         @relation("InviteCreatedBy", fields: [createdById], references: [id])
+  acceptedBy  User?        @relation("InviteAcceptedBy", fields: [acceptedByUserId], references: [id])
+
+  @@index([orgId, status])
+  @@index([orgId, email, status])
+  @@map("org_invite")
+}

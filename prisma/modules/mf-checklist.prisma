@@ -1,0 +1,96 @@
+enum MfChkStatus {
+  draft
+  submitted
+  approved
+  archived
+}
+
+enum MfChkAnswer {
+  unanswered
+  yes
+  no
+  na
+}
+
+model MfChecklistSection {
+  id             String                     @id @default(cuid())
+  num            Int                        @unique
+  key            String                     @unique
+  title          String
+  order          Int
+  considerations MfChecklistConsideration[]
+
+  @@map("mf_checklist_section")
+}
+
+model MfChecklistConsideration {
+  id        String             @id @default(cuid())
+  sectionId String
+  section   MfChecklistSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  code      String             @unique
+  title     String
+  order     Int
+  items     MfChecklistItem[]
+
+  @@map("mf_checklist_consideration")
+}
+
+model MfChecklistItem {
+  id              String                   @id @default(cuid())
+  considerationId String
+  consideration   MfChecklistConsideration @relation(fields: [considerationId], references: [id], onDelete: Cascade)
+  code            String                   @unique
+  text            String
+  guidance        String?
+  order           Int
+
+  @@map("mf_checklist_item")
+}
+
+model MfChecklistAssessment {
+  id             String      @id @default(cuid())
+  orgId          String
+  usecaseId      String?
+  version        Int         @default(1)
+  status         MfChkStatus @default(draft)
+  title          String
+  createdById    String
+  submittedAt    DateTime?
+  submittedById  String?
+  approvedAt     DateTime?
+  approvedById   String?
+  archivedAt     DateTime?
+  archivedById   String?
+  supersededById String?     @unique
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  org          Organization            @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase      AiUsecase?              @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+  createdBy    User                    @relation("MfChkCreator", fields: [createdById], references: [id])
+  submittedBy  User?                   @relation("MfChkSubmitter", fields: [submittedById], references: [id])
+  approvedBy   User?                   @relation("MfChkApprover", fields: [approvedById], references: [id])
+  archivedBy   User?                   @relation("MfChkArchiver", fields: [archivedById], references: [id])
+  supersededBy MfChecklistAssessment?  @relation("MfChkSupersede", fields: [supersededById], references: [id])
+  supersedes   MfChecklistAssessment[] @relation("MfChkSupersede")
+  answers      MfChecklistAnswer[]
+
+  @@unique([usecaseId, version])
+  @@index([orgId, usecaseId, status])
+  @@index([orgId, status, updatedAt(sort: Desc)])
+  @@map("mf_checklist_assessment")
+}
+
+model MfChecklistAnswer {
+  id           String                @id @default(cuid())
+  assessmentId String
+  assessment   MfChecklistAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  itemCode     String
+  status       MfChkAnswer           @default(unanswered)
+  elaboration  String?
+  evidenceRefs Json                  @default("[]")
+  updatedAt    DateTime              @updatedAt
+
+  @@unique([assessmentId, itemCode])
+  @@map("mf_checklist_answer")
+}

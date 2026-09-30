@@ -1,0 +1,36 @@
+AIGP-Lite
+Copyright 2026 The AIGP-Lite Authors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product includes or is derived from third-party material that remains
+under its own terms. The per-source provenance and licence notes live next to
+the data they cover:
+
+- FINOS AI Governance Framework, CC BY 4.0
+  prisma/seeds/finos-aigf.json.LICENSE
+- MITRE ATLAS (c) The MITRE Corporation, atlas-data under Apache-2.0
+  prisma/seeds/mitre-atlas.json.LICENSE
+- OWASP Top 10 for Agentic Applications 2026, CC BY-SA 4.0 (codes and titles only)
+  prisma/seeds/owasp-asi-catalog.LICENSE
+  prisma/seeds/asi-redteam-checklist-catalog.json.LICENSE
+- NIST AI RMF 1.0, U.S. Government work (public domain in the U.S.)
+  prisma/seeds/nist-ai-rmf-catalog.LICENSE
+- ISO/IEC 42001:2023 Annex A, identifiers and short names only
+  prisma/seeds/iso-42001-catalog.LICENSE
+- Regulation (EU) 2024/1689 (EU AI Act), reused under Decision 2011/833/EU
+  prisma/seeds/eu-ai-act-catalog.LICENSE
+- MAS/ABS MindForge AI Risk Management, codes/titles plus original summaries
+  prisma/seeds/mindforge-catalog.LICENSE
+  prisma/seeds/mf-checklist-catalog.json.LICENSE
+  prisma/seeds/mindforge-crosswalk.json.LICENSE
+- IMDA / AI Verify Foundation, AI Verify Testing Framework process checklist
+  prisma/seeds/aivtf-catalog.LICENSE
+- AI Verify Foundation Moonshot, Apache-2.0
+  src/lib/redteam/library/moonshot.LICENSE
+
+Design elements adapted from the Microsoft Agent Governance Toolkit (MIT) are
+credited in the Acknowledgments section of README.md.
+
+Framework and product names are trademarks of their respective owners. Their
+use here is descriptive and does not imply endorsement.

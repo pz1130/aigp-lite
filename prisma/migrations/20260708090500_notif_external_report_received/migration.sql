@@ -1,0 +1,1 @@
+ALTER TYPE "NotificationType" ADD VALUE IF NOT EXISTS 'external_report_received';

@@ -1,0 +1,8 @@
+MindForge Cross-Framework Crosswalk — original analysis.
+
+The mappings in mindforge-crosswalk.json are original AI Governance Platform
+(AIGP) analysis of control-intent correspondence between MindForge practices and
+controls in NIST AI RMF, ISO/IEC 42001, FINOS AIGF, and the EU AI Act. They are
+NOT an official mapping by, or endorsement from, MAS/ABS, NIST, ISO, FINOS, or
+the European Commission. Practice and control codes are factual identifiers.
+"note" fields are original AIGP wording; no normative text is reproduced.

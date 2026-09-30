@@ -1,0 +1,65 @@
+enum FairnessStatus {
+  draft
+  completed
+}
+
+enum FairnessCheck {
+  yes
+  no
+  not_applicable
+}
+
+enum FairnessMetricKind {
+  selection_rate
+  true_positive_rate
+  error_rate
+  precision
+}
+
+model UsecaseFairnessAssessment {
+  id            String         @id @default(cuid())
+  orgId         String
+  usecaseId     String         @unique
+  status        FairnessStatus @default(draft)
+  proxyReview   FairnessCheck?
+  feedbackLoop  FairnessCheck?
+  notes         String?        @db.Text
+  completedById String?
+  completedAt   DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  org         Organization        @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase     AiUsecase           @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+  completedBy User?               @relation("FairnessCompletedBy", fields: [completedById], references: [id])
+  attributes  FairnessAttribute[]
+
+  @@index([orgId])
+  @@map("usecase_fairness_assessment")
+}
+
+model FairnessAttribute {
+  id           String             @id @default(cuid())
+  assessmentId String
+  name         String
+  metric       FairnessMetricKind
+  createdAt    DateTime           @default(now())
+
+  assessment UsecaseFairnessAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  subgroups  FairnessSubgroup[]
+
+  @@unique([assessmentId, name])
+  @@map("fairness_attribute")
+}
+
+model FairnessSubgroup {
+  id          String @id @default(cuid())
+  attributeId String
+  label       String
+  value       Float
+
+  attribute FairnessAttribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+
+  @@unique([attributeId, label])
+  @@map("fairness_subgroup")
+}

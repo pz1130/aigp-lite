@@ -1,0 +1,125 @@
+enum LifecycleStage {
+  proposed
+  development
+  production
+  deprecated
+  retired
+}
+
+enum AutonomyLevel {
+  assistant
+  simple_agent
+  collaborative_agent
+  agent_ecosystem
+}
+
+enum DeploymentType {
+  built
+  blended
+  embedded
+  byo
+}
+
+model AiUsecase {
+  id              String          @id @default(cuid())
+  orgId           String
+  name            String
+  ownerId         String
+  lifecycleStage  LifecycleStage  @default(proposed)
+  autonomyLevel   AutonomyLevel
+  deploymentType  DeploymentType
+  modelCardMd     String          @default("") @db.Text
+  description     String          @default("")
+  intendedUseMd   String          @default("") @db.Text
+  prohibitedUseMd String          @default("") @db.Text
+  // Deprecation lifecycle (set only via inventory.deprecate; cleared on reinstate)
+  sunsetDate        DateTime?
+  deprecatedAt      DateTime?
+  deprecatedById    String?
+  deprecationReason String          @default("") @db.Text
+  humanOversightAttested     Boolean   @default(false)
+  humanOversightAttestedById String?
+  humanOversightAttestedAt   DateTime?
+  publicReportToken          String?   @unique
+  publicReportEnabled        Boolean   @default(false)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  org             Organization            @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  owner           User                    @relation("UsecaseOwner", fields: [ownerId], references: [id])
+  versions        AiModelVersion[]
+  riskAssessments UsecaseRiskAssessment[]
+  controlStatuses UsecaseControlStatus[]
+  invocations     LlmInvocation[]
+  workflows      WorkflowInstance[]
+  evidences      Evidence[]
+  dataLinks      UsecaseDataLink[]
+  incidents      Incident[]
+  classification  UsecaseClassification?
+  materiality     UsecaseMateriality?
+  fairnessAssessment UsecaseFairnessAssessment?
+  frias          UsecaseFria[]
+  aivtfAssessments AivtfAssessment[]
+  mfChecklistAssessments MfChecklistAssessment[]
+  asiChkAssessments AsiChkAssessment[]
+  agChkAssessments  AgChkAssessment[]
+  frtAssessments    FrtAssessment[]
+  txrReports        TxrReport[]
+  evidencePacks    EvidencePack[]
+  catalogRiskLinks       UsecaseCatalogRiskLink[]
+  riskCopilotSuggestions RiskCopilotSuggestion[]
+
+  // Vendor back-relation
+  vendorLinks VendorUsecaseLink[]
+
+  // Go-live / dossier back-relations
+  evaluations     Evaluation[]
+  driftBenchmarks DriftBenchmark[]
+  goLiveReviews   GoLiveReview[]
+  redteamAttestations RedteamAttestation[]
+  externalReports     ExternalReport[]
+  alignmentAudits AlignmentAudit[]
+
+  @@unique([orgId, name])
+  @@index([orgId, lifecycleStage])
+  @@map("ai_usecase")
+}
+
+model AiModelVersion {
+  id          String   @id @default(cuid())
+  usecaseId   String
+  version     String
+  modelCardMd String   @default("") @db.Text
+  deployedAt  DateTime?
+  createdAt   DateTime @default(now())
+
+  usecase AiUsecase @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+
+  @@unique([usecaseId, version])
+  @@map("ai_model_version")
+}
+
+model UsecaseClassification {
+  id                       String   @id @default(cuid())
+  orgId                    String
+  usecaseId                String   @unique
+  domain                   String?
+  containsPii              Boolean  @default(false)
+  dataSensitivity          String?
+  automatedDecisionMaking  Boolean  @default(false)
+  euAiActCategory          String?
+  complianceTags           String[]
+  suggestedRisks           Json     @default("[]")
+  summary                  String   @default("") @db.Text
+  modelProvider            String?
+  modelName                String?
+  confidence               Float?
+  generatedAt              DateTime @default(now())
+  generatedReason          String
+
+  org     Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase AiUsecase    @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
+  @@map("usecase_classification")
+}

@@ -1,0 +1,2467 @@
+{
+  "app": {
+    "name": "AIGP-Lite",
+    "tagline": "AI 治理平台"
+  },
+  "nav": {
+    "dashboard": "总览",
+    "posture": "态势",
+    "logout": "退出登录",
+    "search": "搜索...",
+    "noResults": "未找到结果。",
+    "modules": "模块",
+    "providers": "AI Provider",
+    "organization": {
+      "label": "组织",
+      "error": "无法切换组织。"
+    },
+    "group": {
+      "govern": "治理",
+      "operate": "运营",
+      "connect": "集成",
+      "insight": "洞察"
+    }
+  },
+  "auth": {
+    "selectOrg": {
+      "title": "选择组织",
+      "subtitle": "请选择要管理的组织。"
+    },
+    "sso": {
+      "button": "使用 SSO 登录",
+      "divider": "或",
+      "errors": {
+        "failed": "SSO 登录失败。请重试或联系管理员。",
+        "denied": "访问被拒绝。请联系管理员。",
+        "unknown": "登录失败。"
+      }
+    },
+    "brand": {
+      "tagline": "让 AI，可治、可信、可控。"
+    },
+    "login": {
+      "title": "登录",
+      "subtitle": "欢迎回来",
+      "showPassword": "显示密码",
+      "hidePassword": "隐藏密码",
+      "email": "邮箱",
+      "password": "密码",
+      "submit": "登录",
+      "noAccount": "还没有账号？去注册"
+    },
+    "register": {
+      "title": "创建组织",
+      "orgName": "组织名称",
+      "name": "你的姓名",
+      "email": "邮箱",
+      "password": "密码",
+      "submit": "创建",
+      "haveAccount": "已有账号？去登录",
+      "showPassword": "显示密码",
+      "hidePassword": "隐藏密码"
+    }
+  },
+  "dashboard": {
+    "title": "总览",
+    "description": "AI 治理概览",
+    "thisWeek": {
+      "title": "本周"
+    },
+    "kpi": {
+      "calls": "LLM 调用",
+      "blocked": "拦截请求",
+      "spend": "LLM 支出",
+      "maturity": "成熟度评分"
+    },
+    "attention": {
+      "title": "需要关注",
+      "allClear": "所有系统运行正常",
+      "incidents": {
+        "label": "待处理事件",
+        "cta": "查看"
+      },
+      "approvals": {
+        "label": "待审批",
+        "cta": "审核"
+      }
+    },
+    "maturity": {
+      "title": "成熟度雷达"
+    },
+    "activity": {
+      "title": "活动动态",
+      "empty": "暂无最近活动"
+    }
+  },
+  "governance": {
+    "score": "治理评分",
+    "dimensions": {
+      "controls": "控制达标",
+      "risk": "风险覆盖",
+      "incidents": "事件健康",
+      "policies": "策略执行",
+      "process": "流程完备",
+      "survey": "成熟度问卷"
+    },
+    "noData": "暂无数据"
+  },
+  "posture": {
+    "title": "治理态势",
+    "description": "跨用例的控制覆盖、事件、漂移健康和预算态势汇总。",
+    "readiness": {
+      "tabHealth": "健康度评分",
+      "tabReadiness": "上线就绪度",
+      "loading": "加载中…",
+      "highRiskBlocked": "高风险被阻塞",
+      "colSystem": "系统",
+      "colOwner": "负责人",
+      "colHighRisk": "风险",
+      "colBlockingChecks": "阻塞项",
+      "highRiskBadge": "高风险",
+      "noOwner": "—",
+      "empty": "没有系统被阻止上线 🎉"
+    }
+  },
+  "evidencePack": {
+    "generate": "生成证据包",
+    "empty": "暂无证据包。",
+    "status": "状态",
+    "framework": "框架",
+    "hash": "哈希",
+    "created": "创建时间",
+    "actions": "操作",
+    "download": "下载 .zip"
+  },
+  "materiality": {
+    "title": "重要性分级",
+    "description": "依据影响与自主程度得出的风险比例分级。等级越高，对态势评分与报告预期的权重越大。",
+    "empty": "尚未评估。",
+    "loading": "加载中…",
+    "assess": "评估重要性",
+    "edit": "编辑",
+    "save": "保存",
+    "cancel": "取消",
+    "computed": "计算值",
+    "override": "覆盖",
+    "overrideReason": "覆盖原因",
+    "overrideTier": "覆盖等级",
+    "clearOverride": "清除覆盖",
+    "effectiveTier": "生效等级",
+    "assessedBy": "评估于 {when}",
+    "tier": {
+      "minimal": "最低",
+      "limited": "有限",
+      "high": "高",
+      "critical": "关键"
+    },
+    "dim": {
+      "affectedParties": "受影响方",
+      "decisionConsequence": "决策后果",
+      "financialSafety": "财务 / 安全影响",
+      "dataSensitivity": "数据敏感度"
+    }
+  },
+  "fairness": {
+    "cardTitle": "公平性评估",
+    "cardDescription": "子群体差异检查（五分之四规则）、代理特征审查与反馈循环检查。",
+    "required": "该用例必须评估（高/严重重要性）。",
+    "notRequired": "在当前重要性等级下无需评估。",
+    "status": {
+      "draft": "草稿",
+      "completed": "已完成"
+    },
+    "addAttribute": "添加受保护属性",
+    "attributeName": "属性",
+    "metric": {
+      "selection_rate": "选择率",
+      "true_positive_rate": "真正例率",
+      "error_rate": "错误率",
+      "precision": "精确率"
+    },
+    "subgroup": "子群体",
+    "value": "数值",
+    "addSubgroup": "添加子群体",
+    "ratio": "差异比率",
+    "pass": "符合五分之四",
+    "fail": "存在差异",
+    "notComputable": "需要 2 个以上子群体",
+    "proxyReview": "是否完成代理特征审查？",
+    "feedbackLoop": "是否检查反馈循环风险？",
+    "check": {
+      "yes": "是",
+      "no": "否",
+      "not_applicable": "不适用"
+    },
+    "save": "保存草稿",
+    "complete": "标记完成",
+    "reopen": "重新打开",
+    "remove": "移除",
+    "empty": "尚未添加属性。"
+  },
+  "vendor": {
+    "listTitle": "供应商",
+    "createTitle": "新建供应商",
+    "new": "新建供应商",
+    "empty": "暂无供应商。",
+    "name": "名称",
+    "typeLabel": "类型",
+    "ratingLabel": "评级",
+    "unassessed": "未评估",
+    "create": "创建",
+    "type": {
+      "model_provider": "模型提供方",
+      "data_vendor": "数据供应商",
+      "tooling_vendor": "工具供应商"
+    },
+    "rating": {
+      "low": "低",
+      "medium": "中",
+      "high": "高",
+      "critical": "严重"
+    },
+    "status": {
+      "yes": "是",
+      "partial": "部分",
+      "no": "否",
+      "not_applicable": "不适用"
+    },
+    "contractSection": "合同与数据驻留",
+    "dataResidency": "数据驻留地",
+    "dataResidencyPlaceholder": "例如 欧盟（法兰克福）、美国（us-east-1）",
+    "contractRenewalDate": "合同续签日期",
+    "modelChangeNotice": "合同要求模型变更通知",
+    "questionnaire": "尽职调查问卷",
+    "save": "保存答案",
+    "linkedUsecases": "关联用例",
+    "link": "关联用例",
+    "unlink": "取消关联",
+    "override": "覆盖评级",
+    "overrideReason": "原因",
+    "clearOverride": "清除覆盖",
+    "cardTitle": "第三方供应商",
+    "cardDescription": "该用例所依赖的供应商和提供方。",
+    "cardEmpty": "未关联供应商。",
+    "cardUnassessedWarning": "未评估供应商"
+  },
+  "errors": {
+    "invalidCredentials": "邮箱或密码不正确。",
+    "emailTaken": "该邮箱已注册。",
+    "unexpected": "出了点问题。"
+  },
+  "inventory": {
+    "title": "AI 资产登记",
+    "new": "新建用例",
+    "deleteTitle": "删除用例",
+    "deleteConfirm": "确定要删除「{name}」吗？此操作不可撤销。",
+    "edit": "编辑",
+    "save": "保存",
+    "noModelCard": "暂无模型卡。",
+    "noUsecases": "暂无用例。",
+    "noUsecasesHint": "创建你的第一个用例来开始。",
+    "col": {
+      "lastUpdated": "最后更新",
+      "aiAnalysis": "AI 分析"
+    },
+    "fields": {
+      "name": "名称",
+      "autonomyLevel": "Agent 自主度",
+      "deploymentType": "部署类型",
+      "lifecycleStage": "生命周期阶段",
+      "owner": "负责人",
+      "description": "描述",
+      "modelCard": "模型卡 (Markdown)",
+      "modelVersions": "模型版本",
+      "addVersion": "添加版本",
+      "version": "版本",
+      "deployedAt": "部署时间",
+      "noVersions": "暂无模型版本。",
+      "descriptionPlaceholder": "简要描述本用例：解决什么问题、谁来用、产出什么。",
+      "descriptionHelp": "建议包含：业务目标、目标用户、输入数据、输出/决策、不适用场景。",
+      "modelCardHelp": "支持 Markdown。点击\"使用模板\"填入标准模型卡骨架。",
+      "intendedUse": "预期用途",
+      "intendedUseHelp": "说明本系统设计支持的核心场景、目标用户与部署场景。",
+      "prohibitedUse": "禁止 / 不适用场景",
+      "prohibitedUseHelp": "说明本系统不得用于的场景 — 不适用人群、决策类型或已知滥用方式。"
+    },
+    "useTemplate": "使用模板",
+    "descriptionTemplate": "业务目标：\n目标用户：\n输入数据：\n输出/决策：\n不适用场景：\n",
+    "modelCardTemplate": "## 模型概况\n- 模型名称/版本：\n- 责任人/团队：\n- 上线日期：\n\n## 预期用途\n- 核心场景：\n- 目标用户：\n- 业务价值：\n\n## 训练数据\n- 数据来源：\n- 数据规模：\n- 敏感数据/PII：\n\n## 评估与性能\n- 关键指标：\n- 已知偏差：\n\n## 限制与风险\n- 已知局限：\n- 不适用场景：\n\n## 合规与伦理考量\n- 适用法规（如欧盟 AI 法案、个人信息保护法）：\n- 公平性考量：\n\n## 监控与更新\n- 运行时监控：\n- 回滚机制：\n",
+    "intendedUseTemplate": "核心场景：\n目标用户：\n部署场景：\n",
+    "prohibitedUseTemplate": "禁止用于：\n不适用人群/决策：\n已知滥用方式：\n",
+    "classification": {
+      "title": "AI 分析",
+      "description": "基于描述和模型卡的 LLM 自动分类与风险线索，请人工复核后再行动。",
+      "run": "运行分析",
+      "rerun": "重新运行",
+      "analyzeAll": "分析 {count} 个未分析的用例",
+      "bulkQueued": "已排队 {count} 个",
+      "queued": "分析已排队…",
+      "loading": "加载中…",
+      "empty": "尚未分析。点击\"运行分析\"生成结果。",
+      "yes": "是",
+      "no": "否",
+      "field": {
+        "domain": "业务领域",
+        "dataSensitivity": "数据敏感度",
+        "containsPii": "包含个人信息",
+        "adm": "自动化决策",
+        "euAiAct": "欧盟 AI 法案分类",
+        "confidence": "置信度",
+        "complianceTags": "合规标签",
+        "suggestedRisks": "建议风险项"
+      },
+      "sensitivity": {
+        "low": "低",
+        "medium": "中",
+        "high": "高"
+      },
+      "severity": {
+        "low": "低",
+        "medium": "中",
+        "high": "高"
+      },
+      "euAct": {
+        "prohibited": "禁止类",
+        "high": "高风险",
+        "limited": "有限风险",
+        "minimal": "极低风险",
+        "unknown": "未知"
+      },
+      "reason": {
+        "auto_created": "创建时自动",
+        "auto_updated": "更新时自动",
+        "manual": "手动触发"
+      },
+      "provenance": "由 {provider}/{model} 于 {when} 生成（{reason}）",
+      "timeout": "分析超时。后台可能仍在处理 — 请稍后刷新查看。",
+      "error": "分析失败，请重试。",
+      "bulkError": "批量分析启动失败。"
+    },
+    "stages": {
+      "proposed": "草案",
+      "development": "开发中",
+      "production": "生产",
+      "deprecated": "已弃用",
+      "retired": "已下线"
+    },
+    "deprecate": {
+      "action": "弃用",
+      "sunsetDate": "停用日期（可选）",
+      "reason": "原因 / 迁移指引",
+      "submit": "弃用系统",
+      "bannerTitle": "该系统已弃用",
+      "deprecatedBy": "由 {name} 于 {date} 弃用",
+      "noSunset": "未设置停用日期"
+    },
+    "sunset": {
+      "daysLeft": "距停用还有 {days} 天",
+      "overdue": "已逾期停用 {days} 天",
+      "today": "今天停用"
+    },
+    "autonomy": {
+      "assistant": "AI 助手",
+      "simple_agent": "简单 Agent",
+      "collaborative_agent": "协作 Agent",
+      "agent_ecosystem": "Agent 生态"
+    },
+    "deploy": {
+      "built": "自建",
+      "blended": "混合",
+      "embedded": "内嵌",
+      "byo": "自带"
+    },
+    "addVersion": "新增版本",
+    "cancel": "取消",
+    "deployedAt": "部署时间",
+    "noVersions": "暂无模型版本记录。",
+    "version": "版本"
+  },
+  "risk": {
+    "title": "风险与合规",
+    "frameworks": "框架",
+    "controls": "控制项",
+    "assess": "评估",
+    "latest": "最新",
+    "score": "评分",
+    "levelLabel": "等级",
+    "code": "代码",
+    "control": "控制项",
+    "severityLabel": "严重性",
+    "status": "状态",
+    "description": "描述",
+    "usecases": "用例",
+    "noFrameworks": "暂无法规框架。",
+    "noUsecases": "暂无用例。",
+    "noControls": "暂无控制项。",
+    "autonomyLabel": "自主度",
+    "autonomy": {
+      "assistant": "AI 助手",
+      "simple_agent": "简单 Agent",
+      "collaborative_agent": "协作 Agent",
+      "agent_ecosystem": "Agent 生态"
+    },
+    "notesPlaceholder": "评估备注（可选）...",
+    "assessing": "评估中...",
+    "runAssessment": "执行评估",
+    "assessmentError": "评估失败，请重试。",
+    "assessmentSuccess": "评估完成。",
+    "downloadReport": "下载报告 (PDF)",
+    "newFramework": "新建框架",
+    "editFramework": "编辑框架",
+    "deleteFramework": "删除框架",
+    "deleteFrameworkConfirm": "确定删除此框架及其所有控制项？此操作不可撤销。",
+    "addControl": "添加控制项",
+    "editControl": "编辑控制项",
+    "deleteControl": "删除控制项",
+    "deleteControlConfirm": "确定删除此控制项？",
+    "frameworkCreated": "框架已创建。",
+    "frameworkUpdated": "框架已更新。",
+    "frameworkDeleted": "框架已删除。",
+    "controlCreated": "控制项已创建。",
+    "controlUpdated": "控制项已更新。",
+    "controlDeleted": "控制项已删除。",
+    "controlHasStatuses": "无法删除：此控制项存在关联的用例状态。",
+    "fields": {
+      "code": "代码",
+      "name": "名称",
+      "version": "版本",
+      "title": "标题",
+      "description": "描述",
+      "severity": "严重性"
+    },
+    "codeHint": "字母、数字、点、破折号、下划线。",
+    "importControls": "导入控制项",
+    "importFile": "导入文件",
+    "downloadTemplate": "下载模板",
+    "templateXlsx": "Excel 模板",
+    "templateMd": "Markdown 模板",
+    "uploadFile": "上传文件",
+    "dropZone": "拖放文件到此处或点击浏览",
+    "parsing": "解析中...",
+    "previewControls": "预览控制项",
+    "importing": "导入中...",
+    "importSuccess": "控制项导入成功。",
+    "importError": "导入失败，请重试。",
+    "noFileSelected": "请选择文件。",
+    "invalidFileType": "不支持的文件类型，请使用 .xlsx、.md、.txt 或 .pdf。",
+    "severity": {
+      "high": "高",
+      "medium": "中",
+      "low": "低"
+    },
+    "level": {
+      "high": "高",
+      "medium": "中",
+      "low": "低"
+    },
+    "statuses": {
+      "not_applicable": "不适用",
+      "not_started": "未开始",
+      "in_progress": "进行中",
+      "satisfied": "已满足",
+      "failed": "未通过"
+    },
+    "generateReport": "生成 PDF",
+    "generateReportPending": "正在生成…",
+    "generateReportError": "无法生成 PDF。",
+    "noDescription": "暂无描述。",
+    "descriptionPlaceholder": "输入框架描述...",
+    "saveDescription": "保存",
+    "catalogRisks": {
+      "title": "目录与监管风险",
+      "subtitle": "已关联到此用例的框架风险（如《欧盟人工智能法案》、NIST AI RMF、ISO 42001、FINOS、MITRE ATLAS）。",
+      "empty": "尚未关联目录风险。请在用例详情页使用风险助手关联框架风险。",
+      "severity": {
+        "low": "低",
+        "medium": "中",
+        "high": "高",
+        "critical": "严重"
+      }
+    }
+  },
+  "maturity": {
+    "title": "治理成熟度",
+    "takeAssessment": "重新评估",
+    "scoreLabels": {
+      "0": "未开始",
+      "1": "临时性",
+      "2": "已成型",
+      "3": "已制度化"
+    },
+    "pillars": {
+      "mandate_and_scope": "职责与范围",
+      "structure_and_roles": "结构与角色",
+      "processes": "流程",
+      "decision_rights": "决策权",
+      "culture": "文化",
+      "communication": "沟通"
+    },
+    "description": "评估组织在六个维度上的 AI 治理成熟度。",
+    "assessmentDesc": "完成六个治理维度的评估。",
+    "next": "下一步",
+    "back": "上一步",
+    "cancel": "取消",
+    "selectScore": "选择分数"
+  },
+  "hierarchy": {
+    "title": "组织层级",
+    "subtitle": "挂载子组织，使其继承你的基线策略。子组织只能新增更严格的自有策略。",
+    "loading": "加载中…",
+    "isChildNotice": "本组织隶属于上级组织并继承其基线策略。层级由上级组织管理。",
+    "standaloneNotice": "本组织为顶级组织。在下方挂载子组织，即可将策略下发给它们。",
+    "childrenHeading": "子组织",
+    "noChildren": "暂无子组织。",
+    "attachHeading": "挂载子组织",
+    "attachHint": "粘贴子组织的 ID。",
+    "childOrgIdPlaceholder": "子组织 ID",
+    "attach": "挂载",
+    "detach": "解除",
+    "attached": "已挂载子组织。",
+    "detached": "已解除子组织。",
+    "attachError": "无法挂载该组织。请检查 ID 及其是否符合条件。"
+  },
+  "policy": {
+    "title": "策略与运行时",
+    "new": "新建策略",
+    "edit": "编辑",
+    "save": "保存",
+    "playground": "Playground",
+    "evaluations": "评估记录",
+    "apiKeys": "API 密钥",
+    "fields": {
+      "name": "名称",
+      "description": "描述",
+      "ruleJson": "规则 (JSON)",
+      "severity": "严重性",
+      "mode": "模式",
+      "scope": "作用域",
+      "enabled": "启用"
+    },
+    "severity": {
+      "low": "低",
+      "medium": "中",
+      "high": "高"
+    },
+    "mode": {
+      "block": "阻止",
+      "warn": "警告",
+      "log": "记录"
+    },
+    "scope": {
+      "input": "输入",
+      "output": "输出",
+      "both": "双向"
+    },
+    "installSamples": "安装示例策略",
+    "noPolicies": "暂无策略。",
+    "inheritedPolicies": "继承策略",
+    "inheritedFromHq": "总部下发",
+    "inheritedReadonly": "由上级组织管理，此处只读。",
+    "createKey": "创建密钥",
+    "keyLabel": "密钥名称",
+    "keyShow": "请立即复制密钥 — 只会显示一次。",
+    "revoke": "撤销",
+    "pasteKey": "粘贴 API 密钥 (aigp_…)",
+    "provider": "Provider",
+    "model": "模型",
+    "prompt": "你的提示词…",
+    "send": "发送",
+    "streaming": "流式响应中…",
+    "policyHits": "策略命中",
+    "noHits": "暂无命中",
+    "blocked": "已阻止",
+    "warn": "警告",
+    "recentEvals": "最近评估",
+    "exportCsv": "导出 CSV",
+    "guide": {
+      "openGuide": "使用向导",
+      "title": "如何使用策略",
+      "description": "按照以下 4 个步骤，为你的 AI 应用设置内容安全防护。",
+      "step1": {
+        "title": "创建策略",
+        "description": "定义规则来检查 LLM 的输入/输出。选择 block（拦截调用）、warn（放行但告警）或 log（仅记录）。设置作用域为输入、输出或双向。"
+      },
+      "step2": {
+        "title": "生成 API 密钥",
+        "description": "创建 API 密钥用于外部系统调用 AIGP 网关时的身份认证。密钥以 aigp_ 开头，Playground 和运行时集成都需要用到。"
+      },
+      "step3": {
+        "title": "在 Playground 中测试",
+        "description": "粘贴 API 密钥并发送真实提示词，验证策略是否按预期生效。实时查看拦截/告警命中结果。"
+      },
+      "step4": {
+        "title": "查看评估记录",
+        "description": "查看所有策略命中历史 — 哪些提示词被标记、被哪个策略命中、匹配的文本内容。支持导出 CSV 用于合规报告。"
+      },
+      "goTo": "前往",
+      "skip": "跳过",
+      "next": "下一步",
+      "back": "上一步",
+      "finish": "完成"
+    },
+    "ruleHelper": {
+      "toggle": "规则模板与指南",
+      "templates": "模板",
+      "reference": "参考",
+      "insert": "插入",
+      "tplRegex": "正则匹配",
+      "tplRegexDesc": "用正则表达式匹配文本",
+      "tplKeywords": "关键词黑名单",
+      "tplKeywordsDesc": "文本包含列表中任意关键词时触发",
+      "tplLength": "长度限制",
+      "tplLengthDesc": "输入超过指定字符数时拦截",
+      "tplAnd": "组合条件 (AND)",
+      "tplAndDesc": "所有条件都必须为真",
+      "tplOr": "组合条件 (OR)",
+      "tplOrDesc": "至少一个条件为真即可",
+      "tplAutonomy": "自主性门控",
+      "tplAutonomyDesc": "对自主型用例应用更严格的规则",
+      "refVars": "上下文变量",
+      "refVarText": "正在评估的输入或输出文本",
+      "refVarScope": "当前评估范围：\"input\" 或 \"output\"",
+      "refVarUseCaseId": "用例 ID",
+      "refVarAutonomy": "用例自主性级别（如 \"full\"、\"supervised\"）",
+      "refVarOrgId": "组织 ID",
+      "refOps": "运算符",
+      "refOpRegex": "文本匹配正则表达式时为真",
+      "refOpContains": "文本包含任意关键词时为真（不区分大小写）",
+      "refOpLength": "文本长度超过指定数值时为真",
+      "refOpAnd": "所有条件都必须为真",
+      "refOpOr": "至少一个条件为真",
+      "refOpNot": "取反",
+      "refOpEq": "相等比较",
+      "refOpVar": "读取上下文变量",
+      "refCombinators": "组合器",
+      "refCombinatorsDesc": "使用 \"and\" / \"or\" 组合多个条件，使用 \"!\" 取反。",
+      "refTip": "提示：部署前请在 Playground 中测试规则。"
+    }
+  },
+  "workflow": {
+    "title": "工作流",
+    "description": "AI 用例审批流程",
+    "empty": {
+      "title": "暂无工作流",
+      "description": "工作流在创建用例时自动启动"
+    },
+    "stage": {
+      "draft": "草稿",
+      "in_review": "审核中",
+      "approved": "已批准",
+      "rejected": "已拒绝",
+      "requested_changes": "要求修改"
+    },
+    "action": {
+      "approve": "批准",
+      "reject": "拒绝",
+      "requestChanges": "要求修改"
+    },
+    "col": {
+      "usecase": "用例",
+      "stage": "阶段",
+      "actor": "操作人",
+      "updatedAt": "更新时间"
+    },
+    "template": "模板",
+    "state": "状态",
+    "step": "步骤",
+    "assignedTo": "指派给",
+    "noWorkflows": "暂无进行中的审批。",
+    "takeAction": "执行操作",
+    "commentPlaceholder": "审批备注（可选）...",
+    "processing": "处理中...",
+    "approve": "批准",
+    "reject": "驳回",
+    "requestChanges": "要求修改",
+    "notAssignable": "仅以下角色可决策",
+    "decisionError": "操作失败，请重试。",
+    "decision": {
+      "pending": "待决策",
+      "approved": "已批准",
+      "rejected": "已驳回",
+      "requested_changes": "需修改"
+    },
+    "startWorkflow": "发起工作流",
+    "selectUsecase": "选择用例...",
+    "selectTemplate": "选择模板...",
+    "noEligibleUsecases": "暂无可发起工作流的用例。",
+    "templates": {
+      "title": "工作流模板",
+      "description": "管理审批工作流模板",
+      "empty": {
+        "title": "暂无模板",
+        "description": "创建一个模板来定义自定义审批流程"
+      },
+      "create": "新建模板",
+      "edit": "编辑",
+      "delete": "删除",
+      "default": "默认",
+      "makeDefault": "设为默认",
+      "stepCount": "{count, plural, =1 {# 个步骤} other {# 个步骤}}",
+      "form": {
+        "name": "模板名称",
+        "namePlaceholder": "例如：标准审批流程",
+        "description": "描述",
+        "descriptionPlaceholder": "简要描述此工作流...",
+        "isDefault": "设为默认模板",
+        "steps": "步骤",
+        "addStep": "添加步骤",
+        "stepName": "步骤名称",
+        "stepNamePlaceholder": "例如：风险评估",
+        "assigneeRole": "按角色指派",
+        "assigneeUser": "按用户指派",
+        "instructions": "说明",
+        "instructionsPlaceholder": "此步骤的说明（可选）...",
+        "dragToReorder": "拖拽以重新排序",
+        "save": "保存模板",
+        "saving": "保存中...",
+        "deleteConfirm": {
+          "title": "删除模板？",
+          "body": "此操作无法撤销。存在进行中工作流的模板无法删除。"
+        },
+        "deleteSuccess": "模板已删除",
+        "saveSuccess": "模板已保存",
+        "noSteps": "请至少添加一个步骤"
+      }
+    }
+  },
+  "incident": {
+    "title": "安全事件",
+    "status": {
+      "open": "待处理",
+      "investigating": "调查中",
+      "mitigated": "已缓解",
+      "closed": "已关闭"
+    },
+    "severity": {
+      "low": "低",
+      "medium": "中",
+      "high": "高",
+      "critical": "严重"
+    },
+    "list": {
+      "showMerged": "显示已合并",
+      "autoCreatedTooltip": "由策略评估自动开启"
+    },
+    "openCount": "待处理事件",
+    "create": {
+      "success": "事件已创建"
+    },
+    "close": {
+      "success": "事件已关闭"
+    },
+    "form": {
+      "title": "标题",
+      "titlePlaceholder": "简要描述事件…",
+      "severity": "严重程度",
+      "rootCause": "根因",
+      "rootCausePlaceholder": "分析根本原因（可选）…",
+      "relatedUsecase": "关联用例"
+    },
+    "category": {
+      "hijack": "劫持",
+      "capability_breach": "能力越权",
+      "data_leak": "数据泄露",
+      "trust_failure": "信任失效",
+      "cascade": "级联故障",
+      "audit_failure": "审计失效",
+      "resource_abuse": "资源滥用",
+      "bias_harm": "偏见伤害",
+      "policy_bypass": "策略绕过",
+      "unclassified": "未分类"
+    },
+    "sla": {
+      "dueIn": "剩余",
+      "overdueBy": "已逾期",
+      "imminent": "即将到期",
+      "ok": "进行中"
+    },
+    "automation": {
+      "similar_to": "相似于",
+      "merge_into": "合并到 #{id}",
+      "dismiss": "忽略",
+      "merged_into": "已合并到",
+      "show_merged": "显示已合并",
+      "auto_created_tooltip": "由策略命中自动创建",
+      "source_policy_evaluation": "来源：策略评估",
+      "auto_opened_at": "自动创建于 {ts}",
+      "settings_title": "事件自动化",
+      "settings_subtitle": "配置何时根据策略命中自动开单，以及如何识别重复事件。",
+      "auto_open_enabled": "启用自动事件创建",
+      "block_always_opens": "block 模式策略每次命中都开单",
+      "hit_burst_threshold": "触发阈值（次数）",
+      "hit_burst_window_min": "窗口（分钟）",
+      "dedup_enabled": "启用语义去重",
+      "dedup_similarity_threshold": "相似度阈值",
+      "dedup_lookback_days": "去重回溯（天）",
+      "save": "保存"
+    }
+  },
+  "audit": {
+    "title": "审计日志",
+    "exportCSV": "导出 CSV",
+    "noLogs": "暂无审计日志。",
+    "timestamp": "时间戳",
+    "action": "操作",
+    "resource": "资源",
+    "actor": "操作者",
+    "ip": "IP 地址",
+    "sinks": {
+      "title": "日志外发",
+      "add": "添加接收端",
+      "description": "将审计事件转发到 Splunk 或 Syslog 等外部系统。",
+      "empty": "尚未配置日志外发接收端。",
+      "createTitle": "添加日志接收端",
+      "editTitle": "编辑日志接收端",
+      "deleteConfirm": "确定删除接收端「{name}」？",
+      "enabled": "启用",
+      "disabled": "禁用",
+      "test": "测试",
+      "testSuccess": "测试事件发送成功。",
+      "testFailed": "测试失败",
+      "type": {
+        "webhook": "Webhook (Splunk HEC)",
+        "syslog": "Syslog",
+        "datadog": "Datadog Logs"
+      },
+      "field": {
+        "name": "名称",
+        "type": "类型",
+        "url": "端点 URL",
+        "token": "认证令牌",
+        "host": "主机",
+        "port": "端口",
+        "protocol": "协议",
+        "apiKey": "API 密钥",
+        "enabled": "启用"
+      },
+      "col": {
+        "name": "名称",
+        "type": "类型",
+        "endpoint": "端点",
+        "status": "状态"
+      }
+    },
+    "integrity": {
+      "title": "审计完整性",
+      "linkLabel": "完整性",
+      "statsTitle": "链状态",
+      "totalRows": "总行数",
+      "firstSeq": "首条序号",
+      "lastSeq": "末条序号",
+      "lastTs": "最近写入",
+      "lastHash": "末条哈希（链头）",
+      "loading": "加载中…",
+      "verifyTitle": "验证链",
+      "verifyHelp": "重新计算每行规范内容的 SHA-256 并核对 prevHash 链接。只读操作。",
+      "verifyLast1000": "验证最近 1000 条",
+      "verifyAll": "验证整条链",
+      "verifyCustom": "运行",
+      "customRange": "自定义范围",
+      "verifying": "正在验证…",
+      "resultTitle": "结果",
+      "resultOk": "通过",
+      "resultBad": "检测到篡改",
+      "totalChecked": "已验证 {count} 行",
+      "firstBadAt": "首个失败在 seq {seq}（{kind}）"
+    }
+  },
+  "evidence": {
+    "title": "证据材料",
+    "noEvidence": "暂无上传的证据材料。",
+    "filename": "文件名",
+    "usecase": "用例",
+    "mimeType": "MIME 类型",
+    "size": "大小",
+    "uploadedBy": "上传者",
+    "uploadedAt": "上传时间",
+    "download": "下载",
+    "preview": "预览",
+    "upload": "上传证据",
+    "uploading": "上传中…",
+    "file": "文件",
+    "noUsecase": "（不关联用例）",
+    "noControl": "（不关联控制项）",
+    "control": "控制项",
+    "notes": "备注（可选）",
+    "selectFile": "请选择文件",
+    "uploadFailed": "上传失败：",
+    "allowedTypes": "支持 PDF / 图片 / 文本 / CSV / JSON / ZIP / XLSX，最大 25 MiB。",
+    "loading": "加载中…",
+    "previewFailed": "预览失败",
+    "close": "关闭"
+  },
+  "externalReports": {
+    "queueTitle": "外部报告",
+    "detailTitle": "外部报告",
+    "loading": "加载中…",
+    "empty": "暂无外部报告。",
+    "reporter": "报告人",
+    "citedClause": "引用的禁止使用条款",
+    "triageNotes": "分诊备注",
+    "filter": {
+      "allTypes": "全部类型",
+      "allStatuses": "全部状态"
+    },
+    "col": {
+      "title": "标题",
+      "type": "类型",
+      "status": "状态",
+      "received": "接收时间"
+    },
+    "status": {
+      "received": "已接收",
+      "triaging": "分诊中",
+      "accepted": "已受理",
+      "resolved": "已解决",
+      "rejected": "已驳回",
+      "duplicate": "重复"
+    },
+    "action": {
+      "startTriage": "开始分诊",
+      "escalate": "升级为事件",
+      "resolve": "标记解决",
+      "reject": "驳回",
+      "markDuplicate": "标记重复"
+    },
+    "similar": {
+      "title": "相似的现有条目",
+      "none": "未找到相似条目。",
+      "incident": "事件",
+      "report": "报告"
+    },
+    "intake": {
+      "title": "公开入口",
+      "manageLink": "管理公开入口",
+      "system": "系统",
+      "status": "状态",
+      "url": "公开链接",
+      "actions": "操作",
+      "enabled": "已启用",
+      "disabled": "已禁用",
+      "enable": "启用",
+      "disable": "禁用",
+      "rotate": "轮换"
+    },
+    "public": {
+      "title": "报告问题",
+      "subtitle": "提交关于 {system} 的报告。",
+      "type": "报告类型",
+      "typeVulnerability": "安全漏洞 / 越狱",
+      "typeUsageViolation": "使用政策违规",
+      "titleLabel": "摘要",
+      "descriptionLabel": "描述",
+      "reproLabel": "复现步骤（可选）",
+      "emailLabel": "您的邮箱（可选）",
+      "submit": "提交报告",
+      "sending": "提交中…",
+      "thanks": "感谢您的报告，我们已收到。",
+      "error": "出现问题，请重试。"
+    }
+  },
+  "alignmentAudit": {
+    "title": "对齐审计",
+    "newAudit": "新建审计",
+    "system": "系统",
+    "targetModel": "目标模型",
+    "outcome": "结果",
+    "worstDimension": "最差维度",
+    "date": "日期",
+    "running": "运行中",
+    "pass": "通过",
+    "concerns": "存在担忧",
+    "fail": "未通过",
+    "maxConcernScore": "最高担忧分",
+    "escalate": "升级为事件",
+    "escalated": "已升级为事件",
+    "provider": "提供方",
+    "dimensions": "维度",
+    "start": "开始审计",
+    "noAudits": "暂无审计。",
+    "erroredBanner": "{count} 个探针执行出错——建议重新运行。",
+    "loading": "加载中…",
+    "judgment": "评判",
+    "concernScore": "担忧分",
+    "actualOutput": "实际输出",
+    "progress": "{completed} / {total} 个探针",
+    "viewIncident": "查看事件"
+  },
+  "dataLineage": {
+    "title": "数据溯源",
+    "description": "追踪AI训练和推理数据源",
+    "created": "创建时间",
+    "linkedUsecases": "关联用例",
+    "viewGraph": "查看图谱",
+    "delete": "删除",
+    "deleting": "删除中...",
+    "deleteConfirmTitle": "确认删除此数据源？",
+    "empty": "暂无数据源。",
+    "addFirst": "添加您的第一个数据源",
+    "new": "添加数据源",
+    "name": "名称",
+    "sensitivity": "敏感等级",
+    "origin": "来源",
+    "view": "查看",
+    "sensitivityLevels": {
+      "restricted": "受限",
+      "confidential": "机密",
+      "internal": "内部",
+      "public": "公开"
+    },
+    "lineageGraph": "数据血缘图",
+    "lineageGraphDescription": "全组织数据源和使用案例链接",
+    "section": {
+      "title": "数据源",
+      "titleFromDs": "关联用例",
+      "empty": "暂无关联数据源。",
+      "emptyFromDs": "暂无关联用例。"
+    },
+    "action": {
+      "link": "添加数据源",
+      "linkFromDs": "添加用例",
+      "unlink": "解除关联"
+    },
+    "dialog": {
+      "dataSource": "数据源",
+      "usecase": "AI 用例",
+      "direction": "方向",
+      "purpose": "用途（可选）",
+      "searchPlaceholder": "搜索…",
+      "confirmUnlink": "确认解除此关联？",
+      "submit": "关联",
+      "cancel": "取消",
+      "noResults": "未找到匹配项",
+      "purposeLabel": "purpose"
+    },
+    "direction": {
+      "training": "训练",
+      "inference_input": "推理输入",
+      "inference_output": "推理输出"
+    }
+  },
+  "integrations": {
+    "title": "集成",
+    "empty": "暂无配置的 Webhook 端点。",
+    "addFirst": "添加您的第一个 Webhook",
+    "new": "添加 Webhook",
+    "url": "URL",
+    "events": "事件",
+    "status": "状态",
+    "manage": "管理",
+    "active": "启用",
+    "disabled": "停用",
+    "connector": {
+      "title": "连接器",
+      "description": "对外集成与双向工单同步。",
+      "manageAll": "管理全部",
+      "new": "新建连接器",
+      "pickDescription": "选择要配置的连接器类型。",
+      "empty": "暂无连接器。",
+      "emptyDescription": "添加 Slack、Teams 或 ServiceNow 连接器，将事件投递到外部系统。",
+      "addFirst": "添加第一个连接器",
+      "noSubscriptions": "未订阅事件",
+      "syncLog": "同步日志",
+      "testing": "测试中…",
+      "deleteConfirm": "删除此连接器？所有同步历史将被清除。",
+      "bidirectional": "双向同步",
+      "field": {
+        "name": "名称",
+        "type": "类型",
+        "health": "健康状态",
+        "lastDelivery": "最近投递",
+        "events": "订阅的事件",
+        "subscribedEvents": "事件",
+        "direction": "方向",
+        "eventType": "事件",
+        "status": "状态",
+        "time": "时间",
+        "detail": "详情",
+        "inboundSecret": "入站密钥",
+        "webhookUrl": "Webhook URL",
+        "username": "用户名",
+        "password": "密码",
+        "instanceUrl": "Instance URL"
+      },
+      "health": {
+        "ok": "正常",
+        "failed": "失败",
+        "never": "尚未投递"
+      },
+      "action": {
+        "test": "发送测试",
+        "delete": "删除"
+      },
+      "slack": {
+        "name": "Slack",
+        "description": "向 Slack 频道发送入站 Webhook。",
+        "docs": "https://api.slack.com/messaging/webhooks"
+      },
+      "teams": {
+        "name": "Microsoft Teams",
+        "description": "向 Teams 频道发送入站 Webhook。",
+        "docs": "https://learn.microsoft.com/microsoftteams/platform/webhooks-and-connectors/"
+      },
+      "servicenow": {
+        "name": "ServiceNow",
+        "description": "与 ServiceNow 工单双向同步。",
+        "docs": "参见 README — 配置 ServiceNow 双向同步。",
+        "inboundSecretTitle": "入站 Webhook 密钥",
+        "inboundSecretHelp": "现在请妥善保存此密钥 — 无法再次查看。在 ServiceNow Business Rule 中作为 X-Webhook-Secret 请求头粘贴。",
+        "inboundSecretConfirm": "我已保存"
+      }
+    }
+  },
+  "provider": {
+    "field": {
+      "name": "名称",
+      "type": "类型",
+      "status": "状态",
+      "lastValidated": "上次验证",
+      "apiKey": "API 密钥",
+      "baseUrl": "基础 URL",
+      "endpoint": "Azure 端点 URL",
+      "deployment": "部署名称",
+      "apiVersion": "API 版本",
+      "isActive": "已激活",
+      "supportsEmbeddings": "支持嵌入向量 (text-embedding-3-small)"
+    },
+    "action": {
+      "ping": "立即测试"
+    },
+    "model": {
+      "label": "默认模型",
+      "discover": "探索",
+      "rediscover": "重新探索",
+      "discovering": "探索中…",
+      "discoverFailed": "获取模型列表失败",
+      "placeholder": "— 从列表选择 —",
+      "inputPlaceholder": "输入模型 ID（如 gpt-4o-mini）",
+      "customSuffix": "自定义",
+      "noneFound": "服务商未返回模型，请在下方手动输入。",
+      "foundCount": "找到 {count} 个模型"
+    },
+    "connection": {
+      "title": "服务商连接",
+      "new": "新建连接",
+      "deleteWarning": "历史调用记录将保留但不再关联。确定删除？",
+      "deleteConfirm": "确定删除此服务商连接？"
+    },
+    "reliability": {
+      "title": "运行时可靠性",
+      "fallbackConnection": "备用连接",
+      "fallbackModel": "备用模型",
+      "fallbackModelPlaceholder": "使用备用默认模型/请求模型",
+      "noFallback": "不使用备用连接",
+      "failureThreshold": "失败阈值",
+      "cooldownSeconds": "冷却秒数",
+      "circuitOpen": "熔断中",
+      "circuitOpenUntil": "熔断至 {time}"
+    },
+    "catalog": {
+      "openai": {
+        "name": "OpenAI",
+        "description": "OpenAI 直连 API"
+      },
+      "anthropic": {
+        "name": "Anthropic",
+        "description": "Anthropic Messages API"
+      },
+      "azureOpenAi": {
+        "name": "Azure OpenAI",
+        "description": "Azure 部署的 OpenAI"
+      },
+      "googleGemini": {
+        "name": "Google Gemini",
+        "description": "Gemini 开发者 API"
+      },
+      "deepseek": {
+        "name": "DeepSeek",
+        "description": "DeepSeek chat / reasoner"
+      },
+      "qwen": {
+        "name": "通义千问",
+        "description": "阿里云通义千问"
+      },
+      "kimi": {
+        "name": "Kimi",
+        "description": "Moonshot AI"
+      },
+      "zhipu": {
+        "name": "智谱 GLM",
+        "description": "智谱 ChatGLM"
+      },
+      "minimax": {
+        "name": "MiniMax",
+        "description": "MiniMax 对话接口"
+      },
+      "doubao": {
+        "name": "豆包",
+        "description": "字节豆包 via Volcengine Ark"
+      },
+      "wenxin": {
+        "name": "文心一言",
+        "description": "百度文心 via Qianfan"
+      },
+      "ollama": {
+        "name": "Ollama",
+        "description": "本地 Ollama 服务"
+      },
+      "customOpenAi": {
+        "name": "自定义 OpenAI 兼容",
+        "description": "任意 OpenAI 兼容端点"
+      },
+      "customAnthropic": {
+        "name": "自定义 Anthropic 兼容",
+        "description": "任意 Anthropic 兼容端点"
+      }
+    }
+  },
+  "common": {
+    "create": "创建",
+    "cancel": "取消",
+    "save": "保存",
+    "saving": "保存中...",
+    "loading": "加载中...",
+    "back": "返回",
+    "edit": "编辑",
+    "delete": "删除",
+    "notFound": "未找到",
+    "testing": "测试中...",
+    "actions": "操作"
+  },
+  "reports": {
+    "title": "合规报告",
+    "generate": "生成报告",
+    "generating": "生成中…",
+    "empty": "暂无报告，点击「生成报告」创建。",
+    "deleteConfirm": "删除此报告？存储文件将保留。",
+    "field": {
+      "template": "模板",
+      "period": "周期",
+      "periodStart": "开始日期",
+      "periodEnd": "结束日期",
+      "generatedAt": "生成时间",
+      "actions": "操作"
+    },
+    "progress": {
+      "aggregating": "聚合数据中…",
+      "renderingPdf": "渲染 PDF…",
+      "renderingXlsx": "渲染 Excel…"
+    },
+    "templates": {
+      "euAiAct": "欧盟人工智能法案 2024/1689",
+      "mindforge": "MindForge 人工智能风险管理"
+    },
+    "articleTitle": {
+      "Art_27": "基本权利影响评估"
+    }
+  },
+  "finops": {
+    "costs": {
+      "title": "成本仪表盘",
+      "kpi": {
+        "totalCost": "总成本",
+        "invocations": "调用次数",
+        "inputTokens": "输入 Token",
+        "outputTokens": "输出 Token"
+      },
+      "start": "开始",
+      "end": "结束",
+      "col": {
+        "bucket": "维度",
+        "cost": "成本 (USD)",
+        "invocations": "调用次数",
+        "inputTokens": "输入 Token",
+        "outputTokens": "输出 Token"
+      },
+      "empty": "此期间暂无成本数据。"
+    },
+    "budget": {
+      "title": "预算管理",
+      "new": "新建预算",
+      "empty": "暂无预算配置。",
+      "emptyHint": "创建预算以监控用量并执行支出限制。",
+      "deleteConfirm": "删除此预算？此操作无法撤销。",
+      "scope": {
+        "org": "组织",
+        "api_key": "API 密钥",
+        "usecase": "用例"
+      },
+      "period": {
+        "daily": "每日",
+        "weekly": "每周",
+        "monthly": "每月"
+      },
+      "col": {
+        "scope": "范围",
+        "period": "周期",
+        "amount": "金额 (USD)",
+        "hardCap": "硬限制",
+        "active": "启用",
+        "actions": "操作"
+      },
+      "form": {
+        "scope": "范围",
+        "usecase": "用例",
+        "selectUsecase": "选择用例",
+        "apiKey": "API 密钥",
+        "selectApiKey": "选择 API 密钥",
+        "period": "周期",
+        "amount": "金额 (USD)",
+        "hardCap": "硬限制（超限后阻断请求）"
+      },
+      "createTitle": "创建预算",
+      "createDesc": "为组织、API 密钥或用例设置支出上限。",
+      "createBtn": "创建",
+      "invalidAmount": "请输入有效的正数金额。",
+      "scopeRefRequired": "请选择具体的作用范围目标。"
+    },
+    "pricing": {
+      "title": "定价",
+      "builtIn": "内置价格目录",
+      "builtInHint": "出厂内置的常见模型单价，按每百万 token 计。优先级低于连接覆盖设置。",
+      "connectionOverrides": "连接覆盖设置",
+      "noConnections": "暂无服务商连接配置。",
+      "configureProviders": "前往服务商管理",
+      "addModel": "添加模型价格",
+      "modelPlaceholder": "如 gpt-4o-mini",
+      "save": "保存",
+      "saving": "保存中…",
+      "remove": "移除",
+      "removeConfirm": "确认移除该模型的价格覆盖？",
+      "noOverrides": "未设置任何模型的价格覆盖；将使用内置目录或不计费。",
+      "col": {
+        "model": "模型",
+        "inputPrice": "输入价格 / 1M",
+        "outputPrice": "输出价格 / 1M",
+        "connection": "连接",
+        "provider": "服务商",
+        "hasOverride": "覆盖",
+        "actions": "操作"
+      }
+    },
+    "import": {
+      "title": "导入账单",
+      "description": "从 Azure OpenAI 或阿里百炼的 CSV 导出文件中导入用量数据。",
+      "dropzone": "拖拽 CSV 文件到此处",
+      "selectFile": "选择文件",
+      "supportedFormats": "支持的格式",
+      "bailianLabel": "阿里百炼",
+      "bailianColumns": "时间, 模型名称, 输入Token数, 输出Token数, 费用",
+      "invalidFileType": "请选择 CSV 文件。",
+      "import": "导入",
+      "importing": "导入中…",
+      "importFailed": "导入失败，请检查文件格式。",
+      "formatDetected": "检测到格式",
+      "importMore": "继续导入",
+      "result": {
+        "total": "总行数",
+        "imported": "已导入",
+        "skipped": "已跳过",
+        "warnings": "警告",
+        "moreErrors": "还有 {count} 条错误"
+      }
+    },
+    "title": "成本管理"
+  },
+  "aivtf": {
+    "title": "AIVTF 流程检查清单",
+    "listTitle": "AIVTF 评估",
+    "new": "新建评估",
+    "scope": "范围",
+    "scopeOrg": "组织级",
+    "scopeUsecase": "用例",
+    "status": "状态",
+    "completion": "完成度",
+    "conformance": "达成率",
+    "createTitle": "新建 AIVTF 评估",
+    "fieldTitle": "标题",
+    "anchor": "归属",
+    "anchorOrg": "整个组织",
+    "anchorUsecase": "指定用例",
+    "selectUsecase": "选择用例",
+    "create": "创建",
+    "yes": "是",
+    "no": "否",
+    "na": "不适用",
+    "unanswered": "未作答",
+    "elaboration": "说明",
+    "evidence": "证据",
+    "genAiOnly": "仅生成式 AI",
+    "traditionalOnly": "仅传统 AI",
+    "submit": "提交",
+    "unsubmit": "撤回",
+    "approve": "批准",
+    "archive": "归档",
+    "newVersion": "修订（新版本）",
+    "downloadPdf": "下载 PDF",
+    "downloadExcel": "下载 Excel",
+    "empty": "暂无评估。"
+  },
+  "mindforgeChecklist": {
+    "title": "MindForge 附录 H 检查清单",
+    "listTitle": "MindForge 附录 H 评估",
+    "new": "新建评估",
+    "scope": "范围",
+    "scopeOrg": "组织级",
+    "scopeUsecase": "用例",
+    "status": "状态",
+    "completion": "完成度",
+    "conformance": "达成率",
+    "createTitle": "新建 MindForge 附录 H 评估",
+    "fieldTitle": "标题",
+    "anchor": "归属",
+    "anchorOrg": "整个组织",
+    "anchorUsecase": "指定用例",
+    "selectUsecase": "选择用例",
+    "create": "创建",
+    "yes": "是",
+    "no": "否",
+    "na": "不适用",
+    "unanswered": "未作答",
+    "elaboration": "说明",
+    "guidance": "指引",
+    "submit": "提交",
+    "unsubmit": "撤回",
+    "approve": "批准",
+    "archive": "归档",
+    "newVersion": "修订（新版本）",
+    "downloadPdf": "下载 PDF",
+    "downloadExcel": "下载 Excel",
+    "empty": "暂无评估。"
+  },
+  "transparencyReport": {
+    "title": "透明度报告",
+    "listTitle": "透明度报告",
+    "createTitle": "新建透明度报告",
+    "new": "新建报告",
+    "empty": "暂无透明度报告。",
+    "fieldTitle": "标题",
+    "periodLabel": "周期标签",
+    "periodStart": "周期开始",
+    "periodEnd": "周期结束",
+    "anchor": "范围",
+    "anchorOrg": "组织级",
+    "scope": {
+      "organization": "组织级"
+    },
+    "portfolio": {
+      "systems": "系统",
+      "totals": "组合汇总",
+      "system": "系统",
+      "tier": "层级",
+      "readiness": "就绪状态",
+      "incidents": "事件",
+      "systemCount": "系统数量",
+      "worstTier": "最高风险层级",
+      "highRiskBlocked": "高风险受阻"
+    },
+    "anchorUsecase": "特定用例",
+    "selectUsecase": "选择用例",
+    "scopeOrg": "组织级",
+    "create": "创建",
+    "overallTier": "总体分级",
+    "noFrt": "无已批准的前沿风险分级",
+    "autoTiers": "系统性风险分级",
+    "autoChanges": "较上一版的变更",
+    "autoIncidents": "事件摘要",
+    "autoQuality": "模型质量与态势",
+    "incidentTotal": "总数",
+    "postureScore": "态势评分",
+    "driftAvg": "最新漂移均分",
+    "tier1": "第 1 级",
+    "tier2": "第 2 级",
+    "tier3": "第 3 级",
+    "tierNone": "未达到",
+    "delta_up": "上升",
+    "delta_down": "下降",
+    "delta_same": "不变",
+    "delta_new": "新增",
+    "status_draft": "草稿",
+    "status_submitted": "已提交",
+    "status_approved": "已批准",
+    "status_published": "已发布",
+    "status_superseded": "已被取代",
+    "section_system_description": "系统与模型说明",
+    "section_safeguards": "安全保障与缓解措施",
+    "section_evaluations": "能力评估与测试",
+    "section_governance": "治理与问责",
+    "section_changes_note": "较上一版的变更",
+    "sectionGuide_system_description": "说明本报告涵盖的系统：用途、能力、部署范围以及所涉周期。",
+    "sectionGuide_safeguards": "总结现有的技术与组织安全保障措施及周期内的任何变更。",
+    "sectionGuide_evaluations": "说明周期内开展的评估、红队演练与基准测试及其发现。",
+    "sectionGuide_governance": "说明治理结构、升级机制以及本报告的审核与批准方式。",
+    "sectionGuide_changes_note": "叙述较上一发布版本的实质性变更；分级变化表随附本节。",
+    "submit": "提交",
+    "unsubmit": "撤回提交",
+    "approve": "批准",
+    "publish": "发布",
+    "newVersion": "新版本",
+    "downloadPdf": "下载 PDF",
+    "downloadExcel": "下载 Excel"
+  },
+  "incidentTrends": {
+    "title": "事件趋势",
+    "subtitle": "跨事件系统性风险分析",
+    "generate": "生成报告",
+    "publish": "发布",
+    "draft": "草稿",
+    "published": "已发布",
+    "superseded": "已取代",
+    "window": "时间窗口",
+    "execSummary": "执行摘要",
+    "clusters": "聚类",
+    "longTail": "长尾",
+    "systemicRecommendation": "系统性建议",
+    "confidence": "置信度",
+    "delta": "较上次报告变化",
+    "noReports": "暂无趋势报告。",
+    "downloadPdf": "下载 PDF",
+    "downloadXlsx": "下载 Excel",
+    "diagnostics": "诊断",
+    "incidents": "事件数",
+    "status": "状态",
+    "generated": "生成时间",
+    "category": "类别",
+    "severity": "严重程度",
+    "prev": "上期",
+    "curr": "本期",
+    "change": "变化",
+    "baseline": "基准",
+    "noDeltaData": "无变化数据（基准报告）。",
+    "stats": "统计",
+    "total": "总计",
+    "clustered": "已聚类",
+    "noClusters": "本报告暂无聚类。",
+    "unnamedCluster": "未命名聚类",
+    "incidentsCount": "{count} 个事件"
+  },
+  "usageInsights": {
+    "title": "使用洞察",
+    "subtitle": "基于已同意 MCP 调用的隐私保护使用主题分析",
+    "generate": "生成报告",
+    "generating": "正在生成…",
+    "publish": "发布",
+    "published": "已发布",
+    "draft": "草稿",
+    "superseded": "已取代",
+    "version": "版本",
+    "window": "时间窗口",
+    "totalInvocations": "已同意调用数",
+    "distinctActors": "去标识化参与者数",
+    "suppressedClusters": "已抑制聚类",
+    "kAnonNote": "低于 k-匿名阈值的用法主题已抑制。",
+    "themeLabel": "主题",
+    "narrative": "用法叙述",
+    "systemicObservation": "系统性观察",
+    "exportPdf": "导出 PDF",
+    "exportXlsx": "导出 Excel",
+    "empty": "暂无报告。",
+    "noConsentedData": "所选时间窗口内无已同意的使用数据。",
+    "status": "状态",
+    "generated": "生成时间",
+    "execSummary": "执行摘要",
+    "delta": "较上次报告变化",
+    "byTool": "按工具",
+    "tool": "工具",
+    "byOutcome": "按结果",
+    "outcome": "结果",
+    "prev": "上期",
+    "curr": "本期",
+    "change": "变化",
+    "baseline": "基准",
+    "noDeltaData": "无变化数据（基准报告）。",
+    "stats": "统计",
+    "total": "总计",
+    "clustered": "已聚类",
+    "longTail": "长尾",
+    "themes": "用法主题",
+    "noThemes": "无高于 k-匿名阈值的主题。",
+    "unnamedTheme": "未命名主题",
+    "invocationCount": "{count} 次调用",
+    "topTools": "主要工具",
+    "outcomes": "结果分布",
+    "confidence": "置信度",
+    "diagnostics": "诊断"
+  },
+  "frontierRiskTier": {
+    "title": "前沿风险分级",
+    "listTitle": "前沿风险分级评估",
+    "createTitle": "新建前沿风险分级评估",
+    "new": "新建评估",
+    "fieldTitle": "标题",
+    "scope": "范围",
+    "scopeOrg": "组织级",
+    "scopeUsecase": "用例",
+    "status": "状态",
+    "completion": "完成度",
+    "overallTier": "总体级别",
+    "anchor": "归属",
+    "anchorOrg": "全组织",
+    "anchorUsecase": "指定用例",
+    "selectUsecase": "选择用例",
+    "create": "创建",
+    "met": "满足",
+    "notMet": "不满足",
+    "na": "不适用",
+    "unanswered": "未作答",
+    "tier1": "第 1 级",
+    "tier2": "第 2 级",
+    "tier3": "第 3 级",
+    "tierNone": "未达级",
+    "elaboration": "说明 / 证据",
+    "guidance": "指引",
+    "submit": "提交",
+    "unsubmit": "撤回提交",
+    "approve": "批准",
+    "archive": "归档",
+    "newVersion": "新版本",
+    "downloadPdf": "下载 PDF",
+    "downloadExcel": "下载 Excel",
+    "empty": "暂无评估。",
+    "effectiveTierSetting": "本评估设定的有效级别 = {tier}",
+    "effectiveTierZero": "本评估设定的有效级别 = 0（无阈值满足）"
+  },
+  "asiRedteamChecklist": {
+    "title": "ASI 红队清单",
+    "listTitle": "ASI 红队清单评估",
+    "new": "新建评估",
+    "scope": "范围",
+    "scopeOrg": "组织级",
+    "scopeUsecase": "用例",
+    "status": "状态",
+    "completion": "完成度",
+    "conformance": "覆盖率",
+    "createTitle": "新建 ASI 红队清单",
+    "fieldTitle": "标题",
+    "anchor": "归属",
+    "anchorOrg": "整个组织",
+    "anchorUsecase": "指定用例",
+    "selectUsecase": "选择用例",
+    "create": "创建",
+    "yes": "是",
+    "no": "否",
+    "na": "不适用",
+    "unanswered": "未作答",
+    "elaboration": "说明 / 证据",
+    "guidance": "指引",
+    "submit": "提交",
+    "unsubmit": "撤回",
+    "approve": "批准",
+    "archive": "归档",
+    "newVersion": "新版本",
+    "downloadPdf": "下载 PDF",
+    "downloadExcel": "下载 Excel",
+    "empty": "暂无评估。",
+    "atlas": "MITRE ATLAS",
+    "llmTop10": "LLM 十大风险",
+    "agenticThreats": "智能体威胁",
+    "aivss": "AIVSS"
+  },
+  "fria": {
+    "title": "基本权利影响评估",
+    "startNew": "发起 FRIA",
+    "loading": "加载中…",
+    "history": "历史",
+    "updatedAt": "更新于",
+    "emptyHint": "此用例尚未发起 FRIA。",
+    "saving": "保存中…",
+    "saved": "已保存",
+    "selfApproveBlocked": "不能批准自己创建的 FRIA",
+    "status": {
+      "draft": "草稿",
+      "submitted": "已提交",
+      "approved": "已批准",
+      "archived": "已归档"
+    },
+    "actions": {
+      "save": "保存草稿",
+      "submit": "提交审批",
+      "withdraw": "撤回",
+      "approve": "批准",
+      "supersede": "新建版本",
+      "archive": "归档",
+      "exportPdf": "导出 PDF"
+    },
+    "sections": {
+      "system": "1. 系统识别",
+      "purpose": "2. 目的与预期用途",
+      "rights": "3. 基本权利评估",
+      "governanceControls": "4. 治理控制映射",
+      "overallRisk": "5. 总体风险评估",
+      "mitigationPlan": "6. 缓解计划",
+      "consultations": "7. 协商记录",
+      "signOff": "8. 签署",
+      "reviewSchedule": "9. 复审与更新"
+    },
+    "rights": {
+      "humanDignity": "人的尊严（第 1 条）",
+      "nonDiscrimination": "非歧视（第 21 条）",
+      "privacy": "隐私与数据保护（第 7-8 条）",
+      "effectiveRemedy": "有效救济（第 47 条）",
+      "freeExpression": "表达自由（第 11 条）",
+      "education": "受教育权（第 14 条）",
+      "workersRights": "劳动者权利（第 31 条）",
+      "childrenRights": "儿童权利（第 24 条）"
+    }
+  },
+  "redteam": {
+    "title": "AI 信任",
+    "judgeLabel": "判定器",
+    "judgeBuiltin": "内置检查器",
+    "judgeNemo": "NeMo Guardrails",
+    "judgeNemoHint": "用 NeMo guardrails 对每条响应进行判定（需 NeMo sidecar；在内置引擎上运行）。",
+    "linkSystem": {
+      "label": "关联到 AI 系统",
+      "none": "— 无 —",
+      "saved": "已保存",
+      "error": "更新关联失败"
+    },
+    "category": {
+      "jailbreak": "越狱",
+      "prompt_injection": "提示词注入",
+      "bias": "偏见",
+      "harmful": "有害内容",
+      "pii_leak": "隐私泄露",
+      "toxicity": "毒性内容"
+    },
+    "overview": {
+      "subtitle": "对接入的 AI 模型做红队对抗测试，自动发现越狱、提示词注入、偏见、有害内容、隐私泄露与毒性等安全风险，并生成可审计的评测报告与模型卡。",
+      "whatItTests": "能测什么",
+      "categories": {
+        "jailbreak": "诱导模型绕过安全限制",
+        "prompt_injection": "通过注入指令劫持模型行为",
+        "bias": "检测输出中的偏见与歧视",
+        "harmful": "识别有害、危险内容",
+        "pii_leak": "检测个人隐私信息泄露",
+        "toxicity": "检测辱骂与毒性言论"
+      },
+      "howToUse": "如何使用",
+      "step1Title": "1. 选择目标与题库",
+      "step1Body": "进入「评估运行 → 新建运行」，选一个服务商连接（被测模型）、填写模型名，勾选要测试的风险类别。",
+      "step2Title": "2. 启动评测",
+      "step2Body": "点击开始，Moonshot 引擎按类别用自带数据集自动跑测，后台异步执行，无需等待。",
+      "step3Title": "3. 查看结果",
+      "step3Body": "运行详情页实时展示通过/失败、每条 finding 的判定与原因，以及 IMDA 框架覆盖度；可一键生成模型卡。",
+      "enter": {
+        "runs": "评估运行",
+        "runsDesc": "发起红队评测，查看历史运行与结果",
+        "library": "提示词题库",
+        "libraryDesc": "浏览内置对抗题库，上传自定义提示词集",
+        "modelCards": "模型卡",
+        "modelCardsDesc": "为用例生成可导出的模型安全卡片",
+        "checklist": "ASI 红队清单",
+        "checklistDesc": "对照 OWASP 智能体应用十大风险（ASI01–ASI10）证明红队测试覆盖。"
+      }
+    },
+    "runs": {
+      "title": "评估运行"
+    },
+    "run": {
+      "detailTitle": "评估运行",
+      "new": "新建运行",
+      "start": "开始评估",
+      "starting": "启动中…",
+      "abort": "中止",
+      "abortConfirm": "确定中止评估？部分结果将被保存。",
+      "viewIncident": "查看聚合事件",
+      "selected": "已选：{count}",
+      "selectAllInCategory": "选择该类别全部",
+      "field": {
+        "connection": "服务商连接",
+        "model": "模型",
+        "status": "状态",
+        "total": "总计",
+        "passed": "通过",
+        "failed": "失败",
+        "error": "错误",
+        "startedAt": "开始时间"
+      }
+    },
+    "library": {
+      "builtin": "内置题库",
+      "custom": "自定义提示词",
+      "customSets": "自定义集合",
+      "setName": "集合名称",
+      "uploadOk": "上传成功",
+      "uploadError": "上传失败"
+    },
+    "finding": {
+      "promptRef": "提示词",
+      "category": "类别",
+      "severity": "严重性",
+      "judgment": "判定",
+      "reason": "原因"
+    },
+    "modelCard": {
+      "title": "模型卡",
+      "chooseUsecase": "选择用例",
+      "markdown": "生成 Markdown",
+      "pdf": "生成 PDF",
+      "generating": "生成中…"
+    }
+  },
+  "redteamAttestation": {
+    "title": "外部红队认证",
+    "disclaimer": "由组织自行申报，平台不对这些认证进行独立核验。",
+    "empty": "暂无外部红队认证记录。",
+    "add": "添加认证",
+    "attester": "认证方名称",
+    "attesterOrg": "认证方机构",
+    "attesterContact": "认证方联系方式",
+    "scope": "评测范围",
+    "methodology": "评测方法",
+    "engagementStart": "评测开始",
+    "engagementEnd": "评测结束",
+    "attestedAt": "认证日期",
+    "summary": "摘要",
+    "file": "签名报告（PDF）",
+    "download": "下载报告",
+    "delete": "删除",
+    "submit": "保存认证",
+    "submitting": "保存中…",
+    "uploadFailed": "上传失败：",
+    "selectFile": "请选择 PDF 报告。"
+  },
+  "notifications": {
+    "title": "通知",
+    "empty": "暂无通知",
+    "markAllRead": "全部标为已读",
+    "viewAll": "查看全部",
+    "unreadOnly": "仅未读",
+    "tabAll": "全部",
+    "tabUnread": "未读",
+    "loadMore": "加载更多",
+    "stepAssigned": {
+      "title": "有新的审批等待你处理",
+      "body": "{usecaseName} — 步骤：{stepName}"
+    },
+    "workflowCancelled": {
+      "title": "工作流已拒绝",
+      "body": "{usecaseName} 已被拒绝"
+    },
+    "goLiveDecision": {
+      "approved": {
+        "title": "上线已批准",
+        "body": "{usecaseName} 已获批上线"
+      },
+      "live": {
+        "title": "系统已上线",
+        "body": "{usecaseName} 现已上线"
+      },
+      "rejected": {
+        "title": "上线已驳回",
+        "body": "{usecaseName} 的上线申请已被驳回"
+      },
+      "withdrawn": {
+        "title": "上线决策已撤回",
+        "body": "{usecaseName} 的上线决策已被撤回"
+      },
+      "staleApproval": {
+        "title": "上线批准已过期",
+        "body": "{usecaseName} 与批准时的能力级别或模型版本不再一致"
+      }
+    },
+    "incidentTrendsAlert": {
+      "title": "事件趋势预警 — 报告 v{version}",
+      "body": "检测到 {count} 项恶化趋势信号。打开报告查看详情。"
+    },
+    "usecaseDeprecated": {
+      "title": "系统已弃用",
+      "body": "{usecaseName} 已被弃用"
+    },
+    "externalReports": {
+      "received": {
+        "title": "新的外部报告",
+        "body": "收到新的 {type} 报告“{title}”。"
+      }
+    },
+    "mcpDriftAlert": {
+      "title": "检测到 MCP 工具漂移",
+      "body": "「{serverName}」的工具集发生变化:新增 {added}、移除 {removed}、修改 {changed}。"
+    },
+    "emptyHint": "工作流、上线决策与告警通知将显示在这里。"
+  },
+  "policyAssistant": {
+    "title": "用 AI 生成",
+    "usageToday": "今日 {used} / {limit}",
+    "placeholder": "例如：禁止用户输入包含完整信用卡号的 prompt",
+    "generate": "生成",
+    "generating": "正在生成…",
+    "selfChecks": "自检结果",
+    "expectedHit": "应命中",
+    "expectedMiss": "不应命中",
+    "status": {
+      "ok": "通过",
+      "needs_review": "需检查",
+      "failed": "失败"
+    }
+  },
+  "mcp": {
+    "title": "MCP 服务器",
+    "addServer": "添加服务器",
+    "empty": "尚未注册 MCP 服务器",
+    "fields": {
+      "name": "名称",
+      "endpoint": "端点",
+      "transport": "传输方式",
+      "authType": "认证类型",
+      "riskTier": "风险等级",
+      "status": "状态",
+      "owner": "负责人",
+      "notes": "备注"
+    },
+    "transport": {
+      "stdio": "stdio",
+      "http": "HTTP"
+    },
+    "authType": {
+      "none": "无",
+      "token": "令牌",
+      "oauth": "OAuth"
+    },
+    "riskTier": {
+      "low": "低",
+      "medium": "中",
+      "high": "高",
+      "critical": "严重"
+    },
+    "status": {
+      "active": "活跃",
+      "inactive": "未激活",
+      "archived": "已归档"
+    },
+    "tools": {
+      "title": "工具",
+      "addTool": "添加工具",
+      "empty": "尚未注册工具",
+      "name": "工具名称",
+      "description": "描述",
+      "inputSchema": "输入 Schema"
+    },
+    "invocations": {
+      "title": "最近调用",
+      "empty": "暂无调用记录",
+      "toolName": "工具",
+      "actor": "操作人",
+      "outcome": "结果",
+      "consent": "授权",
+      "timestamp": "时间"
+    },
+    "outcome": {
+      "success": "成功",
+      "failure": "失败",
+      "denied": "已拒绝"
+    },
+    "drift": {
+      "badge": "漂移待审",
+      "panelTitle": "工具漂移审查",
+      "panelIntro": "该服务器公布的工具集与已批准基线不一致。请审查变更;如属预期,批准新基线。",
+      "added": "新增工具",
+      "removed": "移除工具",
+      "changed": "修改的工具",
+      "descriptionChanged": "描述已变更",
+      "schemaChanged": "输入 schema 已变更",
+      "before": "变更前",
+      "after": "变更后",
+      "approve": "批准新基线",
+      "approved": "已批准新基线。",
+      "historyTitle": "工具快照",
+      "historySource": {
+        "polled": "自动轮询",
+        "manual": "手动提交"
+      },
+      "manualTitle": "提交工具快照",
+      "manualIntro": "stdio 或 OAuth 服务器请将其 tools/list JSON 输出粘贴到此处,与已批准基线比对。",
+      "manualPlaceholder": "粘贴 tools/list JSON…",
+      "manualSubmit": "提交快照",
+      "manualMatches": "快照与已批准基线一致。",
+      "manualBaselineCreated": "首个快照已记录为基线。",
+      "manualDrift": "检测到漂移——请在上方审查变更。",
+      "manualInvalid": "不是有效的 tools/list JSON。",
+      "tokenLabel": "Bearer token(可选)",
+      "tokenHint": "仅用于每日 tools/list 轮询。加密存储,不再回显。",
+      "tokenSet": "已存有 token。输入新值将替换。"
+    }
+  },
+  "members": {
+    "title": "团队成员",
+    "noMembers": "暂无成员。",
+    "col": {
+      "name": "姓名",
+      "email": "邮箱",
+      "role": "角色",
+      "joinedAt": "加入时间",
+      "actions": "操作"
+    },
+    "role": {
+      "admin": "管理员",
+      "risk_officer": "风险官",
+      "ai_owner": "AI 负责人",
+      "auditor": "审计员",
+      "viewer": "只读"
+    },
+    "invite": {
+      "button": "邀请成员",
+      "title": "邀请新成员",
+      "emailLabel": "邮箱",
+      "roleLabel": "角色",
+      "submit": "发送邀请",
+      "success": "邀请已发送。",
+      "error": {
+        "alreadyMember": "该邮箱已是成员。",
+        "pendingExists": "该邮箱已有未处理的邀请。",
+        "invalidEmail": "请输入有效的邮箱。"
+      }
+    },
+    "pending": {
+      "title": "待处理邀请",
+      "col": {
+        "email": "邮箱",
+        "role": "角色",
+        "expires": "过期时间",
+        "actions": ""
+      },
+      "revoke": "撤回",
+      "empty": "暂无待处理邀请。",
+      "expiredBadge": "已过期"
+    },
+    "remove": {
+      "button": "移除",
+      "confirm": "移除",
+      "confirmTitle": "确认移除该成员?",
+      "confirmBody": "{name} 将失去对此组织的访问权限。",
+      "error": {
+        "lastAdmin": "无法移除最后一位管理员。",
+        "self": "无法移除自己。"
+      }
+    },
+    "acceptInvite": {
+      "title": {
+        "success": "邀请已接受",
+        "setPassword": "设置密码",
+        "sso": "使用 SSO 登录",
+        "signIn": "请先登录以接受邀请"
+      },
+      "passwordLabel": "密码 (至少 8 位)",
+      "submit": "接受邀请",
+      "ssoButton": "使用 SSO 继续",
+      "goToDashboard": "进入控制台",
+      "error": {
+        "invalid": "此邀请链接无效。",
+        "expired": "此邀请已过期。",
+        "revoked": "此邀请已被撤回。",
+        "already_accepted": "此邀请已被使用。",
+        "email_mismatch": "此邀请发送给了其他邮箱。"
+      }
+    }
+  },
+  "drift": {
+    "title": "漂移监控",
+    "addBenchmark": "新建基准",
+    "empty": "暂无基准测试",
+    "fields": {
+      "name": "名称",
+      "description": "描述",
+      "threshold": "阈值",
+      "promptCount": "提示词数",
+      "runCount": "运行次数"
+    },
+    "status": {
+      "pending": "待处理",
+      "running": "运行中",
+      "completed": "已完成",
+      "failed": "失败"
+    },
+    "form": {
+      "prompts": "提示词",
+      "addPrompt": "添加提示词",
+      "removePrompt": "移除",
+      "promptText": "提示词文本",
+      "expectedBehavior": "预期行为",
+      "referenceOutput": "参考输出",
+      "targetProvider": "目标提供商",
+      "targetModel": "目标模型",
+      "judgeModel": "评审模型"
+    },
+    "linkSystem": {
+      "label": "关联到 AI 系统",
+      "none": "— 无 —"
+    },
+    "run": {
+      "title": "运行记录",
+      "start": "开始运行",
+      "empty": "暂无运行记录",
+      "avgScore": "平均分",
+      "degraded": "已降级",
+      "promptCount": "提示词数",
+      "completedCount": "已完成",
+      "startedAt": "开始时间",
+      "completedAt": "完成时间"
+    },
+    "result": {
+      "title": "评估结果",
+      "prompt": "提示词",
+      "expected": "预期",
+      "actual": "实际输出",
+      "score": "得分",
+      "judgment": "评判",
+      "targetLatency": "目标延迟",
+      "targetTokens": "目标 Token",
+      "judgeLatency": "评审延迟",
+      "judgeTokens": "评审 Token"
+    },
+    "actions": {
+      "viewResults": "查看结果",
+      "deleteConfirm": "确定删除此基准测试？"
+    }
+  },
+  "riskCopilot": {
+    "title": "AI 风险建议",
+    "intro": "让 AI 识别适用于此用例的风险并推荐缓解措施。",
+    "suggestButton": "用 AI 建议风险",
+    "running": "分析中…",
+    "rerun": "重新运行",
+    "lastRun": "上次运行",
+    "tokens": "{input} 输入 / {output} 输出 tokens · {ms} ms · {model}",
+    "diagnostics": "诊断信息",
+    "noResults": "AI 未发现适用的风险。请查看诊断信息了解原因。",
+    "disabledShort": "请添加更长的描述（≥20 个字符）以启用。",
+    "disabledRbac": "您没有权限执行此操作。",
+    "disabledConfig": "AI 助手未配置。请设置 RISK_COPILOT_PROVIDER、RISK_COPILOT_API_KEY 和 RISK_COPILOT_MODEL。",
+    "disabledCatalog": "风险目录为空 — 请先运行 FINOS 种子数据。",
+    "acceptOne": "接受",
+    "rejectOne": "拒绝",
+    "acceptAll": "接受全部待处理",
+    "rejectAll": "拒绝全部待处理",
+    "alreadyLinked": "已关联",
+    "implementedSkipped": "{n} 个控制措施已实施，已跳过",
+    "evidence": "证据",
+    "rationale": "推理",
+    "mitigations": "推荐控制措施",
+    "severity": {
+      "low": "低",
+      "medium": "中",
+      "high": "高",
+      "critical": "严重"
+    },
+    "linked": {
+      "title": "已关联风险",
+      "empty": "此用例尚未关联任何风险。",
+      "remove": "移除",
+      "source": {
+        "ai": "AI 建议",
+        "manual": "手动"
+      }
+    }
+  },
+  "incidentRca": {
+    "title": "AI 根因分析",
+    "intro": "让 AI 根据此事件的上下文起草结构化的根因分析报告。",
+    "suggestButton": "用 AI 总结根因",
+    "running": "分析中…",
+    "rerun": "重新运行",
+    "lastRun": "上次运行",
+    "tokens": "{input} 输入 / {output} 输出 tokens · {ms} ms · {model}",
+    "diagnostics": "诊断信息",
+    "disabledRbac": "您没有权限执行此操作。",
+    "summary": "摘要",
+    "rootCause": "根因",
+    "timeline": "时间线",
+    "recommendations": "建议",
+    "noTimeline": "无可验证的时间线事件。",
+    "accept": "接受并写入根因",
+    "reject": "拒绝",
+    "alreadyAccepted": "由 {who} 于 {when} 接受",
+    "priority": {
+      "low": "低",
+      "medium": "中",
+      "high": "高"
+    }
+  },
+  "sso": {
+    "title": "单点登录",
+    "subtitle": "配置贵组织的 OIDC 身份提供商。通过它登录的成员将被自动开通账户。",
+    "loading": "加载中…",
+    "save": "保存",
+    "cancel": "取消",
+    "saved": "已保存。",
+    "saveError": "无法保存，请检查输入后重试。",
+    "rotate": "轮换",
+    "rotateSave": "保存密钥",
+    "rotated": "密钥已轮换。",
+    "disabledNotice": "单点登录当前已禁用——成员无法通过它登录。",
+    "fields": {
+      "issuer": "颁发者 URL",
+      "clientId": "客户端 ID",
+      "clientSecret": "客户端密钥",
+      "newSecret": "新密钥",
+      "buttonLabel": "登录按钮文字",
+      "buttonLabelPlaceholder": "使用 SSO 登录",
+      "allowedDomains": "允许的邮箱域名",
+      "allowedDomainsHint": "以逗号分隔。留空表示允许任意域名。",
+      "enabled": "启用单点登录"
+    }
+  },
+  "scim": {
+    "title": "SCIM 自动配置",
+    "subtitle": "允许身份提供商通过 SCIM 2.0 自动创建、更新和停用本组织的成员。",
+    "loading": "加载中…",
+    "notConfigured": "该组织尚未配置 SCIM。",
+    "ssoRequired": "请先配置单点登录，然后再启用 SCIM 自动配置。",
+    "ssoRequiredCta": "前往单点登录设置",
+    "enable": "启用",
+    "disable": "停用",
+    "enabled": "已启用",
+    "disabled": "已停用",
+    "save": "保存",
+    "cancel": "取消",
+    "saved": "已保存。",
+    "saveError": "无法保存，请检查输入后重试。",
+    "rotateToken": "轮换令牌",
+    "rotateConfirm": "轮换将替换当前的令牌。请立即在身份提供商中更新，否则自动配置将失效。是否继续？",
+    "tokenRevealTitle": "新令牌（仅显示一次）",
+    "tokenRevealBody": "请立即复制此令牌并粘贴到身份提供商的 SCIM 配置中，之后将不再显示。",
+    "fields": {
+      "tokenPrefix": "当前令牌",
+      "roleAttribute": "角色属性",
+      "roleAttributeHint": "SCIM 用户数据中用于解析角色的属性路径，例如 \"department\" 或 \"urn:custom.department\"。",
+      "roleValueMap": "角色映射表",
+      "roleValueMapHint": "每行一对 \"属性值: 角色\"，例如 eng: admin",
+      "endpointUrl": "SCIM 端点地址"
+    }
+  },
+  "agentTesting": {
+    "learnMore": "了解更多 ↗",
+    "connect": {
+      "title": "连接你的 Agent",
+      "tests": "在这里登记你的 Agent 的 API——下面所有测试的入口。",
+      "prereq": "你的 Agent 需要提供 OpenAI 兼容的 HTTP API 和一个 API Key。",
+      "cta": "新建连接"
+    },
+    "mouth": {
+      "title": "红队测试你的 Agent 的「嘴」",
+      "tests": "用对抗性提问检测它说什么:越狱、毒性、提示注入、偏见、PII 泄露。",
+      "prereq": "请先连接一个 Provider,红队才有可攻击的端点。",
+      "cta": "新建红队运行"
+    },
+    "hands": {
+      "title": "MCP 审计测试你的 Agent 的「手」",
+      "tests": "调用日志记录 Agent 调用了哪些工具,帮你发现越权或过度的工具调用。",
+      "prereq": "你的 Agent 工具需通过 MCP 暴露(或以其他方式埋点)。",
+      "cta": "注册 MCP Server"
+    },
+    "compliance": {
+      "title": "治理层负责合规",
+      "tests": "把 Agent 登记为用例,对照框架目录评估(EU AI Act、NIST AI RMF、ISO 42001 等)。",
+      "prereq": "没有技术前提——先描述这个 Agent 即可。",
+      "cta": "新建用例"
+    }
+  },
+  "dossier": {
+    "readinessTitle": "上线就绪度",
+    "state": {
+      "not_ready": "未就绪",
+      "conditionally_ready": "有条件就绪",
+      "ready": "已就绪",
+      "live": "已上线",
+      "needs_re_review": "需重新评审"
+    },
+    "blockingFailing": "{count} 项阻断问题",
+    "advisoryOpen": "{count} 项建议事项",
+    "status": {
+      "pass": "通过",
+      "warn": "需关注",
+      "fail": "未通过",
+      "na": "不适用"
+    },
+    "severity": {
+      "blocking": "阻断",
+      "advisory": "建议"
+    },
+    "open": "前往",
+    "requiredAtTier": "第 {tier} 级要求",
+    "capability": {
+      "badge": "能力级别 {tier}",
+      "notAssessed": "未评估级别",
+      "tierZero": "能力级别 0（无阈值满足）"
+    },
+    "checks": {
+      "classified": {
+        "label": "《欧盟人工智能法案》分类",
+        "detail": "上线前必须完成系统分类。"
+      },
+      "risk_management": {
+        "label": "风险管理（第 9 条）",
+        "detail": "尚有 {count} 项控制未满足。"
+      },
+      "regulatory_risks": {
+        "label": "已审阅监管风险",
+        "detail": "{count} 项关联风险缺少理由说明。"
+      },
+      "data_governance": {
+        "label": "数据治理（第 10 条）",
+        "detail": "请关联数据源；含个人数据时需设置敏感级别。"
+      },
+      "documentation": {
+        "label": "技术文档（第 11 条）",
+        "detail": "请添加模型卡并至少一个版本。"
+      },
+      "logging": {
+        "label": "记录留存（第 12 条）",
+        "detail": "该系统尚无活动日志。"
+      },
+      "fria": {
+        "label": "基本权利影响评估（第 27 条）",
+        "detail": "尚无已批准的 FRIA。"
+      },
+      "transparency": {
+        "label": "透明度（第 13/50 条）",
+        "detail": "尚无已发布的透明度报告。"
+      },
+      "redteam": {
+        "label": "对抗性测试（第 15 条）",
+        "detail": "尚无已完成的红队评测。"
+      },
+      "drift": {
+        "label": "持续监测（第 15 条）",
+        "detail": "请添加漂移基准并运行。"
+      },
+      "incidents": {
+        "label": "无未结严重事件",
+        "detail": "存在 {count} 项未结的高/严重事件。"
+      },
+      "human_oversight": {
+        "label": "人工监督（第 14 条）",
+        "detail": "请确认已具备人工监督措施。"
+      },
+      "external_redteam": {
+        "label": "独立外部红队（第 15 条）",
+        "detail": "暂无独立外部红队认证记录。"
+      },
+      "capability_tier_assessed": {
+        "label": "前沿能力级别已评估（RSP）",
+        "detail": "尚无已批准的前沿风险分级评估。"
+      },
+      "alignment_audit": {
+        "label": "行为对齐审计（第 15 条）",
+        "detail": "暂无通过的对齐审计记录。"
+      }
+    },
+    "systemCard": {
+      "export": "导出系统卡片",
+      "markdown": "Markdown",
+      "pdf": "PDF",
+      "failed": "导出失败"
+    },
+    "goLive": {
+      "title": "上线决策",
+      "none": "尚未记录决策。",
+      "decidedBy": "决策人：{name}",
+      "approve": "批准上线",
+      "markLive": "标记为已上线",
+      "reject": "驳回",
+      "withdraw": "撤回",
+      "rationale": "理由",
+      "conditions": "条件（每行一条）",
+      "blockingError": "无法批准：仍有阻断项未通过。",
+      "currentStatus": "当前状态",
+      "boundFingerprint": "批准时级别 {tier} / 模型 {model}",
+      "staleWarning": "能力级别或模型版本自批准以来已变更。请重新评审后再依赖此上线决策。"
+    },
+    "oversight": {
+      "title": "人工监督确认（第 14 条）",
+      "attest": "我确认已具备人工监督措施"
+    }
+  },
+  "agenticGovernance": {
+    "title": "智能体治理",
+    "listTitle": "智能体治理评估",
+    "createTitle": "新建智能体治理评估",
+    "subtitle": "确认智能体 AI 用例的治理控制措施。",
+    "new": "新建评估",
+    "empty": "暂无评估。",
+    "fieldTitle": "标题",
+    "scope": "范围",
+    "status": "状态",
+    "scopeOrg": "组织级",
+    "scopeUsecase": "用例",
+    "anchor": "归属",
+    "anchorOrg": "整个组织",
+    "anchorUsecase": "指定用例",
+    "selectUsecase": "选择用例",
+    "create": "创建",
+    "completion": "完成度",
+    "conformance": "覆盖率",
+    "downloadPdf": "下载 PDF",
+    "downloadExcel": "下载 Excel",
+    "submit": "提交",
+    "unsubmit": "撤回",
+    "approve": "批准",
+    "archive": "归档",
+    "newVersion": "新版本",
+    "yes": "是",
+    "no": "否",
+    "na": "不适用",
+    "unanswered": "未作答",
+    "elaboration": "说明 / 证据",
+    "guidance": "指引",
+    "seeAlso": "另见"
+  },
+  "trustCenter": {
+    "public": {
+      "heading": "信任中心",
+      "dataAsOf": "数据截至 {date}（版本 {version}）",
+      "frameworks": "已采纳框架",
+      "systems": "AI 系统",
+      "goLivePassed": "上线评审已通过",
+      "goLivePending": "上线评审待完成",
+      "redteam": "独立红队测评",
+      "redteamCount": "{count} 份独立鉴证，最近一次于 {date}",
+      "redteamNone": "暂无独立鉴证记录",
+      "transparency": "透明度报告",
+      "sbom": "软件物料清单",
+      "sbomAvailable": "可按需提供 — {count} 个组件",
+      "sbomUnavailable": "未发布",
+      "contact": "申请完整档案：{email}",
+      "requestAccess": "已有访问链接？打开即可查看完整档案。"
+    },
+    "full": {
+      "heading": "机密档案",
+      "notice": "机密内容——依据您的访问链接条款共享，请勿转发。",
+      "versions": "已发布版本",
+      "readiness": "就绪检查",
+      "attestations": "独立红队鉴证",
+      "download": "下载报告（PDF）",
+      "sbom": "完整 CycloneDX SBOM",
+      "transparency": "透明度报告"
+    },
+    "admin": {
+      "title": "信任中心",
+      "profileHeading": "公开资料",
+      "slug": "URL 标识",
+      "displayName": "显示名称",
+      "intro": "简介",
+      "contactEmail": "联系邮箱",
+      "enabled": "站点已上线",
+      "save": "保存资料",
+      "staleBanner": "最新已发布快照已超过 90 天。",
+      "snapshotsHeading": "快照",
+      "createDraft": "创建草稿",
+      "previewPublic": "预览公开层级",
+      "previewConfidential": "预览机密层级",
+      "publish": "发布",
+      "withdraw": "撤回",
+      "deleteDraft": "删除草稿",
+      "tokensHeading": "访问链接",
+      "issueToken": "签发访问链接",
+      "tokenLabel": "标签",
+      "tokenRecipient": "接收人邮箱",
+      "tokenExpires": "过期时间",
+      "tokenShownOnce": "请立即复制此链接——仅显示一次。",
+      "revoke": "吊销",
+      "revoked": "已吊销",
+      "lastUsed": "上次使用",
+      "useCount": "使用次数"
+    }
+  }
+}

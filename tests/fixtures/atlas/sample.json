@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "license": "Apache-2.0",
+    "attribution": "Source: MITRE ATLAS (test fixture)",
+    "upstreamRef": "test-atlas-0000",
+    "fetchedAt": "2026-06-06T00:00:00.000Z",
+    "importerVersion": 1
+  },
+  "risks": [
+    {
+      "code": "atlas-test-1",
+      "title": "Test ATLAS Risk One",
+      "category": "Exfiltration",
+      "summary": "Summary of test atlas risk one.",
+      "description": "Body for test atlas risk one.",
+      "frameworkRefs": {
+        "mitreAtlas": ["AML.T0024.002"],
+        "owaspLlm": ["llm02-2025"]
+      },
+      "relatedRiskCodes": ["ri-23"],
+      "mitigatedByControlCodes": ["mi-test-a", "mi-test-bogus"],
+      "sourceUrl": "https://atlas.mitre.org/techniques/AML.T0024"
+    },
+    {
+      "code": "atlas-test-2",
+      "title": "Test ATLAS Risk Two",
+      "category": "Impact",
+      "summary": "Summary two.",
+      "description": "Body two.",
+      "frameworkRefs": { "mitreAtlas": ["AML.T0029"] },
+      "relatedRiskCodes": [],
+      "mitigatedByControlCodes": ["mi-test-b"],
+      "sourceUrl": "https://atlas.mitre.org/techniques/AML.T0029"
+    }
+  ]
+}

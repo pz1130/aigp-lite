@@ -1,0 +1,111 @@
+enum IncidentSeverity {
+  low
+  medium
+  high
+  critical
+}
+
+enum IncidentStatus {
+  open
+  investigating
+  mitigated
+  closed
+}
+
+enum IncidentCategory {
+  hijack
+  capability_breach
+  data_leak
+  trust_failure
+  cascade
+  audit_failure
+  resource_abuse
+  bias_harm
+  policy_bypass
+}
+
+model Incident {
+  id                      String          @id @default(cuid())
+  orgId                   String
+  severity                 IncidentSeverity @default(high)
+  status                   IncidentStatus   @default(open)
+  category                 IncidentCategory?
+  frameworkRefs            Json              @default("{}")
+  slaDeadline              DateTime?
+  title                    String
+  rootCause                String           @default("") @db.Text
+  relatedUsecaseId         String?
+  relatedPolicyEvaluationId String?         @unique
+  relatedLlmInvocationId   String?         @unique
+  openedAt                 DateTime         @default(now())
+  closedAt                 DateTime?
+  openedById               String
+  closedById               String?
+  externalRefs             Json             @default("{}") @map("external_refs")
+  embedding                   Json?
+  mergedIntoId                String?
+  mergedInto                  Incident?  @relation("IncidentMerge", fields: [mergedIntoId], references: [id], onDelete: SetNull)
+  mergedFrom                  Incident[] @relation("IncidentMerge")
+  autoCreatedFromPolicyEvalId String?
+
+  mergeSuggestionsForThis     IncidentMergeSuggestion[] @relation("MergeSuggestionIncident")
+  mergeSuggestionsAsCandidate IncidentMergeSuggestion[] @relation("MergeSuggestionCandidate")
+
+  org             Organization        @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase         AiUsecase?          @relation(fields: [relatedUsecaseId], references: [id], onDelete: SetNull)
+  openedBy        User                @relation("IncidentOpener", fields: [openedById], references: [id])
+  closedBy        User?               @relation("IncidentCloser", fields: [closedById], references: [id], onDelete: SetNull)
+  policyEvaluation PolicyEvaluation?  @relation("IncidentPolicyEval", fields: [relatedPolicyEvaluationId], references: [id], onDelete: SetNull)
+  llmInvocation   LlmInvocation?      @relation("IncidentLlmInvoke", fields: [relatedLlmInvocationId], references: [id], onDelete: SetNull)
+
+  rcaDrafts IncidentRcaDraft[]
+  externalReport ExternalReport?
+
+  @@index([orgId, status])
+  @@index([orgId, severity])
+  @@index([orgId, category])
+  @@index([orgId, slaDeadline])
+  @@index([orgId, mergedIntoId])
+  @@map("incident")
+}
+
+model IncidentMergeSuggestion {
+  id                   String    @id @default(cuid())
+  orgId                String
+  incidentId           String
+  candidateIncidentId  String
+  similarity           Float
+  suggestedAt          DateTime  @default(now())
+  dismissedAt          DateTime?
+  dismissedById        String?
+  acceptedAt           DateTime?
+  acceptedById         String?
+
+  org           Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  incident      Incident     @relation("MergeSuggestionIncident",  fields: [incidentId],          references: [id], onDelete: Cascade)
+  candidate     Incident     @relation("MergeSuggestionCandidate", fields: [candidateIncidentId], references: [id], onDelete: Cascade)
+  dismissedBy   User?        @relation("MergeSuggestionDismisser", fields: [dismissedById],       references: [id], onDelete: SetNull)
+  acceptedBy    User?        @relation("MergeSuggestionAccepter",  fields: [acceptedById],        references: [id], onDelete: SetNull)
+
+  @@unique([incidentId, candidateIncidentId])
+  @@index([orgId, incidentId])
+  @@map("incident_merge_suggestion")
+}
+
+model OrgIncidentAutomationConfig {
+  orgId                    String   @id
+  autoOpenEnabled          Boolean  @default(true)
+  blockAlwaysOpens         Boolean  @default(true)
+  hitBurstThreshold        Int      @default(5)
+  hitBurstWindowMin        Int      @default(10)
+  dedupEnabled             Boolean  @default(true)
+  dedupSimilarityThreshold Float    @default(0.85)
+  dedupLookbackDays        Int      @default(30)
+  updatedAt                DateTime @updatedAt
+  updatedById              String?
+
+  org       Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  updatedBy User?        @relation(fields: [updatedById], references: [id], onDelete: SetNull)
+
+  @@map("org_incident_automation_config")
+}

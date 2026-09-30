@@ -1,0 +1,12 @@
+OWASP Top 10 for Agentic Applications (2026)
+Source: OWASP GenAI Security Project / Agentic Security Initiative
+https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications/
+
+Licensed under Creative Commons Attribution-ShareAlike 4.0 International
+(CC BY-SA 4.0): https://creativecommons.org/licenses/by-sa/4.0/
+
+This catalog reproduces only the ASI01–ASI10 short codes and titles from the
+source. All summaries and descriptions in owasp-asi-catalog.json are original
+wording authored for AIGP-Lite and are NOT verbatim OWASP text. Appendix-A
+cross-mapping metadata (OWASP LLM Top 10, Agentic Threats T1–T17, AIVSS) is
+stored as factual references only.

@@ -1,0 +1,79 @@
+enum FrtStatus {
+  draft
+  submitted
+  approved
+  archived
+}
+
+model FrtCategory {
+  id         String         @id @default(cuid())
+  code       String         @unique
+  order      Int
+  title      String
+  summary    String
+  thresholds FrtThreshold[]
+
+  @@map("frt_category")
+}
+
+model FrtThreshold {
+  id         String      @id @default(cuid())
+  categoryId String
+  category   FrtCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  code       String      @unique
+  tier       Int
+  order      Int
+  statement  String
+  guidance   String?
+
+  @@index([categoryId, tier, order])
+  @@map("frt_threshold")
+}
+
+model FrtAssessment {
+  id             String    @id @default(cuid())
+  orgId          String
+  usecaseId      String?
+  version        Int       @default(1)
+  status         FrtStatus @default(draft)
+  title          String
+  createdById    String
+  submittedAt    DateTime?
+  submittedById  String?
+  approvedAt     DateTime?
+  approvedById   String?
+  archivedAt     DateTime?
+  archivedById   String?
+  supersededById String?   @unique
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  org          Organization    @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase      AiUsecase?      @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+  createdBy    User            @relation("FrtCreator", fields: [createdById], references: [id])
+  submittedBy  User?           @relation("FrtSubmitter", fields: [submittedById], references: [id])
+  approvedBy   User?           @relation("FrtApprover", fields: [approvedById], references: [id])
+  archivedBy   User?           @relation("FrtArchiver", fields: [archivedById], references: [id])
+  supersededBy FrtAssessment?  @relation("FrtSupersede", fields: [supersededById], references: [id])
+  supersedes   FrtAssessment[] @relation("FrtSupersede")
+  answers      FrtAnswer[]
+
+  @@unique([orgId, usecaseId, version])
+  @@index([orgId, usecaseId, status])
+  @@index([orgId, status, updatedAt(sort: Desc)])
+  @@map("frt_assessment")
+}
+
+model FrtAnswer {
+  id           String        @id @default(cuid())
+  assessmentId String
+  assessment   FrtAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  thresholdCode String
+  status       String        @default("unanswered")
+  elaboration  String?
+  evidenceRefs String[]
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([assessmentId, thresholdCode])
+  @@map("frt_answer")
+}

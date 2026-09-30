@@ -1,0 +1,5404 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AIGP-Lite API",
+    "version": "0.6.0",
+    "description": "API reference for AIGP-Lite. REST routes are executable as documented. tRPC entries describe the canonical procedures exposed via /api/trpc/{procedure} and are intended as integration reference."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local development"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Audit"
+    },
+    {
+      "name": "Evidence"
+    },
+    {
+      "name": "Runtime"
+    },
+    {
+      "name": "Red Team Runtime"
+    },
+    {
+      "name": "Reports Download"
+    },
+    {
+      "name": "ServiceNow"
+    },
+    {
+      "name": "Inventory"
+    },
+    {
+      "name": "Risk"
+    },
+    {
+      "name": "Maturity"
+    },
+    {
+      "name": "Policy"
+    },
+    {
+      "name": "Policy API Keys"
+    },
+    {
+      "name": "Workflow"
+    },
+    {
+      "name": "Data Lineage"
+    },
+    {
+      "name": "Webhooks"
+    },
+    {
+      "name": "Red Team"
+    },
+    {
+      "name": "Incidents"
+    },
+    {
+      "name": "Provider Connections"
+    },
+    {
+      "name": "Reports"
+    },
+    {
+      "name": "FinOps"
+    },
+    {
+      "name": "Risk Copilot"
+    },
+    {
+      "name": "Incident RCA"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "authjs.session-token",
+        "description": "NextAuth session cookie used by browser-authenticated API routes."
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API key",
+        "description": "Runtime API key, for example Authorization: Bearer aigp_..."
+      },
+      "serviceNowWebhookSecret": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-webhook-secret",
+        "description": "Shared secret configured for the ServiceNow inbound integration."
+      }
+    }
+  },
+  "paths": {
+    "/api/audit/export": {
+      "get": {
+        "tags": ["Audit"],
+        "summary": "Export audit logs as CSV",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5000
+            }
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "resourceType",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CSV export",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/evidence/upload": {
+      "post": {
+        "tags": ["Evidence"],
+        "summary": "Upload evidence file",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["file"],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "usecaseId": {
+                    "type": "string"
+                  },
+                  "controlId": {
+                    "type": "string"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "maxLength": 1000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Evidence record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/evidence/download": {
+      "get": {
+        "tags": ["Evidence"],
+        "summary": "Download evidence file",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evidence file stream",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/runtime/llm": {
+      "post": {
+        "tags": ["Runtime"],
+        "summary": "Invoke LLM through governed runtime gateway",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["connectionId", "model", "messages"],
+                "properties": {
+                  "connectionId": {
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "usecaseId": {
+                    "type": "string"
+                  },
+                  "messages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Server-sent event stream from provider",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/redteam/runs": {
+      "post": {
+        "tags": ["Red Team Runtime"],
+        "summary": "Create red-team evaluation run",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created evaluation run",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/redteam/runs/{id}/abort": {
+      "post": {
+        "tags": ["Red Team Runtime"],
+        "summary": "Abort red-team evaluation run",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Resource ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Abort status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/redteam/runs/{id}/stream": {
+      "get": {
+        "tags": ["Red Team Runtime"],
+        "summary": "Stream red-team evaluation progress",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Resource ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Server-sent evaluation events",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/reports/{id}/{format}": {
+      "get": {
+        "tags": ["Reports Download"],
+        "summary": "Download generated report",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Resource ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "format",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["pdf", "xlsx"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report file",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/integrations/servicenow/inbound/{id}": {
+      "post": {
+        "tags": ["ServiceNow"],
+        "summary": "Receive ServiceNow inbound webhook",
+        "security": [
+          {
+            "serviceNowWebhookSecret": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Integration ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Webhook handling result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/trpc/inventory": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List AI use cases",
+        "description": "Documentation proxy for tRPC procedure `inventory.list`. The canonical runtime endpoint remains `/api/trpc/inventory.list` using the tRPC HTTP protocol.",
+        "operationId": "inventory_list",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "inventory.list"
+      },
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Create an AI use case",
+        "description": "Documentation proxy for tRPC procedure `inventory.create`. The canonical runtime endpoint remains `/api/trpc/inventory.create` using the tRPC HTTP protocol.",
+        "operationId": "inventory_create",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "inventory.create"
+      }
+    },
+    "/trpc/inventory/{id}": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "Get an AI use case",
+        "description": "Documentation proxy for tRPC procedure `inventory.byId`. The canonical runtime endpoint remains `/api/trpc/inventory.byId` using the tRPC HTTP protocol.",
+        "operationId": "inventory_byId",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "inventory.byId"
+      },
+      "patch": {
+        "tags": ["Inventory"],
+        "summary": "Update an AI use case",
+        "description": "Documentation proxy for tRPC procedure `inventory.update`. The canonical runtime endpoint remains `/api/trpc/inventory.update` using the tRPC HTTP protocol.",
+        "operationId": "inventory_update",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "inventory.update"
+      },
+      "delete": {
+        "tags": ["Inventory"],
+        "summary": "Delete an AI use case",
+        "description": "Documentation proxy for tRPC procedure `inventory.remove`. The canonical runtime endpoint remains `/api/trpc/inventory.remove` using the tRPC HTTP protocol.",
+        "operationId": "inventory_remove",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "inventory.remove"
+      }
+    },
+    "/trpc/inventory/{usecaseId}/model-versions": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "List model versions",
+        "description": "Documentation proxy for tRPC procedure `inventory.modelVersionList`. The canonical runtime endpoint remains `/api/trpc/inventory.modelVersionList` using the tRPC HTTP protocol.",
+        "operationId": "inventory_modelVersionList",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "usecaseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "inventory.modelVersionList"
+      },
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Create a model version",
+        "description": "Documentation proxy for tRPC procedure `inventory.modelVersionCreate`. The canonical runtime endpoint remains `/api/trpc/inventory.modelVersionCreate` using the tRPC HTTP protocol.",
+        "operationId": "inventory_modelVersionCreate",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "usecaseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "inventory.modelVersionCreate"
+      }
+    },
+    "/trpc/inventory/model-versions/{id}": {
+      "patch": {
+        "tags": ["Inventory"],
+        "summary": "Update a model version",
+        "description": "Documentation proxy for tRPC procedure `inventory.modelVersionUpdate`. The canonical runtime endpoint remains `/api/trpc/inventory.modelVersionUpdate` using the tRPC HTTP protocol.",
+        "operationId": "inventory_modelVersionUpdate",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "inventory.modelVersionUpdate"
+      }
+    },
+    "/trpc/risk/frameworks": {
+      "get": {
+        "tags": ["Risk"],
+        "summary": "List risk frameworks",
+        "description": "Documentation proxy for tRPC procedure `risk.frameworks`. The canonical runtime endpoint remains `/api/trpc/risk.frameworks` using the tRPC HTTP protocol.",
+        "operationId": "risk_frameworks",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "risk.frameworks"
+      }
+    },
+    "/trpc/risk/usecases/{usecaseId}/controls": {
+      "get": {
+        "tags": ["Risk"],
+        "summary": "List control statuses",
+        "description": "Documentation proxy for tRPC procedure `risk.controlStatuses`. The canonical runtime endpoint remains `/api/trpc/risk.controlStatuses` using the tRPC HTTP protocol.",
+        "operationId": "risk_controlStatuses",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "usecaseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "risk.controlStatuses"
+      }
+    },
+    "/trpc/risk/usecases/{usecaseId}/controls/{controlId}": {
+      "patch": {
+        "tags": ["Risk"],
+        "summary": "Set control status",
+        "description": "Documentation proxy for tRPC procedure `risk.setControlStatus`. The canonical runtime endpoint remains `/api/trpc/risk.setControlStatus` using the tRPC HTTP protocol.",
+        "operationId": "risk_setControlStatus",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "usecaseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "controlId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "risk.setControlStatus"
+      }
+    },
+    "/trpc/risk/usecases/{usecaseId}/assess": {
+      "post": {
+        "tags": ["Risk"],
+        "summary": "Run use case risk assessment",
+        "description": "Documentation proxy for tRPC procedure `risk.assess`. The canonical runtime endpoint remains `/api/trpc/risk.assess` using the tRPC HTTP protocol.",
+        "operationId": "risk_assess",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "usecaseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "risk.assess"
+      }
+    },
+    "/trpc/risk/usecases/{usecaseId}/latest-assessment": {
+      "get": {
+        "tags": ["Risk"],
+        "summary": "Get latest risk assessment",
+        "description": "Documentation proxy for tRPC procedure `risk.latestAssessment`. The canonical runtime endpoint remains `/api/trpc/risk.latestAssessment` using the tRPC HTTP protocol.",
+        "operationId": "risk_latestAssessment",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "usecaseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "risk.latestAssessment"
+      }
+    },
+    "/trpc/risk/high-risk-count": {
+      "get": {
+        "tags": ["Risk"],
+        "summary": "Count high risk use cases",
+        "description": "Documentation proxy for tRPC procedure `risk.highRiskCount`. The canonical runtime endpoint remains `/api/trpc/risk.highRiskCount` using the tRPC HTTP protocol.",
+        "operationId": "risk_highRiskCount",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "risk.highRiskCount"
+      }
+    },
+    "/trpc/maturity/questions": {
+      "get": {
+        "tags": ["Maturity"],
+        "summary": "Get maturity assessment questions",
+        "description": "Documentation proxy for tRPC procedure `maturity.questions`. The canonical runtime endpoint remains `/api/trpc/maturity.questions` using the tRPC HTTP protocol.",
+        "operationId": "maturity_questions",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "maturity.questions"
+      }
+    },
+    "/trpc/maturity/latest": {
+      "get": {
+        "tags": ["Maturity"],
+        "summary": "Get latest maturity scores",
+        "description": "Documentation proxy for tRPC procedure `maturity.latest`. The canonical runtime endpoint remains `/api/trpc/maturity.latest` using the tRPC HTTP protocol.",
+        "operationId": "maturity_latest",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "maturity.latest"
+      }
+    },
+    "/trpc/maturity/assessments": {
+      "post": {
+        "tags": ["Maturity"],
+        "summary": "Submit maturity assessment",
+        "description": "Documentation proxy for tRPC procedure `maturity.submit`. The canonical runtime endpoint remains `/api/trpc/maturity.submit` using the tRPC HTTP protocol.",
+        "operationId": "maturity_submit",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "maturity.submit"
+      }
+    },
+    "/trpc/maturity/dashboard-summary": {
+      "get": {
+        "tags": ["Maturity"],
+        "summary": "Get dashboard maturity summary",
+        "description": "Documentation proxy for tRPC procedure `maturity.dashboardSummary`. The canonical runtime endpoint remains `/api/trpc/maturity.dashboardSummary` using the tRPC HTTP protocol.",
+        "operationId": "maturity_dashboardSummary",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "maturity.dashboardSummary"
+      }
+    },
+    "/trpc/policies": {
+      "get": {
+        "tags": ["Policy"],
+        "summary": "List policies",
+        "description": "Documentation proxy for tRPC procedure `policy.list`. The canonical runtime endpoint remains `/api/trpc/policy.list` using the tRPC HTTP protocol.",
+        "operationId": "policy_list",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "policy.list"
+      },
+      "post": {
+        "tags": ["Policy"],
+        "summary": "Create policy",
+        "description": "Documentation proxy for tRPC procedure `policy.create`. The canonical runtime endpoint remains `/api/trpc/policy.create` using the tRPC HTTP protocol.",
+        "operationId": "policy_create",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "policy.create"
+      }
+    },
+    "/trpc/policies/{id}": {
+      "get": {
+        "tags": ["Policy"],
+        "summary": "Get policy",
+        "description": "Documentation proxy for tRPC procedure `policy.byId`. The canonical runtime endpoint remains `/api/trpc/policy.byId` using the tRPC HTTP protocol.",
+        "operationId": "policy_byId",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "policy.byId"
+      },
+      "patch": {
+        "tags": ["Policy"],
+        "summary": "Update policy",
+        "description": "Documentation proxy for tRPC procedure `policy.update`. The canonical runtime endpoint remains `/api/trpc/policy.update` using the tRPC HTTP protocol.",
+        "operationId": "policy_update",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "policy.update"
+      },
+      "delete": {
+        "tags": ["Policy"],
+        "summary": "Delete policy",
+        "description": "Documentation proxy for tRPC procedure `policy.remove`. The canonical runtime endpoint remains `/api/trpc/policy.remove` using the tRPC HTTP protocol.",
+        "operationId": "policy_remove",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "policy.remove"
+      }
+    },
+    "/trpc/policies/recent-hits": {
+      "get": {
+        "tags": ["Policy"],
+        "summary": "List recent policy hits",
+        "description": "Documentation proxy for tRPC procedure `policy.recentHits`. The canonical runtime endpoint remains `/api/trpc/policy.recentHits` using the tRPC HTTP protocol.",
+        "operationId": "policy_recentHits",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "policy.recentHits"
+      }
+    },
+    "/trpc/policies/hits-this-week": {
+      "get": {
+        "tags": ["Policy"],
+        "summary": "Count policy hits this week",
+        "description": "Documentation proxy for tRPC procedure `policy.policyHitsThisWeek`. The canonical runtime endpoint remains `/api/trpc/policy.policyHitsThisWeek` using the tRPC HTTP protocol.",
+        "operationId": "policy_policyHitsThisWeek",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "policy.policyHitsThisWeek"
+      }
+    },
+    "/trpc/policy/api-keys": {
+      "get": {
+        "tags": ["Policy API Keys"],
+        "summary": "List API keys",
+        "description": "Documentation proxy for tRPC procedure `policy.apiKeys.list`. The canonical runtime endpoint remains `/api/trpc/policy.apiKeys.list` using the tRPC HTTP protocol.",
+        "operationId": "policy_apiKeys_list",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "policy.apiKeys.list"
+      },
+      "post": {
+        "tags": ["Policy API Keys"],
+        "summary": "Create API key",
+        "description": "Documentation proxy for tRPC procedure `policy.apiKeys.create`. The canonical runtime endpoint remains `/api/trpc/policy.apiKeys.create` using the tRPC HTTP protocol.",
+        "operationId": "policy_apiKeys_create",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "policy.apiKeys.create"
+      }
+    },
+    "/trpc/policy/api-keys/{id}": {
+      "delete": {
+        "tags": ["Policy API Keys"],
+        "summary": "Revoke API key",
+        "description": "Documentation proxy for tRPC procedure `policy.apiKeys.revoke`. The canonical runtime endpoint remains `/api/trpc/policy.apiKeys.revoke` using the tRPC HTTP protocol.",
+        "operationId": "policy_apiKeys_revoke",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "policy.apiKeys.revoke"
+      }
+    },
+    "/trpc/workflows/pending-count": {
+      "get": {
+        "tags": ["Workflow"],
+        "summary": "Count pending workflows",
+        "description": "Documentation proxy for tRPC procedure `workflow.pendingCount`. The canonical runtime endpoint remains `/api/trpc/workflow.pendingCount` using the tRPC HTTP protocol.",
+        "operationId": "workflow_pendingCount",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "workflow.pendingCount"
+      }
+    },
+    "/trpc/workflows": {
+      "post": {
+        "tags": ["Workflow"],
+        "summary": "Start workflow",
+        "description": "Documentation proxy for tRPC procedure `workflow.start`. The canonical runtime endpoint remains `/api/trpc/workflow.start` using the tRPC HTTP protocol.",
+        "operationId": "workflow_start",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "workflow.start"
+      },
+      "get": {
+        "tags": ["Workflow"],
+        "summary": "List workflows",
+        "description": "Documentation proxy for tRPC procedure `workflow.list`. The canonical runtime endpoint remains `/api/trpc/workflow.list` using the tRPC HTTP protocol.",
+        "operationId": "workflow_list",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "workflow.list"
+      }
+    },
+    "/trpc/workflows/{id}": {
+      "get": {
+        "tags": ["Workflow"],
+        "summary": "Get workflow",
+        "description": "Documentation proxy for tRPC procedure `workflow.get`. The canonical runtime endpoint remains `/api/trpc/workflow.get` using the tRPC HTTP protocol.",
+        "operationId": "workflow_get",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "workflow.get"
+      }
+    },
+    "/trpc/workflows/steps/{stepId}/decision": {
+      "post": {
+        "tags": ["Workflow"],
+        "summary": "Decide workflow step",
+        "description": "Documentation proxy for tRPC procedure `workflow.decideStep`. The canonical runtime endpoint remains `/api/trpc/workflow.decideStep` using the tRPC HTTP protocol.",
+        "operationId": "workflow_decideStep",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "stepId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "workflow.decideStep"
+      }
+    },
+    "/trpc/evidence": {
+      "get": {
+        "tags": ["Evidence"],
+        "summary": "List evidence records",
+        "description": "Documentation proxy for tRPC procedure `evidence.list`. The canonical runtime endpoint remains `/api/trpc/evidence.list` using the tRPC HTTP protocol.",
+        "operationId": "evidence_list",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "evidence.list"
+      }
+    },
+    "/trpc/evidence/{id}": {
+      "get": {
+        "tags": ["Evidence"],
+        "summary": "Get evidence record",
+        "description": "Documentation proxy for tRPC procedure `evidence.byId`. The canonical runtime endpoint remains `/api/trpc/evidence.byId` using the tRPC HTTP protocol.",
+        "operationId": "evidence_byId",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "evidence.byId"
+      }
+    },
+    "/trpc/audit": {
+      "get": {
+        "tags": ["Audit"],
+        "summary": "List audit log entries",
+        "description": "Documentation proxy for tRPC procedure `audit.list`. The canonical runtime endpoint remains `/api/trpc/audit.list` using the tRPC HTTP protocol.",
+        "operationId": "audit_list",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "audit.list"
+      }
+    },
+    "/trpc/data-sources": {
+      "get": {
+        "tags": ["Data Lineage"],
+        "summary": "List data sources",
+        "description": "Documentation proxy for tRPC procedure `dataLineage.list`. The canonical runtime endpoint remains `/api/trpc/dataLineage.list` using the tRPC HTTP protocol.",
+        "operationId": "dataLineage_list",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "dataLineage.list"
+      },
+      "post": {
+        "tags": ["Data Lineage"],
+        "summary": "Create data source",
+        "description": "Documentation proxy for tRPC procedure `dataLineage.create`. The canonical runtime endpoint remains `/api/trpc/dataLineage.create` using the tRPC HTTP protocol.",
+        "operationId": "dataLineage_create",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "dataLineage.create"
+      }
+    },
+    "/trpc/data-sources/{id}": {
+      "get": {
+        "tags": ["Data Lineage"],
+        "summary": "Get data source",
+        "description": "Documentation proxy for tRPC procedure `dataLineage.byId`. The canonical runtime endpoint remains `/api/trpc/dataLineage.byId` using the tRPC HTTP protocol.",
+        "operationId": "dataLineage_byId",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "dataLineage.byId"
+      },
+      "patch": {
+        "tags": ["Data Lineage"],
+        "summary": "Update data source",
+        "description": "Documentation proxy for tRPC procedure `dataLineage.update`. The canonical runtime endpoint remains `/api/trpc/dataLineage.update` using the tRPC HTTP protocol.",
+        "operationId": "dataLineage_update",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "dataLineage.update"
+      },
+      "delete": {
+        "tags": ["Data Lineage"],
+        "summary": "Delete data source",
+        "description": "Documentation proxy for tRPC procedure `dataLineage.delete`. The canonical runtime endpoint remains `/api/trpc/dataLineage.delete` using the tRPC HTTP protocol.",
+        "operationId": "dataLineage_delete",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "dataLineage.delete"
+      }
+    },
+    "/trpc/data-sources/{dataSourceId}/usecases": {
+      "post": {
+        "tags": ["Data Lineage"],
+        "summary": "Link use case to data source",
+        "description": "Documentation proxy for tRPC procedure `dataLineage.linkUsecase`. The canonical runtime endpoint remains `/api/trpc/dataLineage.linkUsecase` using the tRPC HTTP protocol.",
+        "operationId": "dataLineage_linkUsecase",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dataSourceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "dataLineage.linkUsecase"
+      }
+    },
+    "/trpc/data-sources/{dataSourceId}/usecases/{usecaseId}": {
+      "delete": {
+        "tags": ["Data Lineage"],
+        "summary": "Unlink use case from data source",
+        "description": "Documentation proxy for tRPC procedure `dataLineage.unlinkUsecase`. The canonical runtime endpoint remains `/api/trpc/dataLineage.unlinkUsecase` using the tRPC HTTP protocol.",
+        "operationId": "dataLineage_unlinkUsecase",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dataSourceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "usecaseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "dataLineage.unlinkUsecase"
+      }
+    },
+    "/trpc/usecases/{usecaseId}/data-sources": {
+      "get": {
+        "tags": ["Data Lineage"],
+        "summary": "List data sources for use case",
+        "description": "Documentation proxy for tRPC procedure `dataLineage.byUsecase`. The canonical runtime endpoint remains `/api/trpc/dataLineage.byUsecase` using the tRPC HTTP protocol.",
+        "operationId": "dataLineage_byUsecase",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "usecaseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "dataLineage.byUsecase"
+      }
+    },
+    "/trpc/webhooks": {
+      "get": {
+        "tags": ["Webhooks"],
+        "summary": "List webhook endpoints",
+        "description": "Documentation proxy for tRPC procedure `integrations.listWebhooks`. The canonical runtime endpoint remains `/api/trpc/integrations.listWebhooks` using the tRPC HTTP protocol.",
+        "operationId": "integrations_listWebhooks",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "integrations.listWebhooks"
+      },
+      "post": {
+        "tags": ["Webhooks"],
+        "summary": "Create webhook endpoint",
+        "description": "Documentation proxy for tRPC procedure `integrations.createWebhook`. The canonical runtime endpoint remains `/api/trpc/integrations.createWebhook` using the tRPC HTTP protocol.",
+        "operationId": "integrations_createWebhook",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "integrations.createWebhook"
+      }
+    },
+    "/trpc/webhooks/{id}": {
+      "get": {
+        "tags": ["Webhooks"],
+        "summary": "Get webhook endpoint",
+        "description": "Documentation proxy for tRPC procedure `integrations.webhookById`. The canonical runtime endpoint remains `/api/trpc/integrations.webhookById` using the tRPC HTTP protocol.",
+        "operationId": "integrations_webhookById",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "integrations.webhookById"
+      },
+      "patch": {
+        "tags": ["Webhooks"],
+        "summary": "Update webhook endpoint",
+        "description": "Documentation proxy for tRPC procedure `integrations.updateWebhook`. The canonical runtime endpoint remains `/api/trpc/integrations.updateWebhook` using the tRPC HTTP protocol.",
+        "operationId": "integrations_updateWebhook",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "integrations.updateWebhook"
+      },
+      "delete": {
+        "tags": ["Webhooks"],
+        "summary": "Delete webhook endpoint",
+        "description": "Documentation proxy for tRPC procedure `integrations.deleteWebhook`. The canonical runtime endpoint remains `/api/trpc/integrations.deleteWebhook` using the tRPC HTTP protocol.",
+        "operationId": "integrations_deleteWebhook",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "integrations.deleteWebhook"
+      }
+    },
+    "/trpc/webhooks/{id}/regenerate-secret": {
+      "post": {
+        "tags": ["Webhooks"],
+        "summary": "Regenerate webhook secret",
+        "description": "Documentation proxy for tRPC procedure `integrations.regenerateSecret`. The canonical runtime endpoint remains `/api/trpc/integrations.regenerateSecret` using the tRPC HTTP protocol.",
+        "operationId": "integrations_regenerateSecret",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "integrations.regenerateSecret"
+      }
+    },
+    "/trpc/redteam/library/builtin": {
+      "get": {
+        "tags": ["Red Team"],
+        "summary": "List built-in red-team prompts",
+        "description": "Documentation proxy for tRPC procedure `redteam.library.builtin`. The canonical runtime endpoint remains `/api/trpc/redteam.library.builtin` using the tRPC HTTP protocol.",
+        "operationId": "redteam_library_builtin",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "redteam.library.builtin"
+      }
+    },
+    "/trpc/redteam/library/builtin/{slug}": {
+      "get": {
+        "tags": ["Red Team"],
+        "summary": "Get built-in red-team prompt",
+        "description": "Documentation proxy for tRPC procedure `redteam.library.builtinDetail`. The canonical runtime endpoint remains `/api/trpc/redteam.library.builtinDetail` using the tRPC HTTP protocol.",
+        "operationId": "redteam_library_builtinDetail",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "redteam.library.builtinDetail"
+      }
+    },
+    "/trpc/redteam/library/custom": {
+      "get": {
+        "tags": ["Red Team"],
+        "summary": "List custom red-team prompts",
+        "description": "Documentation proxy for tRPC procedure `redteam.library.customList`. The canonical runtime endpoint remains `/api/trpc/redteam.library.customList` using the tRPC HTTP protocol.",
+        "operationId": "redteam_library_customList",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "redteam.library.customList"
+      },
+      "post": {
+        "tags": ["Red Team"],
+        "summary": "Upload custom red-team prompts",
+        "description": "Documentation proxy for tRPC procedure `redteam.library.customUpload`. The canonical runtime endpoint remains `/api/trpc/redteam.library.customUpload` using the tRPC HTTP protocol.",
+        "operationId": "redteam_library_customUpload",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "redteam.library.customUpload"
+      }
+    },
+    "/trpc/redteam/library/custom/{setName}": {
+      "delete": {
+        "tags": ["Red Team"],
+        "summary": "Delete custom prompt set",
+        "description": "Documentation proxy for tRPC procedure `redteam.library.customDelete`. The canonical runtime endpoint remains `/api/trpc/redteam.library.customDelete` using the tRPC HTTP protocol.",
+        "operationId": "redteam_library_customDelete",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "setName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "redteam.library.customDelete"
+      }
+    },
+    "/trpc/redteam/runs": {
+      "get": {
+        "tags": ["Red Team"],
+        "summary": "List red-team runs",
+        "description": "Documentation proxy for tRPC procedure `redteam.runs.list`. The canonical runtime endpoint remains `/api/trpc/redteam.runs.list` using the tRPC HTTP protocol.",
+        "operationId": "redteam_runs_list",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "redteam.runs.list"
+      }
+    },
+    "/trpc/redteam/runs/{id}": {
+      "get": {
+        "tags": ["Red Team"],
+        "summary": "Get red-team run",
+        "description": "Documentation proxy for tRPC procedure `redteam.runs.get`. The canonical runtime endpoint remains `/api/trpc/redteam.runs.get` using the tRPC HTTP protocol.",
+        "operationId": "redteam_runs_get",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "redteam.runs.get"
+      }
+    },
+    "/trpc/redteam/model-cards": {
+      "post": {
+        "tags": ["Red Team"],
+        "summary": "Generate model card",
+        "description": "Documentation proxy for tRPC procedure `redteam.modelCard.generate`. The canonical runtime endpoint remains `/api/trpc/redteam.modelCard.generate` using the tRPC HTTP protocol.",
+        "operationId": "redteam_modelCard_generate",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "redteam.modelCard.generate"
+      }
+    },
+    "/trpc/incidents": {
+      "get": {
+        "tags": ["Incidents"],
+        "summary": "List incidents",
+        "description": "Documentation proxy for tRPC procedure `incident.list`. The canonical runtime endpoint remains `/api/trpc/incident.list` using the tRPC HTTP protocol.",
+        "operationId": "incident_list",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "incident.list"
+      },
+      "post": {
+        "tags": ["Incidents"],
+        "summary": "Create incident",
+        "description": "Documentation proxy for tRPC procedure `incident.create`. The canonical runtime endpoint remains `/api/trpc/incident.create` using the tRPC HTTP protocol.",
+        "operationId": "incident_create",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "incident.create"
+      }
+    },
+    "/trpc/incidents/{id}": {
+      "get": {
+        "tags": ["Incidents"],
+        "summary": "Get incident",
+        "description": "Documentation proxy for tRPC procedure `incident.byId`. The canonical runtime endpoint remains `/api/trpc/incident.byId` using the tRPC HTTP protocol.",
+        "operationId": "incident_byId",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "incident.byId"
+      }
+    },
+    "/trpc/incidents/{id}/status": {
+      "patch": {
+        "tags": ["Incidents"],
+        "summary": "Update incident status",
+        "description": "Documentation proxy for tRPC procedure `incident.updateStatus`. The canonical runtime endpoint remains `/api/trpc/incident.updateStatus` using the tRPC HTTP protocol.",
+        "operationId": "incident_updateStatus",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "incident.updateStatus"
+      }
+    },
+    "/trpc/incidents/open-count": {
+      "get": {
+        "tags": ["Incidents"],
+        "summary": "Count open incidents",
+        "description": "Documentation proxy for tRPC procedure `incident.openCount`. The canonical runtime endpoint remains `/api/trpc/incident.openCount` using the tRPC HTTP protocol.",
+        "operationId": "incident_openCount",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "incident.openCount"
+      }
+    },
+    "/trpc/provider-connections": {
+      "get": {
+        "tags": ["Provider Connections"],
+        "summary": "List provider connections",
+        "description": "Documentation proxy for tRPC procedure `providerConnection.list`. The canonical runtime endpoint remains `/api/trpc/providerConnection.list` using the tRPC HTTP protocol.",
+        "operationId": "providerConnection_list",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "providerConnection.list"
+      },
+      "post": {
+        "tags": ["Provider Connections"],
+        "summary": "Create provider connection",
+        "description": "Documentation proxy for tRPC procedure `providerConnection.create`. The canonical runtime endpoint remains `/api/trpc/providerConnection.create` using the tRPC HTTP protocol.",
+        "operationId": "providerConnection_create",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "providerConnection.create"
+      }
+    },
+    "/trpc/provider-connections/{id}": {
+      "get": {
+        "tags": ["Provider Connections"],
+        "summary": "Get provider connection",
+        "description": "Documentation proxy for tRPC procedure `providerConnection.get`. The canonical runtime endpoint remains `/api/trpc/providerConnection.get` using the tRPC HTTP protocol.",
+        "operationId": "providerConnection_get",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "providerConnection.get"
+      },
+      "patch": {
+        "tags": ["Provider Connections"],
+        "summary": "Update provider connection",
+        "description": "Documentation proxy for tRPC procedure `providerConnection.update`. The canonical runtime endpoint remains `/api/trpc/providerConnection.update` using the tRPC HTTP protocol.",
+        "operationId": "providerConnection_update",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "providerConnection.update"
+      },
+      "delete": {
+        "tags": ["Provider Connections"],
+        "summary": "Delete provider connection",
+        "description": "Documentation proxy for tRPC procedure `providerConnection.delete`. The canonical runtime endpoint remains `/api/trpc/providerConnection.delete` using the tRPC HTTP protocol.",
+        "operationId": "providerConnection_delete",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "providerConnection.delete"
+      }
+    },
+    "/trpc/provider-connections/catalog": {
+      "get": {
+        "tags": ["Provider Connections"],
+        "summary": "Get provider catalog",
+        "description": "Documentation proxy for tRPC procedure `providerConnection.catalog`. The canonical runtime endpoint remains `/api/trpc/providerConnection.catalog` using the tRPC HTTP protocol.",
+        "operationId": "providerConnection_catalog",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "providerConnection.catalog"
+      }
+    },
+    "/trpc/provider-connections/{id}/ping": {
+      "post": {
+        "tags": ["Provider Connections"],
+        "summary": "Ping provider connection",
+        "description": "Documentation proxy for tRPC procedure `providerConnection.ping`. The canonical runtime endpoint remains `/api/trpc/providerConnection.ping` using the tRPC HTTP protocol.",
+        "operationId": "providerConnection_ping",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "providerConnection.ping"
+      }
+    },
+    "/trpc/reports/templates": {
+      "get": {
+        "tags": ["Reports"],
+        "summary": "List report templates",
+        "description": "Documentation proxy for tRPC procedure `reports.templates`. The canonical runtime endpoint remains `/api/trpc/reports.templates` using the tRPC HTTP protocol.",
+        "operationId": "reports_templates",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "reports.templates"
+      }
+    },
+    "/trpc/reports": {
+      "get": {
+        "tags": ["Reports"],
+        "summary": "List generated reports",
+        "description": "Documentation proxy for tRPC procedure `reports.list`. The canonical runtime endpoint remains `/api/trpc/reports.list` using the tRPC HTTP protocol.",
+        "operationId": "reports_list",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "reports.list"
+      },
+      "post": {
+        "tags": ["Reports"],
+        "summary": "Generate report",
+        "description": "Documentation proxy for tRPC procedure `reports.generate`. The canonical runtime endpoint remains `/api/trpc/reports.generate` using the tRPC HTTP protocol.",
+        "operationId": "reports_generate",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "reports.generate"
+      }
+    },
+    "/trpc/reports/{id}": {
+      "get": {
+        "tags": ["Reports"],
+        "summary": "Get generated report",
+        "description": "Documentation proxy for tRPC procedure `reports.get`. The canonical runtime endpoint remains `/api/trpc/reports.get` using the tRPC HTTP protocol.",
+        "operationId": "reports_get",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "reports.get"
+      },
+      "delete": {
+        "tags": ["Reports"],
+        "summary": "Delete generated report",
+        "description": "Documentation proxy for tRPC procedure `reports.delete`. The canonical runtime endpoint remains `/api/trpc/reports.delete` using the tRPC HTTP protocol.",
+        "operationId": "reports_delete",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "reports.delete"
+      }
+    },
+    "/trpc/finops/cost/summary": {
+      "get": {
+        "tags": ["FinOps"],
+        "summary": "Get cost summary",
+        "description": "Documentation proxy for tRPC procedure `finops.cost.summary`. The canonical runtime endpoint remains `/api/trpc/finops.cost.summary` using the tRPC HTTP protocol.",
+        "operationId": "finops_cost_summary",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "finops.cost.summary"
+      }
+    },
+    "/trpc/finops/cost/totals": {
+      "get": {
+        "tags": ["FinOps"],
+        "summary": "Get cost totals",
+        "description": "Documentation proxy for tRPC procedure `finops.cost.totals`. The canonical runtime endpoint remains `/api/trpc/finops.cost.totals` using the tRPC HTTP protocol.",
+        "operationId": "finops_cost_totals",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "finops.cost.totals"
+      }
+    },
+    "/trpc/finops/budgets": {
+      "get": {
+        "tags": ["FinOps"],
+        "summary": "List budgets",
+        "description": "Documentation proxy for tRPC procedure `finops.budget.list`. The canonical runtime endpoint remains `/api/trpc/finops.budget.list` using the tRPC HTTP protocol.",
+        "operationId": "finops_budget_list",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "finops.budget.list"
+      },
+      "post": {
+        "tags": ["FinOps"],
+        "summary": "Create budget",
+        "description": "Documentation proxy for tRPC procedure `finops.budget.create`. The canonical runtime endpoint remains `/api/trpc/finops.budget.create` using the tRPC HTTP protocol.",
+        "operationId": "finops_budget_create",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "finops.budget.create"
+      }
+    },
+    "/trpc/finops/budgets/{id}": {
+      "patch": {
+        "tags": ["FinOps"],
+        "summary": "Update budget",
+        "description": "Documentation proxy for tRPC procedure `finops.budget.update`. The canonical runtime endpoint remains `/api/trpc/finops.budget.update` using the tRPC HTTP protocol.",
+        "operationId": "finops_budget_update",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "finops.budget.update"
+      },
+      "delete": {
+        "tags": ["FinOps"],
+        "summary": "Delete budget",
+        "description": "Documentation proxy for tRPC procedure `finops.budget.delete`. The canonical runtime endpoint remains `/api/trpc/finops.budget.delete` using the tRPC HTTP protocol.",
+        "operationId": "finops_budget_delete",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "finops.budget.delete"
+      }
+    },
+    "/trpc/finops/pricing": {
+      "get": {
+        "tags": ["FinOps"],
+        "summary": "Get pricing catalog",
+        "description": "Documentation proxy for tRPC procedure `finops.pricing.catalog`. The canonical runtime endpoint remains `/api/trpc/finops.pricing.catalog` using the tRPC HTTP protocol.",
+        "operationId": "finops_pricing_catalog",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "finops.pricing.catalog"
+      }
+    },
+    "/trpc/finops/pricing/overrides": {
+      "post": {
+        "tags": ["FinOps"],
+        "summary": "Set pricing override",
+        "description": "Documentation proxy for tRPC procedure `finops.pricing.setOverride`. The canonical runtime endpoint remains `/api/trpc/finops.pricing.setOverride` using the tRPC HTTP protocol.",
+        "operationId": "finops_pricing_setOverride",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "finops.pricing.setOverride"
+      },
+      "delete": {
+        "tags": ["FinOps"],
+        "summary": "Clear pricing override",
+        "description": "Documentation proxy for tRPC procedure `finops.pricing.clearOverride`. The canonical runtime endpoint remains `/api/trpc/finops.pricing.clearOverride` using the tRPC HTTP protocol.",
+        "operationId": "finops_pricing_clearOverride",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "finops.pricing.clearOverride"
+      }
+    },
+    "/trpc/risk-copilot/enabled": {
+      "get": {
+        "tags": ["Risk Copilot"],
+        "summary": "Check if risk copilot is enabled",
+        "description": "Documentation proxy for tRPC procedure `riskCopilot.isEnabled`. The canonical runtime endpoint remains `/api/trpc/riskCopilot.isEnabled` using the tRPC HTTP protocol.",
+        "operationId": "riskCopilot_isEnabled",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "riskCopilot.isEnabled"
+      }
+    },
+    "/trpc/risk-copilot/usage-today": {
+      "get": {
+        "tags": ["Risk Copilot"],
+        "summary": "Get today's usage count and limit",
+        "description": "Documentation proxy for tRPC procedure `riskCopilot.usageToday`. The canonical runtime endpoint remains `/api/trpc/riskCopilot.usageToday` using the tRPC HTTP protocol.",
+        "operationId": "riskCopilot_usageToday",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "riskCopilot.usageToday"
+      }
+    },
+    "/trpc/risk-copilot/suggest": {
+      "post": {
+        "tags": ["Risk Copilot"],
+        "summary": "Run AI risk suggestion for a use case",
+        "description": "Documentation proxy for tRPC procedure `riskCopilot.suggest`. The canonical runtime endpoint remains `/api/trpc/riskCopilot.suggest` using the tRPC HTTP protocol.",
+        "operationId": "riskCopilot_suggest",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "riskCopilot.suggest"
+      }
+    },
+    "/trpc/risk-copilot/latest": {
+      "get": {
+        "tags": ["Risk Copilot"],
+        "summary": "Get latest suggestion for a use case",
+        "description": "Documentation proxy for tRPC procedure `riskCopilot.latest`. The canonical runtime endpoint remains `/api/trpc/riskCopilot.latest` using the tRPC HTTP protocol.",
+        "operationId": "riskCopilot_latest",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "usecaseId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "riskCopilot.latest"
+      }
+    },
+    "/trpc/risk-copilot/history": {
+      "get": {
+        "tags": ["Risk Copilot"],
+        "summary": "Get suggestion history for a use case",
+        "description": "Documentation proxy for tRPC procedure `riskCopilot.history`. The canonical runtime endpoint remains `/api/trpc/riskCopilot.history` using the tRPC HTTP protocol.",
+        "operationId": "riskCopilot_history",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "usecaseId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "riskCopilot.history"
+      }
+    },
+    "/trpc/risk-copilot/decide": {
+      "post": {
+        "tags": ["Risk Copilot"],
+        "summary": "Accept or reject a suggestion item",
+        "description": "Documentation proxy for tRPC procedure `riskCopilot.decide`. The canonical runtime endpoint remains `/api/trpc/riskCopilot.decide` using the tRPC HTTP protocol.",
+        "operationId": "riskCopilot_decide",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "riskCopilot.decide"
+      }
+    },
+    "/trpc/risk-copilot/bulk-decide": {
+      "post": {
+        "tags": ["Risk Copilot"],
+        "summary": "Bulk accept or reject suggestion items",
+        "description": "Documentation proxy for tRPC procedure `riskCopilot.bulkDecide`. The canonical runtime endpoint remains `/api/trpc/riskCopilot.bulkDecide` using the tRPC HTTP protocol.",
+        "operationId": "riskCopilot_bulkDecide",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "riskCopilot.bulkDecide"
+      }
+    },
+    "/trpc/risk-copilot/unlink": {
+      "post": {
+        "tags": ["Risk Copilot"],
+        "summary": "Remove a risk link from a use case",
+        "description": "Documentation proxy for tRPC procedure `riskCopilot.unlink`. The canonical runtime endpoint remains `/api/trpc/riskCopilot.unlink` using the tRPC HTTP protocol.",
+        "operationId": "riskCopilot_unlink",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "riskCopilot.unlink"
+      }
+    },
+    "/trpc/risk-copilot/linked-risks": {
+      "get": {
+        "tags": ["Risk Copilot"],
+        "summary": "List risks linked to a use case",
+        "description": "Documentation proxy for tRPC procedure `riskCopilot.linkedRisks`. The canonical runtime endpoint remains `/api/trpc/riskCopilot.linkedRisks` using the tRPC HTTP protocol.",
+        "operationId": "riskCopilot_linkedRisks",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "usecaseId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "riskCopilot.linkedRisks"
+      }
+    },
+    "/trpc/incident-rca/enabled": {
+      "get": {
+        "tags": ["Incident RCA"],
+        "summary": "Check if incident RCA is enabled",
+        "description": "Documentation proxy for tRPC procedure `incidentRca.isEnabled`. The canonical runtime endpoint remains `/api/trpc/incidentRca.isEnabled` using the tRPC HTTP protocol.",
+        "operationId": "incidentRca_isEnabled",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "incidentRca.isEnabled"
+      }
+    },
+    "/trpc/incident-rca/suggest": {
+      "post": {
+        "tags": ["Incident RCA"],
+        "summary": "Run AI root-cause analysis for an incident",
+        "description": "Documentation proxy for tRPC procedure `incidentRca.suggest`. The canonical runtime endpoint remains `/api/trpc/incidentRca.suggest` using the tRPC HTTP protocol.",
+        "operationId": "incidentRca_suggest",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "incidentRca.suggest"
+      }
+    },
+    "/trpc/incident-rca/latest": {
+      "get": {
+        "tags": ["Incident RCA"],
+        "summary": "Get latest RCA draft for an incident",
+        "description": "Documentation proxy for tRPC procedure `incidentRca.latest`. The canonical runtime endpoint remains `/api/trpc/incidentRca.latest` using the tRPC HTTP protocol.",
+        "operationId": "incidentRca_latest",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "incidentId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "incidentRca.latest"
+      }
+    },
+    "/trpc/incident-rca/history": {
+      "get": {
+        "tags": ["Incident RCA"],
+        "summary": "Get RCA draft history for an incident",
+        "description": "Documentation proxy for tRPC procedure `incidentRca.history`. The canonical runtime endpoint remains `/api/trpc/incidentRca.history` using the tRPC HTTP protocol.",
+        "operationId": "incidentRca_history",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "incidentId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "incidentRca.history"
+      }
+    },
+    "/trpc/incident-rca/accept": {
+      "post": {
+        "tags": ["Incident RCA"],
+        "summary": "Accept RCA draft and write to incident root cause",
+        "description": "Documentation proxy for tRPC procedure `incidentRca.accept`. The canonical runtime endpoint remains `/api/trpc/incidentRca.accept` using the tRPC HTTP protocol.",
+        "operationId": "incidentRca_accept",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "incidentRca.accept"
+      }
+    },
+    "/trpc/incident-rca/reject": {
+      "post": {
+        "tags": ["Incident RCA"],
+        "summary": "Reject RCA draft",
+        "description": "Documentation proxy for tRPC procedure `incidentRca.reject`. The canonical runtime endpoint remains `/api/trpc/incidentRca.reject` using the tRPC HTTP protocol.",
+        "operationId": "incidentRca_reject",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-trpc-procedure": "incidentRca.reject"
+      }
+    }
+  }
+}

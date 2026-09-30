@@ -1,0 +1,128 @@
+enum McpTransportType {
+  stdio
+  http
+}
+
+enum McpAuthType {
+  none
+  token
+  oauth
+}
+
+enum McpRiskTier {
+  low
+  medium
+  high
+  critical
+}
+
+enum McpServerStatus {
+  active
+  inactive
+  archived
+}
+
+enum McpSnapshotSource {
+  polled
+  manual
+}
+
+enum McpDriftStatus {
+  none
+  pending_review
+}
+
+model McpServer {
+  id            String           @id @default(cuid())
+  orgId         String
+  name          String           @db.VarChar(200)
+  endpoint      String           @db.VarChar(500)
+  transport     McpTransportType
+  authType      McpAuthType      @default(none)
+  riskTier      McpRiskTier      @default(medium)
+  status        McpServerStatus  @default(active)
+  owner         String?          @db.VarChar(200)
+  notes              String?          @db.Text
+  authTokenEnc       Bytes?
+  driftStatus        McpDriftStatus   @default(none)
+  baselineSnapshotId String?
+  createdById        String
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  org              Organization      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  createdBy        User              @relation("McpServerCreator", fields: [createdById], references: [id], onDelete: Cascade)
+  baselineSnapshot McpToolSnapshot?  @relation("McpServerBaseline", fields: [baselineSnapshotId], references: [id], onDelete: SetNull)
+  snapshots        McpToolSnapshot[]
+  tools            McpTool[]
+  invocations      McpToolInvocation[]
+
+  @@index([orgId, status])
+  @@index([orgId, riskTier])
+  @@map("mcp_server")
+}
+
+model McpTool {
+  id            String      @id @default(cuid())
+  serverId      String
+  orgId         String
+  name          String      @db.VarChar(200)
+  description   String?     @db.Text
+  riskTier      McpRiskTier
+  inputSchema   Json?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  server        McpServer   @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  org           Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  invocations   McpToolInvocation[]
+
+  @@unique([serverId, name])
+  @@index([orgId])
+  @@map("mcp_tool")
+}
+
+model McpToolInvocation {
+  id            String          @id @default(cuid())
+  orgId         String
+  serverId      String
+  toolId        String?
+  toolName      String          @db.VarChar(200)
+  actorId       String
+  outcome       String          @db.VarChar(20)
+  consentGiven  Boolean         @default(true)
+  inputSummary  String?         @db.Text
+  outputSummary String?         @db.Text
+  latencyMs     Int?
+  errorMessage  String?         @db.Text
+  createdAt     DateTime        @default(now())
+
+  org           Organization    @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  server        McpServer       @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  tool          McpTool?        @relation(fields: [toolId], references: [id], onDelete: SetNull)
+  actor         User            @relation("McpInvocationActor", fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, createdAt(sort: Desc)])
+  @@index([orgId, serverId, createdAt])
+  @@index([orgId, actorId, createdAt])
+  @@map("mcp_tool_invocation")
+}
+
+model McpToolSnapshot {
+  id           String            @id @default(cuid())
+  orgId        String
+  serverId     String
+  toolsHash    String            @db.VarChar(64)
+  toolsJson    Json
+  source       McpSnapshotSource
+  capturedById String?
+  createdAt    DateTime          @default(now())
+
+  org        Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  server     McpServer    @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  capturedBy User?        @relation("McpSnapshotCapturer", fields: [capturedById], references: [id], onDelete: SetNull)
+  baselineOf McpServer[]  @relation("McpServerBaseline")
+
+  @@index([orgId, serverId, createdAt(sort: Desc)])
+  @@map("mcp_tool_snapshot")
+}

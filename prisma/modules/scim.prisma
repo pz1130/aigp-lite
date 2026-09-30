@@ -1,0 +1,20 @@
+// SCIM 2.0 provisioning — one connection per org (bearer token auth).
+// IdP-driven push provisioning; complements SSO/OIDC's login-time JIT
+// provisioning (src/lib/auth/sso/jit.ts), which this never touches.
+
+model ScimConnection {
+  id            String   @id @default(cuid())
+  orgId         String   @unique
+  tokenHash     String   @unique
+  tokenPrefix   String
+  roleAttribute String?
+  roleValueMap  Json?
+  enabled       Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  createdBy     String
+
+  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@map("scim_connection")
+}

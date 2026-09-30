@@ -1,0 +1,850 @@
+{
+  "_meta": {
+    "license": "U.S. Government Work (public domain)",
+    "attribution": "Source: NIST AI Risk Management Framework (AI RMF 1.0), NIST AI 100-1, January 2023 (https://www.nist.gov/itl/ai-risk-management-framework)",
+    "note": "Subcategory codes are NIST's. Summaries and descriptions are original AIGP wording, not verbatim NIST text. See nist-ai-rmf-catalog.LICENSE.",
+    "upstreamRef": "AI-RMF-1.0",
+    "importerVersion": 1
+  },
+  "risks": [
+    {
+      "code": "nist-harm-people",
+      "title": "Harm to People",
+      "category": "HARM",
+      "summary": "AI systems can harm individuals (civil liberties, rights, physical or psychological safety, economic opportunity) and groups or communities through discrimination or denial of access, as well as broader societal harms to democratic participation and access to services.",
+      "description": "NIST AI RMF frames AI risk in terms of potential harms. Harm to people spans individual harms (to a person's civil liberties, rights, physical or psychological safety, or economic opportunity), harm to groups and communities (e.g. discrimination against a sub-population), and societal harms (to democratic participation, educational access, or public trust). GOVERN/MAP/MEASURE/MANAGE controls exist largely to anticipate and reduce these harms.",
+      "frameworkRefs": { "finosAigf": ["ri-16", "ri-18"] },
+      "relatedRiskCodes": ["nist-harm-org", "nist-harm-ecosystem"],
+      "sourceUrl": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf"
+    },
+    {
+      "code": "nist-harm-org",
+      "title": "Harm to an Organization",
+      "category": "HARM",
+      "summary": "AI failures can damage an organization's business operations, security (breaches, monetary loss), or reputation.",
+      "description": "Harm to an organization includes harm to business operations and continuity, security breaches or monetary loss, and reputational damage. These risks motivate accountability structures, monitoring, and incident response across the framework.",
+      "frameworkRefs": { "finosAigf": ["ri-20", "ri-22"] },
+      "relatedRiskCodes": ["nist-harm-people", "nist-harm-ecosystem"],
+      "sourceUrl": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf"
+    },
+    {
+      "code": "nist-harm-ecosystem",
+      "title": "Harm to an Ecosystem",
+      "category": "HARM",
+      "summary": "AI can harm interconnected systems — supply chains, the global financial system, interdependent components — and the natural environment.",
+      "description": "Harm to an ecosystem covers harms to interconnected and interdependent elements and resources (e.g. global financial systems or supply chains), to natural resources and the environment, and to the planet. Third-party and sustainability controls address these systemic risks.",
+      "frameworkRefs": { "finosAigf": ["ri-26"], "mitreAtlas": ["atlas-5"] },
+      "relatedRiskCodes": ["nist-harm-people", "nist-harm-org"],
+      "sourceUrl": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf"
+    }
+  ],
+  "mitigations": [
+    {
+      "code": "GOVERN-1.1",
+      "title": "Understand and document legal and regulatory requirements",
+      "category": "GOVERN",
+      "summary": "Identify, manage, and document the legal and regulatory requirements that apply to the organization's AI systems.",
+      "description": "Establish a clear understanding of which laws, regulations, and statutory obligations apply to AI use, and keep that understanding documented and current as the regulatory landscape evolves.",
+      "frameworkRefs": { "finosAigf": ["mi-7", "ri-22"] },
+      "mitigatesRiskCodes": ["nist-harm-org"],
+      "relatedMitigationCodes": ["GOVERN-1.2", "MAP-4.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-1.2",
+      "title": "Integrate trustworthy-AI characteristics into policy",
+      "category": "GOVERN",
+      "summary": "Embed the characteristics of trustworthy AI into organizational policies, processes, procedures, and practices.",
+      "description": "Translate trustworthiness goals (validity, safety, security, accountability, transparency, explainability, privacy, fairness) into concrete organizational policy so they shape day-to-day practice rather than remaining aspirational.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["GOVERN-1.1", "GOVERN-4.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-1.3",
+      "title": "Risk-tiered management processes",
+      "category": "GOVERN",
+      "summary": "Define processes that scale risk-management effort to the organization's stated risk tolerance.",
+      "description": "Put procedures in place that determine how much risk-management activity a given AI system warrants, calibrated to organizational risk tolerance so that high-impact systems receive proportionally more scrutiny.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MAP-1.5", "MANAGE-1.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-1.4",
+      "title": "Transparent risk-management process and controls",
+      "category": "GOVERN",
+      "summary": "Establish the risk-management process and its outcomes through transparent policies, procedures, and controls based on organizational priorities.",
+      "description": "Document the risk-management process and its results via transparent, prioritized controls so decisions are traceable and defensible.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["GOVERN-1.5"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-1.5",
+      "title": "Ongoing monitoring and periodic review",
+      "category": "GOVERN",
+      "summary": "Plan ongoing monitoring and periodic review of the risk-management process, with clearly assigned roles and review frequency.",
+      "description": "Define who reviews the risk-management process, how often, and against what criteria, so the program stays effective as systems and context change.",
+      "frameworkRefs": { "finosAigf": ["mi-4"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MANAGE-4.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-1.6",
+      "title": "Maintain an inventory of AI systems",
+      "category": "GOVERN",
+      "summary": "Inventory AI systems and resource that inventory according to organizational risk priorities.",
+      "description": "Keep a maintained inventory of deployed and in-development AI systems so the organization knows what it operates and can prioritize oversight by risk.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["GOVERN-1.7"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-1.7",
+      "title": "Safe decommissioning of AI systems",
+      "category": "GOVERN",
+      "summary": "Establish processes to retire and phase out AI systems safely without increasing risk or eroding trustworthiness.",
+      "description": "Define decommissioning procedures that handle data, dependencies, and downstream users so that retiring a system does not introduce new risks.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MANAGE-2.4"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-2.1",
+      "title": "Document roles and responsibilities",
+      "category": "GOVERN",
+      "summary": "Document and clearly communicate roles, responsibilities, and lines of communication for mapping, measuring, and managing AI risk.",
+      "description": "Make accountability explicit by defining who owns each part of the AI risk lifecycle and how those roles communicate.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["GOVERN-2.3"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-2.2",
+      "title": "AI risk-management training",
+      "category": "GOVERN",
+      "summary": "Provide personnel and partners with AI risk-management training aligned to their duties and to relevant policies and agreements.",
+      "description": "Equip staff and partners to carry out their AI responsibilities through targeted training tied to organizational policy.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["GOVERN-4.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-2.3",
+      "title": "Executive accountability for AI risk",
+      "category": "GOVERN",
+      "summary": "Have executive leadership take responsibility for decisions about risks of AI development and deployment.",
+      "description": "Place ultimate accountability for AI risk decisions with senior leadership so risk ownership is not diffused.",
+      "frameworkRefs": { "finosAigf": ["ri-20"] },
+      "mitigatesRiskCodes": ["nist-harm-org"],
+      "relatedMitigationCodes": ["GOVERN-2.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-3.1",
+      "title": "Diverse teams inform AI risk decisions",
+      "category": "GOVERN",
+      "summary": "Ensure decisions across the AI lifecycle are informed by a demographically and disciplinarily diverse team.",
+      "description": "Bring diverse demographics, disciplines, experience, and backgrounds into risk decisions to surface blind spots and reduce harmful outcomes.",
+      "frameworkRefs": { "finosAigf": ["ri-16"] },
+      "mitigatesRiskCodes": ["nist-harm-people"],
+      "relatedMitigationCodes": ["MEASURE-2.11"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-3.2",
+      "title": "Define human-AI oversight roles",
+      "category": "GOVERN",
+      "summary": "Define and differentiate roles and responsibilities for human-AI configurations and oversight.",
+      "description": "Establish policies that clarify how humans configure, supervise, and override AI systems so oversight responsibilities are unambiguous.",
+      "frameworkRefs": { "finosAigf": ["mi-11"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MAP-3.5"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-4.1",
+      "title": "Foster a safety-first culture",
+      "category": "GOVERN",
+      "summary": "Adopt policies and practices that foster critical thinking and a safety-first mindset across the AI lifecycle.",
+      "description": "Cultivate an organizational culture that prioritizes safety and minimizing negative impacts in design, development, deployment, and use.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["GOVERN-1.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-4.2",
+      "title": "Document and communicate AI risks and impacts",
+      "category": "GOVERN",
+      "summary": "Require teams to document the risks and potential impacts of AI they build or use, and communicate those impacts more broadly.",
+      "description": "Make risk and impact documentation a routine deliverable so that knowledge is shared rather than siloed.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MAP-5.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-4.3",
+      "title": "Enable testing, incident identification, and information sharing",
+      "category": "GOVERN",
+      "summary": "Put practices in place that enable AI testing, incident identification, and information sharing.",
+      "description": "Support red-teaming, incident detection, and disclosure practices so problems are found and shared rather than hidden.",
+      "frameworkRefs": { "finosAigf": ["mi-5"], "mitreAtlas": ["atlas-1"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MANAGE-4.3"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-5.1",
+      "title": "Collect and integrate external feedback",
+      "category": "GOVERN",
+      "summary": "Establish practices to collect, prioritize, and integrate feedback from those outside the development team about potential impacts.",
+      "description": "Create channels for external stakeholders to raise concerns about individual and societal impacts, and feed that input into governance.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": ["nist-harm-people"],
+      "relatedMitigationCodes": ["GOVERN-5.2", "MEASURE-3.3"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-5.2",
+      "title": "Incorporate adjudicated feedback into design",
+      "category": "GOVERN",
+      "summary": "Enable teams to regularly incorporate adjudicated stakeholder feedback into system design and implementation.",
+      "description": "Close the loop on feedback by routing reviewed input back into design and implementation decisions.",
+      "frameworkRefs": { "finosAigf": ["mi-11"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["GOVERN-5.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-6.1",
+      "title": "Policies for third-party AI risk",
+      "category": "GOVERN",
+      "summary": "Maintain policies addressing AI risks from third-party entities, including IP infringement risk.",
+      "description": "Govern third-party data, models, and software with explicit policies covering security, licensing, and intellectual-property risk.",
+      "frameworkRefs": {
+        "finosAigf": ["mi-20", "ri-26"],
+        "mitreAtlas": ["atlas-5"]
+      },
+      "mitigatesRiskCodes": ["nist-harm-ecosystem"],
+      "relatedMitigationCodes": ["GOVERN-6.2", "MANAGE-3.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "GOVERN-6.2",
+      "title": "Contingency for third-party failures",
+      "category": "GOVERN",
+      "summary": "Have contingency processes for failures or incidents in high-risk third-party data or AI systems.",
+      "description": "Plan for the failure of critical third-party dependencies so a vendor incident does not become an uncontrolled outage or breach.",
+      "frameworkRefs": { "finosAigf": ["ri-7"] },
+      "mitigatesRiskCodes": ["nist-harm-ecosystem"],
+      "relatedMitigationCodes": ["GOVERN-6.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-1.1",
+      "title": "Document intended purpose and deployment context",
+      "category": "MAP",
+      "summary": "Understand and document intended purposes, beneficial uses, applicable laws and norms, and the prospective deployment setting.",
+      "description": "Capture the system's intended purpose and the legal, normative, and operational context in which it will run before building or assessing it.",
+      "frameworkRefs": { "finosAigf": ["ri-18"] },
+      "mitigatesRiskCodes": ["nist-harm-people"],
+      "relatedMitigationCodes": ["MAP-1.4", "MAP-3.3"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-1.2",
+      "title": "Interdisciplinary context-setting",
+      "category": "MAP",
+      "summary": "Ensure interdisciplinary actors with diverse expertise establish context, and document their participation.",
+      "description": "Prioritize interdisciplinary collaboration and diverse domain expertise when establishing system context, and record who contributed.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["GOVERN-3.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-1.3",
+      "title": "Document mission and AI goals",
+      "category": "MAP",
+      "summary": "Understand and document the organization's mission and relevant goals for the AI technology.",
+      "description": "Tie the AI initiative to documented organizational mission and goals so its purpose is explicit and reviewable.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MAP-1.4"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-1.4",
+      "title": "Define business value and use context",
+      "category": "MAP",
+      "summary": "Clearly define (or re-evaluate, for existing systems) the business value and context of business use.",
+      "description": "State the business justification and usage context so trade-offs can be assessed against a clear baseline.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MAP-1.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-1.5",
+      "title": "Determine and document risk tolerance",
+      "category": "MAP",
+      "summary": "Determine and document organizational risk tolerances for the AI system.",
+      "description": "Make risk tolerance explicit so downstream decisions about acceptance, mitigation, and monitoring have a defined threshold.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["GOVERN-1.3", "MANAGE-1.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-1.6",
+      "title": "Elicit socio-technical system requirements",
+      "category": "MAP",
+      "summary": "Elicit system requirements from relevant actors and account for socio-technical implications in design.",
+      "description": "Gather requirements (including non-functional ones like privacy) from stakeholders and reflect socio-technical context in design choices.",
+      "frameworkRefs": { "finosAigf": ["ri-1"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MAP-2.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-2.1",
+      "title": "Define tasks and methods",
+      "category": "MAP",
+      "summary": "Define the specific tasks and the methods (e.g. classifier, generative, recommender) used to implement them.",
+      "description": "Document what the system does and how, so evaluation and oversight can target the actual mechanism in use.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MAP-2.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-2.2",
+      "title": "Document knowledge limits and human oversight of output",
+      "category": "MAP",
+      "summary": "Document the system's knowledge limits and how its output may be used and overseen by humans.",
+      "description": "Make explicit where the system's competence ends and how humans are expected to interpret and supervise its outputs.",
+      "frameworkRefs": { "finosAigf": ["ri-4"] },
+      "mitigatesRiskCodes": ["nist-harm-people"],
+      "relatedMitigationCodes": ["MAP-3.5"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-2.3",
+      "title": "Document TEVV and scientific-integrity considerations",
+      "category": "MAP",
+      "summary": "Identify and document scientific-integrity and TEVV considerations, including experimental design and data suitability.",
+      "description": "Record test, evaluation, verification, and validation considerations — data representativeness, construct validity, experimental design — early in mapping.",
+      "frameworkRefs": { "finosAigf": ["ri-19"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MEASURE-2.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-3.1",
+      "title": "Examine potential benefits",
+      "category": "MAP",
+      "summary": "Examine and document the potential benefits of intended AI functionality and performance.",
+      "description": "Document expected benefits so they can be weighed against costs and risks with a clear record.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MAP-3.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-3.2",
+      "title": "Examine potential costs of AI errors",
+      "category": "MAP",
+      "summary": "Examine and document potential costs (including non-monetary) of AI errors and trustworthiness gaps relative to risk tolerance.",
+      "description": "Account for the downside — including non-monetary harms — of errors and trustworthiness failures, connected to organizational risk tolerance.",
+      "frameworkRefs": { "finosAigf": ["ri-4"] },
+      "mitigatesRiskCodes": ["nist-harm-org"],
+      "relatedMitigationCodes": ["MAP-3.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-3.3",
+      "title": "Specify targeted application scope",
+      "category": "MAP",
+      "summary": "Specify and document the targeted application scope based on capability, context, and system categorization.",
+      "description": "Bound where and how the system should be used so that out-of-scope deployment is recognizable as a risk.",
+      "frameworkRefs": { "finosAigf": ["ri-18"] },
+      "mitigatesRiskCodes": ["nist-harm-people"],
+      "relatedMitigationCodes": ["MAP-1.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-3.4",
+      "title": "Define operator proficiency processes",
+      "category": "MAP",
+      "summary": "Define, assess, and document processes for operator and practitioner proficiency with the system.",
+      "description": "Ensure those operating the system have, and can demonstrate, the proficiency needed to use it safely, including relevant standards and certifications.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["GOVERN-2.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-3.5",
+      "title": "Define human-oversight processes",
+      "category": "MAP",
+      "summary": "Define, assess, and document human-oversight processes consistent with GOVERN policies.",
+      "description": "Specify how humans oversee and intervene in the system, aligned to the organization's governance policies.",
+      "frameworkRefs": { "finosAigf": ["mi-11"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["GOVERN-3.2", "MAP-2.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-4.1",
+      "title": "Map technology and legal risks of components",
+      "category": "MAP",
+      "summary": "Follow and document approaches for mapping technology and legal risks of components, including third-party data and software and IP-infringement risk.",
+      "description": "Systematically map component-level risk, including third-party and intellectual-property exposure, and keep the mapping documented.",
+      "frameworkRefs": { "finosAigf": ["ri-23", "mi-7"] },
+      "mitigatesRiskCodes": ["nist-harm-ecosystem"],
+      "relatedMitigationCodes": ["MAP-4.2", "GOVERN-6.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-4.2",
+      "title": "Identify internal risk controls for components",
+      "category": "MAP",
+      "summary": "Identify and document internal risk controls for components, including third-party AI technologies.",
+      "description": "Record which internal controls cover each component so coverage gaps are visible.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MAP-4.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-5.1",
+      "title": "Identify likelihood and magnitude of impacts",
+      "category": "MAP",
+      "summary": "Identify and document the likelihood and magnitude of each beneficial and harmful impact, drawing on past uses, incident reports, and external feedback.",
+      "description": "Assess each potential impact's likelihood and magnitude using evidence such as prior incidents and stakeholder feedback.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": ["nist-harm-people"],
+      "relatedMitigationCodes": ["MAP-5.2", "MEASURE-3.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MAP-5.2",
+      "title": "Sustain engagement on impacts",
+      "category": "MAP",
+      "summary": "Put practices and personnel in place to engage relevant actors and integrate feedback on positive, negative, and unanticipated impacts.",
+      "description": "Maintain ongoing stakeholder engagement so impact understanding stays current across the lifecycle.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["GOVERN-5.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-1.1",
+      "title": "Select measurement approaches by risk priority",
+      "category": "MEASURE",
+      "summary": "Select measurement approaches and metrics starting with the most significant risks, and document what cannot be measured.",
+      "description": "Prioritize measurement of the highest risks and explicitly record any trustworthiness characteristics that will not or cannot be measured.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MEASURE-1.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-1.2",
+      "title": "Reassess metrics and control effectiveness",
+      "category": "MEASURE",
+      "summary": "Regularly assess and update the appropriateness of metrics and the effectiveness of existing controls.",
+      "description": "Treat metrics and controls as living artifacts, revisiting them as errors and community impacts come to light.",
+      "frameworkRefs": { "finosAigf": ["mi-4"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MEASURE-1.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-1.3",
+      "title": "Independent assessment involvement",
+      "category": "MEASURE",
+      "summary": "Involve independent assessors and non-front-line internal experts, and consult domain experts and affected communities.",
+      "description": "Bring in assessors who did not build the system, plus external domain experts and affected communities, for credible evaluation.",
+      "frameworkRefs": { "finosAigf": ["mi-15"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["GOVERN-3.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-2.1",
+      "title": "Document test sets, metrics, and tools",
+      "category": "MEASURE",
+      "summary": "Document the test sets, metrics, and tooling used during TEVV.",
+      "description": "Record the evaluation apparatus so results are reproducible and auditable.",
+      "frameworkRefs": { "finosAigf": ["mi-5"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MAP-2.3"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-2.2",
+      "title": "Human-subject evaluation requirements",
+      "category": "MEASURE",
+      "summary": "Ensure evaluations involving human subjects meet applicable protections and are representative of the relevant population.",
+      "description": "Apply human-subject protections and representativeness requirements to any evaluation involving people.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": ["nist-harm-people"],
+      "relatedMitigationCodes": ["MEASURE-2.11"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-2.3",
+      "title": "Measure performance under deployment-like conditions",
+      "category": "MEASURE",
+      "summary": "Measure and document performance or assurance criteria under conditions similar to the deployment setting.",
+      "description": "Demonstrate performance against criteria in conditions that resemble real deployment, and document the results.",
+      "frameworkRefs": { "finosAigf": ["ri-6"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MEASURE-2.5"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-2.4",
+      "title": "Monitor functionality in production",
+      "category": "MEASURE",
+      "summary": "Monitor the functionality and behavior of the system and its components in production.",
+      "description": "Continuously monitor deployed behavior against the characteristics identified during mapping.",
+      "frameworkRefs": { "finosAigf": ["mi-4", "ri-19"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MANAGE-4.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-2.5",
+      "title": "Demonstrate validity and reliability",
+      "category": "MEASURE",
+      "summary": "Demonstrate the system is valid and reliable, and document limits on generalizability.",
+      "description": "Show the system performs validly and reliably, and document where generalization beyond development conditions is not assured.",
+      "frameworkRefs": { "finosAigf": ["ri-4"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MEASURE-2.3"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-2.6",
+      "title": "Evaluate safety and fail-safe behavior",
+      "category": "MEASURE",
+      "summary": "Regularly evaluate safety risks and demonstrate the system is safe, fails safely, and keeps residual risk within tolerance.",
+      "description": "Assess safety against mapped risks, ensure the system can fail safely (especially beyond its knowledge limits), and track reliability and response-time metrics.",
+      "frameworkRefs": { "finosAigf": ["ri-14"] },
+      "mitigatesRiskCodes": ["nist-harm-people"],
+      "relatedMitigationCodes": ["MANAGE-2.4"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-2.7",
+      "title": "Evaluate security and resilience",
+      "category": "MEASURE",
+      "summary": "Evaluate and document AI system security and resilience.",
+      "description": "Assess the system's resistance to attack and its ability to recover, against the security risks identified during mapping.",
+      "frameworkRefs": {
+        "finosAigf": ["ri-8", "ri-10"],
+        "mitreAtlas": ["atlas-1", "atlas-6"]
+      },
+      "mitigatesRiskCodes": ["nist-harm-org"],
+      "relatedMitigationCodes": ["MANAGE-2.3"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-2.8",
+      "title": "Examine transparency and accountability risks",
+      "category": "MEASURE",
+      "summary": "Examine and document risks related to transparency and accountability.",
+      "description": "Evaluate whether the system's transparency and accountability properties meet expectations set during mapping.",
+      "frameworkRefs": { "finosAigf": ["mi-13"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MEASURE-2.9"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-2.9",
+      "title": "Explain and validate the model",
+      "category": "MEASURE",
+      "summary": "Explain, validate, and document the model, and interpret output within context to inform responsible use.",
+      "description": "Produce model explanations and validation suited to the context so output can be interpreted and governed responsibly.",
+      "frameworkRefs": { "finosAigf": ["ri-17", "mi-21"] },
+      "mitigatesRiskCodes": ["nist-harm-people"],
+      "relatedMitigationCodes": ["MEASURE-2.8"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-2.10",
+      "title": "Examine privacy risk",
+      "category": "MEASURE",
+      "summary": "Examine and document the privacy risk of the AI system.",
+      "description": "Evaluate privacy exposure against the risks identified during mapping and document the findings.",
+      "frameworkRefs": {
+        "finosAigf": ["ri-1", "ri-2", "mi-1"],
+        "mitreAtlas": ["atlas-3"]
+      },
+      "mitigatesRiskCodes": ["nist-harm-people"],
+      "relatedMitigationCodes": ["MEASURE-2.7"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-2.11",
+      "title": "Evaluate fairness and bias",
+      "category": "MEASURE",
+      "summary": "Evaluate fairness and bias and document the results.",
+      "description": "Measure fairness and bias against the harms identified during mapping and record outcomes.",
+      "frameworkRefs": { "finosAigf": ["ri-16"] },
+      "mitigatesRiskCodes": ["nist-harm-people"],
+      "relatedMitigationCodes": ["GOVERN-3.1", "MEASURE-2.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-2.12",
+      "title": "Assess environmental impact",
+      "category": "MEASURE",
+      "summary": "Assess and document the environmental impact and sustainability of model training and management.",
+      "description": "Evaluate the energy and environmental footprint of training and operating the system.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": ["nist-harm-ecosystem"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-2.13",
+      "title": "Evaluate effectiveness of TEVV",
+      "category": "MEASURE",
+      "summary": "Evaluate and document the effectiveness of the TEVV metrics and processes themselves.",
+      "description": "Periodically check that the measurement program is actually capturing the risks it is meant to.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MEASURE-1.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-3.1",
+      "title": "Track existing and emergent risks",
+      "category": "MEASURE",
+      "summary": "Maintain approaches, personnel, and documentation to identify and track existing, unanticipated, and emergent risks.",
+      "description": "Continuously track known and newly emerging risks based on real deployment performance.",
+      "frameworkRefs": { "finosAigf": ["ri-19"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MAP-5.1", "MEASURE-3.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-3.2",
+      "title": "Track hard-to-measure risks",
+      "category": "MEASURE",
+      "summary": "Consider tracking approaches for risks that are difficult to assess with current techniques or lack available metrics.",
+      "description": "Acknowledge and monitor risks even where good measurement methods do not yet exist.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MEASURE-3.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-3.3",
+      "title": "User feedback and appeal mechanisms",
+      "category": "MEASURE",
+      "summary": "Establish feedback and appeal processes for end users and impacted communities, integrated into evaluation metrics.",
+      "description": "Give users and affected communities a way to report problems and appeal outcomes, and feed that signal into evaluation.",
+      "frameworkRefs": { "finosAigf": ["mi-11"] },
+      "mitigatesRiskCodes": ["nist-harm-people"],
+      "relatedMitigationCodes": ["GOVERN-5.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-4.1",
+      "title": "Connect measurement to deployment context",
+      "category": "MEASURE",
+      "summary": "Connect measurement approaches to deployment context, informed by domain experts and end users, and document them.",
+      "description": "Ensure measurement reflects the actual deployment context through expert and user consultation.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MEASURE-4.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-4.2",
+      "title": "Validate trustworthiness with actor input",
+      "category": "MEASURE",
+      "summary": "Inform trustworthiness results with input from domain experts and relevant actors to confirm consistent intended performance, and document them.",
+      "description": "Use expert and stakeholder input across the lifecycle to validate that measured trustworthiness matches intended behavior.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MEASURE-4.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MEASURE-4.3",
+      "title": "Identify measurable performance changes",
+      "category": "MEASURE",
+      "summary": "Identify and document measurable performance improvements or declines based on actor consultation and field data.",
+      "description": "Track measurable changes in context-relevant risk and trustworthiness, drawing on field data and affected communities.",
+      "frameworkRefs": { "finosAigf": ["ri-19"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MANAGE-4.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MANAGE-1.1",
+      "title": "Decide whether to proceed",
+      "category": "MANAGE",
+      "summary": "Determine whether the system achieves its intended purposes and whether development or deployment should proceed.",
+      "description": "Make an explicit go/no-go decision based on whether the system meets its objectives.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MANAGE-1.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MANAGE-1.2",
+      "title": "Prioritize risk treatment",
+      "category": "MANAGE",
+      "summary": "Prioritize treatment of documented risks based on impact, likelihood, and available resources.",
+      "description": "Rank risks for treatment so finite resources address the most consequential exposures first.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MAP-1.5", "MANAGE-1.3"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MANAGE-1.3",
+      "title": "Develop high-priority risk responses",
+      "category": "MANAGE",
+      "summary": "Develop, plan, and document responses to high-priority risks (mitigate, transfer, avoid, or accept).",
+      "description": "Plan concrete responses for the highest-priority risks and record the chosen response option for each.",
+      "frameworkRefs": { "finosAigf": ["mi-3"] },
+      "mitigatesRiskCodes": ["nist-harm-people", "nist-harm-org"],
+      "relatedMitigationCodes": ["MANAGE-1.4"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MANAGE-1.4",
+      "title": "Document negative residual risk",
+      "category": "MANAGE",
+      "summary": "Document negative residual risks to downstream acquirers and end users.",
+      "description": "Record the unmitigated risk that remains so downstream parties can make informed decisions.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MANAGE-1.3"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MANAGE-2.1",
+      "title": "Account for resources and non-AI alternatives",
+      "category": "MANAGE",
+      "summary": "Account for the resources to manage risk and consider viable non-AI alternatives to reduce potential impacts.",
+      "description": "Weigh the cost of managing AI risk against non-AI alternatives that might reduce impact magnitude or likelihood.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MANAGE-2.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MANAGE-2.2",
+      "title": "Sustain value of deployed systems",
+      "category": "MANAGE",
+      "summary": "Apply mechanisms to sustain the value of deployed AI systems.",
+      "description": "Maintain deployed systems so they continue to deliver intended value over time.",
+      "frameworkRefs": { "finosAigf": ["mi-10"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MANAGE-4.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MANAGE-2.3",
+      "title": "Respond to and recover from unknown risks",
+      "category": "MANAGE",
+      "summary": "Follow procedures to respond to and recover from previously unknown risks when identified.",
+      "description": "Have a defined response-and-recovery path for risks that were not anticipated.",
+      "frameworkRefs": { "finosAigf": ["ri-8"] },
+      "mitigatesRiskCodes": ["nist-harm-org"],
+      "relatedMitigationCodes": ["MANAGE-4.3"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MANAGE-2.4",
+      "title": "Supersede, disengage, or deactivate AI systems",
+      "category": "MANAGE",
+      "summary": "Apply mechanisms and assign responsibilities to supersede, disengage, or deactivate systems behaving inconsistently with intended use.",
+      "description": "Ensure a clearly owned kill-switch path exists to take down or override a misbehaving system.",
+      "frameworkRefs": { "finosAigf": ["ri-24", "mi-18"] },
+      "mitigatesRiskCodes": ["nist-harm-people"],
+      "relatedMitigationCodes": ["GOVERN-1.7", "MEASURE-2.6"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MANAGE-3.1",
+      "title": "Monitor third-party risks and benefits",
+      "category": "MANAGE",
+      "summary": "Regularly monitor AI risks and benefits from third-party resources and apply documented risk controls.",
+      "description": "Keep third-party dependencies under ongoing monitoring with documented controls.",
+      "frameworkRefs": {
+        "finosAigf": ["mi-20", "ri-26"],
+        "mitreAtlas": ["atlas-5"]
+      },
+      "mitigatesRiskCodes": ["nist-harm-ecosystem"],
+      "relatedMitigationCodes": ["GOVERN-6.1", "MANAGE-3.2"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MANAGE-3.2",
+      "title": "Monitor pre-trained models",
+      "category": "MANAGE",
+      "summary": "Monitor pre-trained models used in development as part of regular monitoring and maintenance.",
+      "description": "Include third-party pre-trained models in routine monitoring so upstream changes or weaknesses are caught.",
+      "frameworkRefs": {
+        "finosAigf": ["ri-5", "mi-10"],
+        "mitreAtlas": ["atlas-5"]
+      },
+      "mitigatesRiskCodes": ["nist-harm-ecosystem"],
+      "relatedMitigationCodes": ["MANAGE-3.1"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MANAGE-4.1",
+      "title": "Implement post-deployment monitoring plans",
+      "category": "MANAGE",
+      "summary": "Implement post-deployment monitoring plans covering user input, appeal/override, decommissioning, incident response, recovery, and change management.",
+      "description": "Operate a comprehensive monitoring plan after deployment that captures feedback and supports override, recovery, and change control.",
+      "frameworkRefs": { "finosAigf": ["mi-4", "mi-11"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MEASURE-2.4", "MANAGE-4.3"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MANAGE-4.2",
+      "title": "Integrate continual improvement",
+      "category": "MANAGE",
+      "summary": "Integrate measurable continual-improvement activities into system updates, with regular stakeholder engagement.",
+      "description": "Feed improvement activities and stakeholder engagement into the update cycle so the system gets safer over time.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["MANAGE-2.2", "MEASURE-4.3"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    },
+    {
+      "code": "MANAGE-4.3",
+      "title": "Communicate and recover from incidents",
+      "category": "MANAGE",
+      "summary": "Communicate incidents and errors to relevant actors and follow documented processes for tracking, response, and recovery.",
+      "description": "Run a documented incident process that informs affected actors and tracks response and recovery to closure.",
+      "frameworkRefs": { "finosAigf": ["mi-4"] },
+      "mitigatesRiskCodes": ["nist-harm-people", "nist-harm-org"],
+      "relatedMitigationCodes": ["GOVERN-4.3", "MANAGE-2.3"],
+      "sourceUrl": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+    }
+  ]
+}

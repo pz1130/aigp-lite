@@ -1,0 +1,427 @@
+{
+  "_meta": {
+    "license": "© European Union — Regulation (EU) 2024/1689. Reusable under Commission Decision 2011/833/EU with attribution.",
+    "attribution": "Source: Regulation (EU) 2024/1689 (EU Artificial Intelligence Act), OJ L, 12.7.2024 (http://data.europa.eu/eli/reg/2024/1689/oj)",
+    "note": "Article / Annex references are the Regulation's own. Summaries and descriptions are original AIGP wording, not verbatim AI Act text. See eu-ai-act-catalog.LICENSE.",
+    "upstreamRef": "Reg-2024-1689",
+    "importerVersion": 1
+  },
+  "risks": [
+    {
+      "code": "eu-prohibited",
+      "title": "Prohibited AI Practices",
+      "category": "PROHIBITED",
+      "summary": "AI uses banned outright in the Union because they pose an unacceptable risk to fundamental rights and safety.",
+      "description": "Article 5 prohibits a closed list of AI practices: harmful subliminal, manipulative or deceptive techniques; exploitation of vulnerabilities due to age, disability or socio-economic situation; social scoring leading to detrimental treatment; risk assessment predicting criminal offending based solely on profiling; untargeted scraping of facial images to build facial-recognition databases; emotion inference in the workplace and education (save medical/safety); biometric categorisation inferring sensitive attributes; and real-time remote biometric identification in publicly accessible spaces for law-enforcement purposes, subject to narrow, authorised exceptions. Systems falling here cannot lawfully be placed on the market or used.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": [
+        "eu-highrisk-biometrics",
+        "eu-highrisk-law-enforcement"
+      ],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "eu-highrisk-safety-component",
+      "title": "High-Risk: Safety Component of a Regulated Product",
+      "category": "HIGH_RISK",
+      "summary": "AI used as a safety component of, or itself a product covered by, Union harmonisation legislation that requires third-party conformity assessment (Art. 6(1), Annex I).",
+      "description": "Under Article 6(1), an AI system is high-risk when it is intended to be used as a safety component of a product — or is itself a product — covered by the Union harmonisation legislation listed in Annex I (e.g. machinery, medical devices, in-vitro diagnostics, toys, lifts, radio equipment, motor vehicles, aviation) and that product must undergo a third-party conformity assessment. These systems must meet the Chapter III high-risk requirements in addition to the sectoral product rules.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["eu-highrisk-critical-infrastructure"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "eu-highrisk-biometrics",
+      "title": "High-Risk: Biometrics (Annex III.1)",
+      "category": "HIGH_RISK",
+      "summary": "Permitted remote biometric identification, biometric categorisation by sensitive attributes, and emotion-recognition systems.",
+      "description": "Annex III point 1 classifies as high-risk (where not prohibited under Art. 5): remote biometric identification systems; biometric categorisation systems that classify people according to sensitive or protected attributes; and emotion-recognition systems. Verification systems whose sole purpose is to confirm a specific person is who they claim to be are excluded.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["eu-prohibited", "eu-transparency-risk"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "eu-highrisk-critical-infrastructure",
+      "title": "High-Risk: Critical Infrastructure (Annex III.2)",
+      "category": "HIGH_RISK",
+      "summary": "AI safety components in the management and operation of critical infrastructure.",
+      "description": "Annex III point 2 covers AI systems intended to be used as safety components in the management and operation of critical digital infrastructure, road traffic, and the supply of water, gas, heating and electricity. Failure of such systems can endanger life, health and the continuity of essential services.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["eu-highrisk-safety-component"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "eu-highrisk-education",
+      "title": "High-Risk: Education and Vocational Training (Annex III.3)",
+      "category": "HIGH_RISK",
+      "summary": "AI determining access, evaluating outcomes, steering learning level, or monitoring conduct during exams.",
+      "description": "Annex III point 3 covers AI used to determine access or admission to education and vocational training; to evaluate learning outcomes (including those that steer the learning process); to assess the appropriate level of education a person will receive; and to monitor and detect prohibited behaviour of students during tests. Such systems can decisively shape a person's educational and professional trajectory.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["eu-highrisk-employment"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "eu-highrisk-employment",
+      "title": "High-Risk: Employment and Worker Management (Annex III.4)",
+      "category": "HIGH_RISK",
+      "summary": "AI for recruitment, work-relationship decisions, task allocation and performance monitoring.",
+      "description": "Annex III point 4 covers AI used for recruitment or selection (placing ads, screening applications, evaluating candidates); and AI used to make decisions affecting terms of work relationships, promotion or termination, to allocate tasks based on individual behaviour or traits, and to monitor and evaluate performance and behaviour. These systems materially affect livelihoods and can entrench bias.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": [
+        "eu-highrisk-education",
+        "eu-highrisk-essential-services"
+      ],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "eu-highrisk-essential-services",
+      "title": "High-Risk: Access to Essential Services (Annex III.5)",
+      "category": "HIGH_RISK",
+      "summary": "AI for benefit eligibility, credit scoring, insurance risk/pricing, and emergency-call triage.",
+      "description": "Annex III point 5 covers AI used to evaluate eligibility for essential public assistance benefits and services; to evaluate creditworthiness or establish credit scores (excluding fraud detection); to assess risk and pricing for life and health insurance; and to evaluate and dispatch or prioritise emergency-call responses. Errors can deny people access to housing, credit, healthcare and emergency aid.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["eu-highrisk-employment"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "eu-highrisk-law-enforcement",
+      "title": "High-Risk: Law Enforcement (Annex III.6)",
+      "category": "HIGH_RISK",
+      "summary": "AI used by or for law enforcement to assess risk, reliability of evidence, profiling and offending risk.",
+      "description": "Annex III point 6 covers AI used by or on behalf of law-enforcement authorities to assess the risk of a person becoming a victim, as polygraphs and similar tools, to evaluate the reliability of evidence, to assess the risk of offending or re-offending (other than where based solely on profiling, which is prohibited), and for profiling in the course of detection, investigation and prosecution. Such use carries acute fundamental-rights risk.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["eu-prohibited", "eu-highrisk-migration"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "eu-highrisk-migration",
+      "title": "High-Risk: Migration, Asylum and Border Control (Annex III.7)",
+      "category": "HIGH_RISK",
+      "summary": "AI used in migration, asylum and border management for risk assessment, application examination and person detection.",
+      "description": "Annex III point 7 covers AI used by or for competent authorities in migration, asylum and border control: as polygraphs and similar tools; to assess security, irregular-migration or health risks posed by people entering or present in a territory; to assist in examining applications for asylum, visas and residence permits and related complaints; and to detect, recognise or identify people (other than verification of travel documents).",
+      "frameworkRefs": {},
+      "relatedRiskCodes": [
+        "eu-highrisk-law-enforcement",
+        "eu-highrisk-biometrics"
+      ],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "eu-highrisk-justice-democracy",
+      "title": "High-Risk: Administration of Justice and Democratic Processes (Annex III.8)",
+      "category": "HIGH_RISK",
+      "summary": "AI assisting judicial decision-making, or used to influence elections, referenda and voting behaviour.",
+      "description": "Annex III point 8 covers AI intended to assist a judicial authority (or alternative dispute resolution) in researching and interpreting facts and the law and applying it to a concrete set of facts, and AI intended to influence the outcome of an election or referendum or the voting behaviour of natural persons (excluding tools whose output people are not directly exposed to, such as campaign logistics). These bear on the rule of law and democratic integrity.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["eu-highrisk-law-enforcement"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "eu-transparency-risk",
+      "title": "Transparency-Risk AI Systems",
+      "category": "TRANSPARENCY",
+      "summary": "Systems that interact with people or generate synthetic content and therefore carry a risk of impersonation or deception.",
+      "description": "Article 50 targets AI systems that are not necessarily high-risk but create a transparency risk: systems intended to interact directly with natural persons (e.g. chatbots), generative AI producing synthetic audio, image, video or text, deepfakes, and emotion-recognition or biometric-categorisation systems. The risk is that people are deceived about whether they are dealing with a machine or with authentic content; the Act answers it with disclosure and labelling duties rather than a ban.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["eu-highrisk-biometrics", "eu-gpai-systemic"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "eu-gpai-systemic",
+      "title": "General-Purpose AI Models and Systemic Risk",
+      "category": "GPAI",
+      "summary": "General-purpose AI models, with stricter duties where a model poses systemic risk at the Union level.",
+      "description": "Articles 51–55 regulate general-purpose AI (GPAI) models — models trained on broad data that display significant generality and can be integrated into many downstream systems. All GPAI providers face baseline documentation, copyright-policy and training-data-summary duties (Art. 53). A model is presumed to pose systemic risk where it has high-impact capabilities (e.g. cumulative training compute above the 10^25 FLOP threshold) or is so designated, triggering additional model evaluation, adversarial testing, systemic-risk assessment, incident tracking and cybersecurity obligations (Art. 55).",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["eu-transparency-risk"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    }
+  ],
+  "mitigations": [
+    {
+      "code": "ART-9",
+      "title": "Risk management system",
+      "category": "PROVIDER_OBLIGATION",
+      "summary": "Establish, implement, document and maintain a continuous, iterative risk-management process across the high-risk system's lifecycle.",
+      "description": "Article 9 requires providers of high-risk AI systems to run a risk-management system as a continuous iterative process throughout the lifecycle: identify and analyse known and reasonably foreseeable risks to health, safety and fundamental rights; estimate risks from intended use and foreseeable misuse; adopt targeted risk-management measures; and test the system to ensure residual risks are judged acceptable. It must give particular attention to impacts on persons under 18 and other vulnerable groups.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [
+        "eu-highrisk-safety-component",
+        "eu-highrisk-biometrics",
+        "eu-highrisk-critical-infrastructure",
+        "eu-highrisk-education",
+        "eu-highrisk-employment",
+        "eu-highrisk-essential-services",
+        "eu-highrisk-law-enforcement",
+        "eu-highrisk-migration",
+        "eu-highrisk-justice-democracy"
+      ],
+      "relatedMitigationCodes": ["ART-15", "ART-17", "ART-72"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-10",
+      "title": "Data and data governance",
+      "category": "PROVIDER_OBLIGATION",
+      "summary": "Train, validate and test high-risk systems on data sets that meet quality, relevance, representativeness and bias-mitigation criteria.",
+      "description": "Article 10 requires that training, validation and testing data sets be subject to appropriate data-governance practices: relevant design choices, data collection and origin, preparation, assumptions, assessment of availability/quantity/suitability, examination for possible biases that could harm health, safety or fundamental rights, and measures to detect, prevent and mitigate those biases. Data sets must be relevant, sufficiently representative, and to the best extent possible free of errors and complete for the intended purpose.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [
+        "eu-highrisk-safety-component",
+        "eu-highrisk-biometrics",
+        "eu-highrisk-critical-infrastructure",
+        "eu-highrisk-education",
+        "eu-highrisk-employment",
+        "eu-highrisk-essential-services",
+        "eu-highrisk-law-enforcement",
+        "eu-highrisk-migration",
+        "eu-highrisk-justice-democracy"
+      ],
+      "relatedMitigationCodes": ["ART-11", "ART-15"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-11",
+      "title": "Technical documentation",
+      "category": "PROVIDER_OBLIGATION",
+      "summary": "Draw up and keep technical documentation demonstrating the high-risk system's conformity before it is placed on the market.",
+      "description": "Article 11 requires providers to prepare technical documentation, before the system is placed on the market or put into service and to keep it up to date, containing at least the elements in Annex IV: a general description of the system, its development, monitoring, functioning and control, the risk-management measures, and the information needed for authorities to assess conformity. The documentation must demonstrate that the system meets the Chapter III requirements.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [
+        "eu-highrisk-safety-component",
+        "eu-highrisk-biometrics",
+        "eu-highrisk-critical-infrastructure",
+        "eu-highrisk-education",
+        "eu-highrisk-employment",
+        "eu-highrisk-essential-services",
+        "eu-highrisk-law-enforcement",
+        "eu-highrisk-migration",
+        "eu-highrisk-justice-democracy"
+      ],
+      "relatedMitigationCodes": ["ART-12", "ART-17"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-12",
+      "title": "Record-keeping (logging)",
+      "category": "PROVIDER_OBLIGATION",
+      "summary": "Technically enable automatic recording of events (logs) over the system's lifetime for traceability.",
+      "description": "Article 12 requires high-risk AI systems to technically allow for the automatic recording of events (logs) throughout their lifetime, to a degree appropriate to the intended purpose. Logging must support identifying situations that may cause the system to present a risk or undergo a substantial modification, facilitate post-market monitoring, and — for certain systems such as remote biometric identification — capture defined minimum information.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [
+        "eu-highrisk-safety-component",
+        "eu-highrisk-biometrics",
+        "eu-highrisk-critical-infrastructure",
+        "eu-highrisk-education",
+        "eu-highrisk-employment",
+        "eu-highrisk-essential-services",
+        "eu-highrisk-law-enforcement",
+        "eu-highrisk-migration",
+        "eu-highrisk-justice-democracy"
+      ],
+      "relatedMitigationCodes": ["ART-72", "ART-73"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-13",
+      "title": "Transparency and provision of information to deployers",
+      "category": "PROVIDER_OBLIGATION",
+      "summary": "Design high-risk systems to be sufficiently transparent and ship clear instructions for use.",
+      "description": "Article 13 requires high-risk AI systems to be designed and developed so that their operation is sufficiently transparent to enable deployers to interpret output and use it appropriately. They must be accompanied by concise, complete, correct and clear instructions for use covering the provider's identity, the system's characteristics, capabilities and limitations of performance, foreseeable risks, human-oversight measures, expected lifetime and maintenance.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [
+        "eu-highrisk-safety-component",
+        "eu-highrisk-biometrics",
+        "eu-highrisk-critical-infrastructure",
+        "eu-highrisk-education",
+        "eu-highrisk-employment",
+        "eu-highrisk-essential-services",
+        "eu-highrisk-law-enforcement",
+        "eu-highrisk-migration",
+        "eu-highrisk-justice-democracy"
+      ],
+      "relatedMitigationCodes": ["ART-14", "ART-50"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-14",
+      "title": "Human oversight",
+      "category": "PROVIDER_OBLIGATION",
+      "summary": "Design high-risk systems so natural persons can effectively oversee them and intervene during use.",
+      "description": "Article 14 requires high-risk AI systems to be designed and developed, including with appropriate human-machine interface tools, so that they can be effectively overseen by natural persons during use. Oversight measures must enable the person to understand the system's capacities and limits, remain aware of automation bias, correctly interpret output, decide not to use it or to override or reverse output, and — for certain biometric systems — require verification by at least two persons before action is taken.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [
+        "eu-highrisk-safety-component",
+        "eu-highrisk-biometrics",
+        "eu-highrisk-critical-infrastructure",
+        "eu-highrisk-education",
+        "eu-highrisk-employment",
+        "eu-highrisk-essential-services",
+        "eu-highrisk-law-enforcement",
+        "eu-highrisk-migration",
+        "eu-highrisk-justice-democracy"
+      ],
+      "relatedMitigationCodes": ["ART-13", "ART-15"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-15",
+      "title": "Accuracy, robustness and cybersecurity",
+      "category": "PROVIDER_OBLIGATION",
+      "summary": "Achieve and maintain appropriate accuracy, robustness and cybersecurity across the lifecycle.",
+      "description": "Article 15 requires high-risk AI systems to be designed to achieve an appropriate level of accuracy, robustness and cybersecurity and to perform consistently in those respects throughout their lifecycle. Accuracy metrics must be declared in the instructions; systems must be resilient to errors, faults and inconsistencies and to feedback loops, and protected against attempts to exploit vulnerabilities, including data poisoning, model poisoning, adversarial examples and confidentiality attacks.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [
+        "eu-highrisk-safety-component",
+        "eu-highrisk-biometrics",
+        "eu-highrisk-critical-infrastructure",
+        "eu-highrisk-education",
+        "eu-highrisk-employment",
+        "eu-highrisk-essential-services",
+        "eu-highrisk-law-enforcement",
+        "eu-highrisk-migration",
+        "eu-highrisk-justice-democracy"
+      ],
+      "relatedMitigationCodes": ["ART-9", "ART-10"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-16",
+      "title": "Obligations of providers of high-risk AI systems",
+      "category": "PROVIDER_OBLIGATION",
+      "summary": "Overarching provider duties: conformity, QMS, registration, CE marking, corrective action and cooperation.",
+      "description": "Article 16 consolidates the duties of providers of high-risk AI systems: ensure the system meets the Chapter III requirements, indicate their name and contact, operate a quality-management system, keep documentation and automatically generated logs, undergo the relevant conformity-assessment procedure, draw up the EU declaration of conformity, affix the CE marking, register in the EU database, take corrective actions, and demonstrate conformity to competent authorities on request.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [
+        "eu-highrisk-safety-component",
+        "eu-highrisk-biometrics",
+        "eu-highrisk-critical-infrastructure",
+        "eu-highrisk-education",
+        "eu-highrisk-employment",
+        "eu-highrisk-essential-services",
+        "eu-highrisk-law-enforcement",
+        "eu-highrisk-migration",
+        "eu-highrisk-justice-democracy"
+      ],
+      "relatedMitigationCodes": ["ART-17", "ART-11"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-17",
+      "title": "Quality management system",
+      "category": "PROVIDER_OBLIGATION",
+      "summary": "Put in place a documented quality-management system covering the whole compliance lifecycle.",
+      "description": "Article 17 requires providers of high-risk AI systems to have a quality-management system, documented in written policies and procedures, covering a regulatory-compliance strategy, design and development controls, testing and validation, technical specifications and standards applied, data management, the Article 9 risk-management system, post-market monitoring, serious-incident reporting, communication with authorities, record-keeping, resource management and an accountability framework.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [
+        "eu-highrisk-safety-component",
+        "eu-highrisk-biometrics",
+        "eu-highrisk-critical-infrastructure",
+        "eu-highrisk-education",
+        "eu-highrisk-employment",
+        "eu-highrisk-essential-services",
+        "eu-highrisk-law-enforcement",
+        "eu-highrisk-migration",
+        "eu-highrisk-justice-democracy"
+      ],
+      "relatedMitigationCodes": ["ART-9", "ART-16"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-27",
+      "title": "Fundamental rights impact assessment (FRIA)",
+      "category": "DEPLOYER_OBLIGATION",
+      "summary": "Deployers of certain high-risk systems must assess the impact on fundamental rights before first use.",
+      "description": "Article 27 requires deployers that are public bodies, or private operators providing public services, and deployers of the Annex III credit-scoring and insurance-risk systems, to carry out a fundamental-rights impact assessment before putting a high-risk system into use: describing the deployment process and period, the categories of persons affected, the specific risks of harm, the human-oversight measures, and the governance and complaint arrangements if risks materialise, and to notify the market-surveillance authority of the result.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [
+        "eu-highrisk-biometrics",
+        "eu-highrisk-critical-infrastructure",
+        "eu-highrisk-education",
+        "eu-highrisk-employment",
+        "eu-highrisk-essential-services",
+        "eu-highrisk-law-enforcement",
+        "eu-highrisk-migration",
+        "eu-highrisk-justice-democracy"
+      ],
+      "relatedMitigationCodes": ["ART-9", "ART-14"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-50",
+      "title": "Transparency obligations for certain AI systems",
+      "category": "TRANSPARENCY",
+      "summary": "Disclose AI interaction, and mark synthetic and deepfake content, so people are not deceived.",
+      "description": "Article 50 requires that systems interacting with natural persons inform them they are dealing with an AI unless this is obvious; that providers of generative AI mark outputs as artificially generated or manipulated in a machine-readable way; that deployers of emotion-recognition or biometric-categorisation systems inform exposed persons; and that deployers disclose deepfake content as artificially generated or manipulated (with carve-outs for art, satire and law enforcement). Information must be clear and provided at the latest at first interaction.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": ["eu-transparency-risk"],
+      "relatedMitigationCodes": ["ART-13", "ART-53"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-53",
+      "title": "Obligations for providers of general-purpose AI models",
+      "category": "GPAI",
+      "summary": "Baseline duties for all GPAI providers: documentation, downstream information, copyright policy and a training-data summary.",
+      "description": "Article 53 requires providers of general-purpose AI models to draw up and maintain technical documentation of the model (including training and testing); to make information available to downstream providers who integrate the model so they understand its capabilities and limitations; to put in place a policy to comply with Union copyright law (including reservations of rights under the DSM Directive); and to publish a sufficiently detailed summary of the content used for training, per the AI Office template. Open-source models under defined conditions benefit from partial exemptions.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": ["eu-gpai-systemic"],
+      "relatedMitigationCodes": ["ART-55", "ART-50"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-55",
+      "title": "Obligations for GPAI models with systemic risk",
+      "category": "GPAI",
+      "summary": "Additional duties for GPAI models posing systemic risk: evaluation, adversarial testing, risk mitigation, incident tracking and cybersecurity.",
+      "description": "Article 55 imposes, on top of Article 53, additional obligations on providers of general-purpose AI models with systemic risk: perform model evaluation using standardised protocols and state-of-the-art tools including adversarial testing; assess and mitigate possible systemic risks at Union level, including their sources; track, document and report serious incidents and corrective measures to the AI Office and national authorities without undue delay; and ensure an adequate level of cybersecurity for the model and its physical infrastructure.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": ["eu-gpai-systemic"],
+      "relatedMitigationCodes": ["ART-53", "ART-73"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-72",
+      "title": "Post-market monitoring",
+      "category": "POST_MARKET",
+      "summary": "Operate a documented system to actively collect and analyse performance data after deployment.",
+      "description": "Article 72 requires providers to establish and document a post-market monitoring system proportionate to the nature and risks of the high-risk AI system, to actively and systematically collect, document and analyse data on its performance throughout its lifetime — including data provided by deployers — so that continuous compliance with the Chapter III requirements can be evaluated and emerging risks acted upon. It is based on a post-market monitoring plan following an AI Office template.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [
+        "eu-highrisk-safety-component",
+        "eu-highrisk-biometrics",
+        "eu-highrisk-critical-infrastructure",
+        "eu-highrisk-education",
+        "eu-highrisk-employment",
+        "eu-highrisk-essential-services",
+        "eu-highrisk-law-enforcement",
+        "eu-highrisk-migration",
+        "eu-highrisk-justice-democracy",
+        "eu-gpai-systemic"
+      ],
+      "relatedMitigationCodes": ["ART-9", "ART-73"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "code": "ART-73",
+      "title": "Reporting of serious incidents",
+      "category": "POST_MARKET",
+      "summary": "Report serious incidents to market-surveillance authorities within defined deadlines and investigate.",
+      "description": "Article 73 requires providers of high-risk AI systems placed on the Union market to report any serious incident to the market-surveillance authorities of the Member States where it occurred, immediately after establishing a causal link (or reasonable likelihood of one) and no later than the deadlines set in the Article — including shorter deadlines for widespread infringement or death. Providers must investigate the incident and the system's risk, cooperate with authorities, and not alter the system in a way that affects the later evaluation of causes.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": [
+        "eu-highrisk-safety-component",
+        "eu-highrisk-biometrics",
+        "eu-highrisk-critical-infrastructure",
+        "eu-highrisk-education",
+        "eu-highrisk-employment",
+        "eu-highrisk-essential-services",
+        "eu-highrisk-law-enforcement",
+        "eu-highrisk-migration",
+        "eu-highrisk-justice-democracy"
+      ],
+      "relatedMitigationCodes": ["ART-12", "ART-72"],
+      "sourceUrl": "http://data.europa.eu/eli/reg/2024/1689/oj"
+    }
+  ]
+}

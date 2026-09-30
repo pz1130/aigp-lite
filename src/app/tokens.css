@@ -1,0 +1,143 @@
+/* ─── Color tokens (light mode) ────────────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --bg-app: #f5f6f8;
+  --bg-surface: #ffffff;
+  --bg-muted: #eef0f2;
+  --bg-subtle: #e5e7eb;
+
+  /* Foreground */
+  --fg-primary: #111318;
+  --fg-secondary: #4a4d5c;
+  --fg-tertiary: #8b8fa3;
+  --fg-inverse: #ffffff;
+
+  /* Borders */
+  --border-default: #e2e4e8;
+  --border-strong: #8b8fa3;
+
+  /* Accent — green (restored) */
+  --accent: #32a852;
+  --accent-hover: #288641;
+  --accent-subtle: #f0fdf4;
+  --accent-fg: #ffffff;
+
+  /* Semantic states */
+  --success: #16a34a;
+  --success-subtle: #f0fdf4;
+  --warn: #ca8a04;
+  --warn-subtle: #fefce8;
+  --danger: #dc2626;
+  --danger-subtle: #fef2f2;
+
+  /* Severity */
+  --severity-critical: #dc2626;
+  --severity-high: #c2410c;
+  --severity-medium: #16a34a;
+  --severity-low: #8b8fa3;
+
+  /* Type stack */
+  --font-sans:
+    var(--font-sans-loaded), "Inter", system-ui, -apple-system, "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+  --font-mono:
+    var(--font-mono-loaded), "JetBrains Mono", "SF Mono", Menlo, monospace;
+  --font-tabular:
+    var(--font-tabular-loaded), "IBM Plex Sans", "PingFang SC", sans-serif;
+
+  /* Type sizes */
+  --text-display-size: 30px;
+  --text-display-lh: 1.2;
+  --text-display-weight: 700;
+  --text-h2-size: 22px;
+  --text-h2-lh: 1.3;
+  --text-h2-weight: 600;
+  --text-h3-size: 18px;
+  --text-h3-lh: 1.4;
+  --text-h3-weight: 600;
+  --text-body-size: 14px;
+  --text-body-lh: 1.5;
+  --text-body-weight: 400;
+  --text-small-size: 13px;
+  --text-small-lh: 1.45;
+  --text-small-weight: 400;
+  --text-xs-size: 11px;
+  --text-xs-lh: 1.4;
+  --text-xs-weight: 500;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(17, 19, 24, 0.04);
+  --shadow-sm:
+    0 1px 3px rgba(17, 19, 24, 0.05), 0 1px 2px rgba(17, 19, 24, 0.03);
+  --shadow-md:
+    0 4px 12px rgba(17, 19, 24, 0.07), 0 2px 4px rgba(17, 19, 24, 0.04);
+  --shadow-lg:
+    0 12px 32px rgba(17, 19, 24, 0.09), 0 4px 8px rgba(17, 19, 24, 0.05);
+}
+
+/* ─── Dark mode ─────────────────────────────────────────────────────────── */
+.dark {
+  --bg-app: #0c0e14;
+  --bg-surface: #141720;
+  --bg-muted: #1a1d28;
+  --bg-subtle: #20242f;
+
+  --fg-primary: #e8e9ef;
+  --fg-secondary: #9196a8;
+  --fg-tertiary: #5a5e72;
+  --fg-inverse: #0c0e14;
+
+  --border-default: #252836;
+  --border-strong: #3d4055;
+
+  /* Accent — green (brighter for dark) */
+  --accent: #4ade80;
+  --accent-hover: #22c55e;
+  --accent-subtle: #14261c;
+  --accent-fg: #0c0e14;
+
+  /* Semantics */
+  --success: #4ade80;
+  --success-subtle: #0d2e1a;
+  --warn: #fbbf24;
+  --warn-subtle: #2d2200;
+  --danger: #f87171;
+  --danger-subtle: #2d1212;
+
+  /* Severity */
+  --severity-critical: #f87171;
+  --severity-high: #fb923c;
+  --severity-medium: #4ade80;
+  --severity-low: #5a5e72;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Chinese ──────────────────────────────────────────────────────────── */
+:lang(zh-CN),
+:lang(zh) {
+  --text-body-size: 14px;
+  --text-body-lh: 1.65;
+  --text-small-size: 13px;
+  --text-small-lh: 1.6;
+}

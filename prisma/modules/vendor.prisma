@@ -1,0 +1,79 @@
+enum VendorType {
+  model_provider
+  data_vendor
+  tooling_vendor
+}
+
+enum VendorRiskRating {
+  low
+  medium
+  high
+  critical
+}
+
+enum DueDiligenceStatus {
+  yes
+  partial
+  no
+  not_applicable
+}
+
+model Vendor {
+  id                   String             @id @default(cuid())
+  orgId                String
+  name                 String
+  vendorType           VendorType
+  description          String?            @db.Text
+  providerConnectionId String?
+  dataResidency        String?
+  contractRenewalDate  DateTime?
+  modelChangeNotice    Boolean            @default(false)
+  computedRating       VendorRiskRating?
+  ratingOverride       VendorRiskRating?
+  overrideReason       String?            @db.Text
+  assessedById         String?
+  assessedAt           DateTime?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  org                Organization              @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  providerConnection ProviderConnection?       @relation(fields: [providerConnectionId], references: [id], onDelete: SetNull)
+  assessedBy         User?                     @relation("VendorAssessedBy", fields: [assessedById], references: [id])
+  answers            VendorDueDiligenceAnswer[]
+  usecases           VendorUsecaseLink[]
+
+  @@unique([orgId, name])
+  @@index([orgId])
+  @@map("vendor")
+}
+
+model VendorDueDiligenceAnswer {
+  id        String             @id @default(cuid())
+  vendorId  String
+  itemCode  String
+  status    DueDiligenceStatus
+  note      String?            @db.Text
+  updatedAt DateTime           @updatedAt
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@unique([vendorId, itemCode])
+  @@map("vendor_dd_answer")
+}
+
+model VendorUsecaseLink {
+  id        String   @id @default(cuid())
+  orgId     String
+  vendorId  String
+  usecaseId String
+  createdAt DateTime @default(now())
+
+  org     Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  vendor  Vendor       @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  usecase AiUsecase    @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+
+  @@unique([vendorId, usecaseId])
+  @@index([orgId])
+  @@index([usecaseId])
+  @@map("vendor_usecase_link")
+}

@@ -1,0 +1,36 @@
+enum GoLiveStatus {
+  draft
+  approved
+  live
+  rejected
+  withdrawn
+}
+
+model GoLiveReview {
+  id                String       @id @default(cuid())
+  orgId             String
+  usecaseId         String
+  status            GoLiveStatus @default(draft)
+  rationale         String       @default("") @db.Text
+  conditions        String[]
+  readinessSnapshot Json         @default("{}")
+  decidedById       String?
+  decidedAt         DateTime?
+  supersededById    String?      @unique
+  boundTier         Int?
+  boundModelRef     String?
+  staleApproval     Boolean      @default(false)
+  createdById       String
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  org         Organization  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase     AiUsecase     @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+  decidedBy   User?         @relation("GoLiveDecider", fields: [decidedById], references: [id])
+  createdBy   User          @relation("GoLiveCreator", fields: [createdById], references: [id])
+  supersededBy GoLiveReview? @relation("GoLiveSupersede", fields: [supersededById], references: [id])
+  supersedes   GoLiveReview? @relation("GoLiveSupersede")
+
+  @@index([orgId, usecaseId, status])
+  @@map("go_live_review")
+}

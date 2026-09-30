@@ -1,0 +1,72 @@
+model AlignmentProbe {
+  id               String            @id @default(cuid())
+  dimension        String
+  title            String            @db.VarChar(200)
+  promptText       String            @db.Text
+  expectedBehavior String            @db.Text
+  concernGuidance  String            @db.Text
+  severityWeight   Int               @default(1)
+  sortOrder        Int               @default(0)
+  active           Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+
+  results          AlignmentResult[]
+
+  @@index([dimension])
+  @@map("alignment_probe")
+}
+
+model AlignmentAudit {
+  id                  String            @id @default(cuid())
+  orgId               String
+  usecaseId           String
+  targetProvider      String
+  targetModel         String
+  status              String            @default("pending")
+  outcome             String?
+  worstDimension      String?
+  maxConcernScore     Float?
+  concernThreshold    Float             @default(7.0)
+  warnThreshold       Float             @default(4.0)
+  completedCount      Int               @default(0)
+  totalCount          Int
+  escalatedIncidentId String?
+  startedById         String
+  errorMessage        String?           @db.Text
+  createdAt           DateTime          @default(now())
+  completedAt         DateTime?
+
+  org                 Organization      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase             AiUsecase         @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+  startedBy           User              @relation("AlignmentAuditStarter", fields: [startedById], references: [id], onDelete: Cascade)
+  results             AlignmentResult[]
+
+  @@index([orgId, createdAt(sort: Desc)])
+  @@index([orgId, usecaseId, status])
+  @@map("alignment_audit")
+}
+
+model AlignmentResult {
+  id              String         @id @default(cuid())
+  auditId         String
+  probeId         String
+  orgId           String
+  dimension       String
+  actualOutput    String         @db.Text
+  concernScore    Float
+  judgment        String         @db.Text
+  errored         Boolean        @default(false)
+  targetLatencyMs Int?
+  targetTokens    Int?
+  judgeLatencyMs  Int?
+  judgeTokens     Int?
+  createdAt       DateTime       @default(now())
+
+  audit           AlignmentAudit @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  probe           AlignmentProbe @relation(fields: [probeId], references: [id], onDelete: Cascade)
+  org             Organization   @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
+  @@index([auditId])
+  @@map("alignment_result")
+}

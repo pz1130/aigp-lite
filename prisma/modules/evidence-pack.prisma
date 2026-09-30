@@ -1,0 +1,29 @@
+enum EvidencePackStatus {
+  pending
+  building
+  ready
+  failed
+}
+
+model EvidencePack {
+  id            String             @id @default(cuid())
+  orgId         String
+  usecaseId     String?
+  framework     String?
+  storageKey    String?
+  packHash      String?
+  status        EvidencePackStatus @default(pending)
+  snapshotRef   String?
+  errorMessage  String?            @db.Text
+  createdById   String
+  createdAt     DateTime           @default(now())
+  completedAt   DateTime?
+
+  org        Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase    AiUsecase?   @relation(fields: [usecaseId], references: [id], onDelete: SetNull)
+  createdBy  User         @relation("EvidencePackCreator", fields: [createdById], references: [id])
+
+  @@index([orgId, status])
+  @@index([orgId, usecaseId])
+  @@map("evidence_pack")
+}

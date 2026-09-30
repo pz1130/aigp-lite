@@ -1,0 +1,33 @@
+enum MaterialityTier {
+  minimal
+  limited
+  high
+  critical
+}
+
+model UsecaseMateriality {
+  id        String @id @default(cuid())
+  orgId     String
+  usecaseId String @unique
+
+  affectedParties     Int
+  decisionConsequence Int
+  financialSafety     Int
+  dataSensitivity     Int
+
+  computedTier MaterialityTier
+
+  tierOverride   MaterialityTier?
+  overrideReason String?         @db.Text
+
+  assessedById String
+  assessedAt   DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  org     Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase AiUsecase    @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+  assessedBy User       @relation(fields: [assessedById], references: [id])
+
+  @@index([orgId])
+  @@map("usecase_materiality")
+}

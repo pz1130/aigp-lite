@@ -1,0 +1,85 @@
+/// Trust Center — outward-facing compliance portal. `TrustProfile` is
+/// configuration (one row per org); `TrustSnapshot` is an immutable, versioned
+/// disclosure; `TrustAccessToken` is a revocable key to the confidential tier.
+model TrustProfile {
+  id           String   @id @default(cuid())
+  orgId        String   @unique
+  slug         String   @unique
+  enabled      Boolean  @default(false)
+  displayName  String
+  intro        String   @default("") @db.Text
+  contactEmail String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@map("trust_profile")
+}
+
+enum TrustSnapshotStatus {
+  draft
+  published
+  superseded
+  withdrawn
+}
+
+/// The two disclosure tiers are two columns, not one column with per-field
+/// markers: the public read path selects only `publicPayload`, so confidential
+/// data is never loaded into the process. `version` is NULL until publish, so
+/// multiple drafts coexist under `@@unique([orgId, version])` (Postgres treats
+/// NULLs as distinct in a unique index).
+model TrustSnapshot {
+  id                  String              @id @default(cuid())
+  orgId               String
+  version             Int?
+  status              TrustSnapshotStatus @default(draft)
+  publicPayload       Json                @default("{}")
+  confidentialPayload Json                @default("{}")
+  includedUsecaseIds  String[]
+  createdById         String
+  publishedAt         DateTime?
+  publishedById       String?
+  withdrawnAt         DateTime?
+  withdrawnById       String?
+  supersededById      String?             @unique
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  org          Organization    @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  createdBy    User            @relation("TrustCreator", fields: [createdById], references: [id])
+  publishedBy  User?           @relation("TrustPublisher", fields: [publishedById], references: [id])
+  withdrawnBy  User?           @relation("TrustWithdrawer", fields: [withdrawnById], references: [id])
+  supersededBy TrustSnapshot?  @relation("TrustSupersede", fields: [supersededById], references: [id])
+  supersedes   TrustSnapshot[] @relation("TrustSupersede")
+
+  @@unique([orgId, version])
+  @@index([orgId, status, publishedAt(sort: Desc)])
+  @@map("trust_snapshot")
+}
+
+/// Hash + prefix storage, mirroring `ScimConnection`. The plaintext token is
+/// returned exactly once, from the issue mutation. Tokens attach to the org,
+/// not to a snapshot, so a link handed out in March keeps working.
+model TrustAccessToken {
+  id             String    @id @default(cuid())
+  orgId          String
+  tokenHash      String    @unique
+  tokenPrefix    String
+  label          String
+  recipientEmail String?
+  expiresAt      DateTime?
+  revokedAt      DateTime?
+  revokedById    String?
+  createdById    String
+  createdAt      DateTime  @default(now())
+  lastUsedAt     DateTime?
+  useCount       Int       @default(0)
+
+  org       Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  createdBy User         @relation("TrustTokenCreator", fields: [createdById], references: [id])
+  revokedBy User?        @relation("TrustTokenRevoker", fields: [revokedById], references: [id])
+
+  @@index([orgId, revokedAt])
+  @@map("trust_access_token")
+}

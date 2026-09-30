@@ -1,0 +1,39 @@
+EU Artificial Intelligence Act catalog
+=======================================
+
+Source
+------
+Regulation (EU) 2024/1689 of the European Parliament and of the Council of
+13 June 2024 laying down harmonised rules on artificial intelligence (Artificial
+Intelligence Act), OJ L, 12.7.2024.
+ELI: http://data.europa.eu/eli/reg/2024/1689/oj
+
+Copyright / licensing status
+----------------------------
+The official text of EU legislation published in the Official Journal of the
+European Union may be freely reused, including for commercial purposes, under
+Commission Decision 2011/833/EU on the reuse of Commission documents, provided
+the source is acknowledged and the meaning is not distorted. Unlike copyrighted
+standards (e.g. ISO/IEC 42001), the normative text of the AI Act could therefore
+be quoted verbatim.
+
+What this catalog contains
+--------------------------
+- The AI Act's article and Annex IDENTIFIERS (e.g. Article 5, Article 9–17,
+  Article 27/50/53/55/72/73, Annex III points 1–8). These are the Regulation's
+  own references.
+- ORIGINAL one-line summaries and descriptions authored for this project. They
+  paraphrase the intent of each provision; they are NOT verbatim AI Act text.
+- The risk-tier model the AI Act establishes: prohibited practices (Art. 5),
+  high-risk systems (Art. 6 + Annex I / Annex III), transparency-risk systems
+  (Art. 50), and general-purpose AI models incl. systemic risk (Art. 51–55).
+
+Even though the AI Act text is freely reusable and could be quoted directly, we
+use our own wording so the catalog stays consistent in tone and length with the
+other framework catalogs in this repository.
+
+Attribution
+-----------
+Where this catalog is surfaced to users, attribute the source as:
+"Based on Regulation (EU) 2024/1689 (EU Artificial Intelligence Act),
+OJ L, 12.7.2024 — © European Union, http://data.europa.eu/eli/reg/2024/1689/oj"

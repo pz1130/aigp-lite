@@ -1,0 +1,683 @@
+{
+  "_meta": {
+    "upstreamRef": "MindForge-2025",
+    "note": "Crosswalk is original AIGP analysis of control-intent correspondence, not an official MindForge/NIST/ISO/FINOS/EU mapping or endorsement."
+  },
+  "mappings": [
+    {
+      "practiceCode": "C1-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-2.1",
+          "relation": "equivalent",
+          "note": "Board-level AI accountability corresponds to documented AI roles and responsibilities at the governing level."
+        },
+        {
+          "framework": "ISO_42001",
+          "code": "A.3.2",
+          "relation": "equivalent",
+          "note": "Assigning board accountability aligns with defining AI roles and responsibilities."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C1-P2",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-1.5",
+          "relation": "related",
+          "note": "Periodic board risk-report review supports ongoing monitoring and periodic review of the risk-management process."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C1-P3",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MANAGE-1.1",
+          "relation": "related",
+          "note": "Board approval of high-impact initiatives relates to the proceed/not-proceed management decision."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C2-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-1.3",
+          "relation": "equivalent",
+          "note": "Enterprise AI governance framework corresponds to establishing risk-tiered management processes."
+        },
+        {
+          "framework": "ISO_42001",
+          "code": "A.2.2",
+          "relation": "equivalent",
+          "note": "Establishing the governance framework aligns with maintaining an AI policy."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C2-P2",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-1.3",
+          "relation": "related",
+          "note": "Integrating AI into enterprise risk management relates to risk-tiered management processes."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C2-P3",
+      "targets": [
+        {
+          "framework": "ISO_42001",
+          "code": "A.3.3",
+          "relation": "related",
+          "note": "Governance forums and escalation paths relate to processes for reporting concerns."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C3-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-1.2",
+          "relation": "equivalent",
+          "note": "Maintaining an AI policy suite corresponds to integrating trustworthy-AI characteristics into policy."
+        },
+        {
+          "framework": "ISO_42001",
+          "code": "A.2.2",
+          "relation": "equivalent",
+          "note": "AI policy suite aligns directly with the ISO AI policy control."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C3-P2",
+      "targets": [
+        {
+          "framework": "ISO_42001",
+          "code": "A.6.1.3",
+          "relation": "related",
+          "note": "Technical standards for AI development relate to responsible design and development processes."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C3-P3",
+      "targets": [
+        {
+          "framework": "ISO_42001",
+          "code": "A.2.4",
+          "relation": "related",
+          "note": "Keeping policy current with regulatory change relates to periodic review of the AI policy."
+        },
+        {
+          "framework": "EU_AI_ACT",
+          "code": "ART-9",
+          "relation": "related",
+          "note": "Tracking regulatory change supports the ongoing risk-management system obligation."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C4-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-2.1",
+          "relation": "equivalent",
+          "note": "Three-lines responsibility assignment corresponds to documenting roles and responsibilities."
+        },
+        {
+          "framework": "ISO_42001",
+          "code": "A.3.2",
+          "relation": "equivalent",
+          "note": "Three-lines model aligns with defined AI roles and responsibilities."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C4-P2",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-2.2",
+          "relation": "equivalent",
+          "note": "Building AI literacy and specialist skills corresponds to AI risk-management training."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C4-P3",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-3.2",
+          "relation": "related",
+          "note": "Model owner/validator roles relate to defining human-AI oversight roles."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C5-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-1.6",
+          "relation": "equivalent",
+          "note": "Maintaining a complete AI use-case inventory corresponds to maintaining an inventory of AI systems."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C5-P2",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MAP-1.1",
+          "relation": "equivalent",
+          "note": "A structured risk taxonomy supports purpose and context mapping for AI systems."
+        },
+        {
+          "framework": "FINOS_AIGF",
+          "code": "mi-6",
+          "relation": "related",
+          "note": "Consistent risk identification aligns with data quality and classification practices."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C5-P3",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MAP-5.1",
+          "relation": "related",
+          "note": "Scanning for emerging AI threats relates to ongoing risk identification activities."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C6-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MAP-3.1",
+          "relation": "equivalent",
+          "note": "Assessing inherent and residual AI risks corresponds to mapping potential impacts and likelihood."
+        },
+        {
+          "framework": "ISO_42001",
+          "code": "A.5.2",
+          "relation": "related",
+          "note": "Risk assessment aligns with the AI system impact assessment process."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C6-P2",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MEASURE-2.6",
+          "relation": "equivalent",
+          "note": "Quantitative drift measurement corresponds to evaluating AI system performance over time."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C6-P3",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MAP-5.2",
+          "relation": "related",
+          "note": "Documenting risk assessment conclusions supports ongoing risk tracking."
+        },
+        {
+          "framework": "ISO_42001",
+          "code": "A.5.3",
+          "relation": "related",
+          "note": "Retained assessment documentation aligns with impact assessment documentation."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C7-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MEASURE-2.11",
+          "relation": "equivalent",
+          "note": "Pre-deployment fairness evaluation corresponds to fairness and bias assessment."
+        },
+        {
+          "framework": "EU_AI_ACT",
+          "code": "ART-10",
+          "relation": "related",
+          "note": "Fairness evaluation supports data and data governance obligations."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C7-P2",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MEASURE-2.7",
+          "relation": "equivalent",
+          "note": "Robustness and stability testing before release aligns with reliability evaluation."
+        },
+        {
+          "framework": "EU_AI_ACT",
+          "code": "ART-15",
+          "relation": "related",
+          "note": "Pre-release testing supports accuracy and robustness obligations."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C7-P3",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MANAGE-2.2",
+          "relation": "equivalent",
+          "note": "Independent validation before production aligns with pre-deployment risk treatment."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C8-P1",
+      "targets": [
+        {
+          "framework": "ISO_42001",
+          "code": "A.4.3",
+          "relation": "equivalent",
+          "note": "Data governance for AI datasets aligns with data resource management."
+        },
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-6.1",
+          "relation": "related",
+          "note": "Dataset governance relates to third-party and supply-chain data risk policies."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C8-P2",
+      "targets": [
+        {
+          "framework": "FINOS_AIGF",
+          "code": "mi-12",
+          "relation": "equivalent",
+          "note": "Access and retention controls align with role-based access control for AI data."
+        },
+        {
+          "framework": "EU_AI_ACT",
+          "code": "ART-10",
+          "relation": "related",
+          "note": "Data access controls support data governance obligations."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C8-P3",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-6.1",
+          "relation": "equivalent",
+          "note": "Assessing third-party training data provenance aligns with third-party AI risk policies."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C9-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MANAGE-1.1",
+          "relation": "equivalent",
+          "note": "Production release gating on control evidence aligns with proceed/not-proceed decisions."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C9-P2",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MANAGE-3.1",
+          "relation": "related",
+          "note": "Staged rollouts relate to planned deployment and change management."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C9-P3",
+      "targets": [
+        {
+          "framework": "FINOS_AIGF",
+          "code": "mi-10",
+          "relation": "equivalent",
+          "note": "Model versioning and tracking aligns with AI model version pinning."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C10-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MEASURE-4.1",
+          "relation": "equivalent",
+          "note": "Ongoing production performance monitoring aligns with post-deployment measurement."
+        },
+        {
+          "framework": "FINOS_AIGF",
+          "code": "mi-4",
+          "relation": "related",
+          "note": "Production monitoring relates to AI system observability."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C10-P2",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MEASURE-2.6",
+          "relation": "equivalent",
+          "note": "Data and concept drift detection corresponds to performance evaluation over time."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C10-P3",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MANAGE-3.2",
+          "relation": "related",
+          "note": "Alert review and remediation relates to post-deployment risk response."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C11-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MANAGE-3.1",
+          "relation": "equivalent",
+          "note": "Formal change management for production models aligns with deployment change controls."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C11-P2",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-1.7",
+          "relation": "equivalent",
+          "note": "Safe model retirement aligns with safe decommissioning of AI systems."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C11-P3",
+      "targets": [
+        {
+          "framework": "EU_AI_ACT",
+          "code": "ART-12",
+          "relation": "related",
+          "note": "Preserving audit trails across versions supports record-keeping obligations."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C12-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-3.2",
+          "relation": "equivalent",
+          "note": "Meaningful human oversight points align with defined human-AI oversight roles."
+        },
+        {
+          "framework": "EU_AI_ACT",
+          "code": "ART-14",
+          "relation": "equivalent",
+          "note": "Human oversight design aligns with human oversight obligations."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C12-P2",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-2.2",
+          "relation": "related",
+          "note": "User training on AI limitations relates to AI risk-management training."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C12-P3",
+      "targets": [
+        {
+          "framework": "FINOS_AIGF",
+          "code": "mi-11",
+          "relation": "related",
+          "note": "Monitoring human override patterns relates to human feedback loops."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C13-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-6.1",
+          "relation": "equivalent",
+          "note": "Third-party AI provider assessment aligns with third-party AI risk policies."
+        },
+        {
+          "framework": "ISO_42001",
+          "code": "A.10.3",
+          "relation": "related",
+          "note": "Provider assessment relates to supplier management."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C13-P2",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-6.2",
+          "relation": "related",
+          "note": "Contractual change-notification requirements relate to third-party contingency planning."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C13-P3",
+      "targets": [
+        {
+          "framework": "ISO_42001",
+          "code": "A.10.3",
+          "relation": "equivalent",
+          "note": "Ongoing outsourced AI service monitoring aligns with supplier oversight."
+        },
+        {
+          "framework": "FINOS_AIGF",
+          "code": "mi-4",
+          "relation": "related",
+          "note": "Service monitoring relates to AI system observability."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C14-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MANAGE-2.3",
+          "relation": "equivalent",
+          "note": "AI incident taxonomy and playbooks align with incident response planning."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C14-P2",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MANAGE-2.4",
+          "relation": "related",
+          "note": "Material incident escalation relates to incident communication and reporting."
+        },
+        {
+          "framework": "EU_AI_ACT",
+          "code": "ART-73",
+          "relation": "related",
+          "note": "Escalation supports serious incident reporting obligations."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C14-P3",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MANAGE-3.2",
+          "relation": "equivalent",
+          "note": "Post-incident review and remediation tracking aligns with post-deployment risk response."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C15-P1",
+      "targets": [
+        {
+          "framework": "EU_AI_ACT",
+          "code": "ART-50",
+          "relation": "equivalent",
+          "note": "Disclosing AI use to customers aligns with transparency obligations."
+        },
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-4.2",
+          "relation": "related",
+          "note": "Customer disclosure relates to documenting and communicating AI impacts."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C15-P2",
+      "targets": [
+        {
+          "framework": "FINOS_AIGF",
+          "code": "mi-13",
+          "relation": "equivalent",
+          "note": "Explainability for high-impact decisions aligns with citations and source traceability."
+        },
+        {
+          "framework": "EU_AI_ACT",
+          "code": "ART-13",
+          "relation": "related",
+          "note": "Explainability supports transparency to deployers."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C15-P3",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-4.2",
+          "relation": "related",
+          "note": "Communicating AI limitations internally relates to risk and impact communication."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C16-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MEASURE-4.2",
+          "relation": "equivalent",
+          "note": "Scheduled independent control testing aligns with post-deployment evaluation."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C16-P2",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MEASURE-4.1",
+          "relation": "related",
+          "note": "Testing control effectiveness relates to ongoing post-deployment measurement."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C16-P3",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "MANAGE-4.1",
+          "relation": "equivalent",
+          "note": "Tracking audit findings to closure aligns with post-deployment risk management."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C17-P1",
+      "targets": [
+        {
+          "framework": "NIST_AI_RMF",
+          "code": "GOVERN-1.1",
+          "relation": "equivalent",
+          "note": "Monitoring supervisory AI guidance aligns with understanding legal and regulatory requirements."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C17-P2",
+      "targets": [
+        {
+          "framework": "EU_AI_ACT",
+          "code": "ART-72",
+          "relation": "related",
+          "note": "Regulatory AI risk reporting readiness relates to post-market monitoring."
+        }
+      ]
+    },
+    {
+      "practiceCode": "C17-P3",
+      "targets": [
+        {
+          "framework": "EU_AI_ACT",
+          "code": "ART-73",
+          "relation": "related",
+          "note": "Regulator engagement on material changes relates to serious incident reporting channels."
+        }
+      ]
+    }
+  ]
+}

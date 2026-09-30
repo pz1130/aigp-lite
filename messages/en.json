@@ -1,0 +1,2467 @@
+{
+  "app": {
+    "name": "AIGP-Lite",
+    "tagline": "AI Governance Platform"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "posture": "Posture",
+    "logout": "Sign out",
+    "search": "Search...",
+    "noResults": "No results found.",
+    "modules": "Modules",
+    "providers": "AI Provider",
+    "organization": {
+      "label": "Organization",
+      "error": "Could not switch organization."
+    },
+    "group": {
+      "govern": "Govern",
+      "operate": "Operate",
+      "connect": "Connect",
+      "insight": "Insight"
+    }
+  },
+  "auth": {
+    "selectOrg": {
+      "title": "Choose an organization",
+      "subtitle": "Select the organization you want to manage."
+    },
+    "sso": {
+      "button": "Sign in with SSO",
+      "divider": "or",
+      "errors": {
+        "failed": "SSO login failed. Please try again or contact your administrator.",
+        "denied": "Access denied. Contact your administrator.",
+        "unknown": "Sign-in failed."
+      }
+    },
+    "brand": {
+      "tagline": "Govern AI with confidence."
+    },
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Welcome back.",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "noAccount": "No account? Register"
+    },
+    "register": {
+      "title": "Create your organization",
+      "orgName": "Organization name",
+      "name": "Your name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create",
+      "haveAccount": "Already have an account? Sign in",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "AI Governance overview",
+    "thisWeek": {
+      "title": "This Week"
+    },
+    "kpi": {
+      "calls": "LLM Calls",
+      "blocked": "Blocked Requests",
+      "spend": "LLM Spend",
+      "maturity": "Maturity Score"
+    },
+    "attention": {
+      "title": "Needs Attention",
+      "allClear": "All systems operational",
+      "incidents": {
+        "label": "Open Incidents",
+        "cta": "View"
+      },
+      "approvals": {
+        "label": "Pending Approvals",
+        "cta": "Review"
+      }
+    },
+    "maturity": {
+      "title": "Maturity Radar"
+    },
+    "activity": {
+      "title": "Activity Feed",
+      "empty": "No recent activity"
+    }
+  },
+  "governance": {
+    "score": "Governance Score",
+    "dimensions": {
+      "controls": "Control Satisfaction",
+      "risk": "Risk Coverage",
+      "incidents": "Incident Health",
+      "policies": "Policy Enforcement",
+      "process": "Process Completeness",
+      "survey": "Maturity Survey"
+    },
+    "noData": "No data yet"
+  },
+  "posture": {
+    "title": "Governance Posture",
+    "description": "Cross-usecase rollup of control coverage, incidents, drift health, and budget posture.",
+    "readiness": {
+      "tabHealth": "Health Score",
+      "tabReadiness": "Go-Live Readiness",
+      "loading": "Loading…",
+      "highRiskBlocked": "High-risk blocked",
+      "colSystem": "System",
+      "colOwner": "Owner",
+      "colHighRisk": "Risk",
+      "colBlockingChecks": "Blocking checks",
+      "highRiskBadge": "High risk",
+      "noOwner": "—",
+      "empty": "No systems are blocked from go-live 🎉"
+    }
+  },
+  "evidencePack": {
+    "generate": "Generate Evidence Pack",
+    "empty": "No evidence packs yet.",
+    "status": "Status",
+    "framework": "Framework",
+    "hash": "Hash",
+    "created": "Created",
+    "actions": "Actions",
+    "download": "Download .zip"
+  },
+  "materiality": {
+    "title": "Materiality",
+    "description": "Risk-proportional tier from impact and autonomy. Higher tiers weight posture and report expectations.",
+    "empty": "Not yet assessed.",
+    "loading": "Loading…",
+    "assess": "Assess materiality",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "computed": "Computed",
+    "override": "Override",
+    "overrideReason": "Override reason",
+    "overrideTier": "Override tier",
+    "clearOverride": "Clear override",
+    "effectiveTier": "Effective tier",
+    "assessedBy": "Assessed {when}",
+    "tier": {
+      "minimal": "Minimal",
+      "limited": "Limited",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "dim": {
+      "affectedParties": "Affected parties",
+      "decisionConsequence": "Decision consequence",
+      "financialSafety": "Financial / safety impact",
+      "dataSensitivity": "Data sensitivity"
+    }
+  },
+  "fairness": {
+    "cardTitle": "Fairness assessment",
+    "cardDescription": "Subgroup disparity check (four-fifths rule), proxy-feature review and feedback-loop check.",
+    "required": "Required for this use case (high/critical materiality).",
+    "notRequired": "Not required at the current materiality tier.",
+    "status": {
+      "draft": "Draft",
+      "completed": "Completed"
+    },
+    "addAttribute": "Add protected attribute",
+    "attributeName": "Attribute",
+    "metric": {
+      "selection_rate": "Selection rate",
+      "true_positive_rate": "True-positive rate",
+      "error_rate": "Error rate",
+      "precision": "Precision"
+    },
+    "subgroup": "Subgroup",
+    "value": "Value",
+    "addSubgroup": "Add subgroup",
+    "ratio": "Disparity ratio",
+    "pass": "Within 4/5ths",
+    "fail": "Disparity",
+    "notComputable": "Needs 2+ subgroups",
+    "proxyReview": "Proxy-feature review done?",
+    "feedbackLoop": "Feedback-loop risk checked?",
+    "check": {
+      "yes": "Yes",
+      "no": "No",
+      "not_applicable": "N/A"
+    },
+    "save": "Save draft",
+    "complete": "Mark complete",
+    "reopen": "Reopen",
+    "remove": "Remove",
+    "empty": "No attributes added yet."
+  },
+  "vendor": {
+    "listTitle": "Vendors",
+    "createTitle": "New vendor",
+    "new": "New vendor",
+    "empty": "No vendors yet.",
+    "name": "Name",
+    "typeLabel": "Type",
+    "ratingLabel": "Rating",
+    "unassessed": "Un-assessed",
+    "create": "Create",
+    "type": {
+      "model_provider": "Model provider",
+      "data_vendor": "Data vendor",
+      "tooling_vendor": "Tooling vendor"
+    },
+    "rating": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "status": {
+      "yes": "Yes",
+      "partial": "Partial",
+      "no": "No",
+      "not_applicable": "N/A"
+    },
+    "contractSection": "Contract & data residency",
+    "dataResidency": "Data residency",
+    "dataResidencyPlaceholder": "e.g. EU (Frankfurt), US (us-east-1)",
+    "contractRenewalDate": "Contract renewal date",
+    "modelChangeNotice": "Contract requires model-change notification",
+    "questionnaire": "Due-diligence questionnaire",
+    "save": "Save answers",
+    "linkedUsecases": "Linked use cases",
+    "link": "Link use case",
+    "unlink": "Unlink",
+    "override": "Override rating",
+    "overrideReason": "Reason",
+    "clearOverride": "Clear override",
+    "cardTitle": "Third-party vendors",
+    "cardDescription": "Vendors and providers this use case relies on.",
+    "cardEmpty": "No vendors linked.",
+    "cardUnassessedWarning": "Un-assessed vendor"
+  },
+  "errors": {
+    "invalidCredentials": "Invalid email or password.",
+    "emailTaken": "This email is already registered.",
+    "unexpected": "Something went wrong."
+  },
+  "inventory": {
+    "title": "AI Inventory",
+    "new": "New use case",
+    "edit": "Edit",
+    "deleteTitle": "Delete use case",
+    "deleteConfirm": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+    "save": "Save",
+    "noModelCard": "No model card.",
+    "noUsecases": "No use cases yet.",
+    "noUsecasesHint": "Create your first use case to get started.",
+    "col": {
+      "lastUpdated": "Last updated",
+      "aiAnalysis": "AI analysis"
+    },
+    "fields": {
+      "name": "Name",
+      "autonomyLevel": "Agent autonomy",
+      "deploymentType": "Deployment type",
+      "lifecycleStage": "Lifecycle stage",
+      "owner": "Owner",
+      "description": "Description",
+      "modelCard": "Model card (Markdown)",
+      "modelVersions": "Model versions",
+      "addVersion": "Add version",
+      "version": "Version",
+      "deployedAt": "Deployed at",
+      "noVersions": "No model versions yet.",
+      "descriptionPlaceholder": "Briefly describe what this use case does — what problem it solves, who uses it, and what it produces.",
+      "descriptionHelp": "Suggested: business goal, target users, input data, output / decisions, out-of-scope.",
+      "modelCardHelp": "Markdown is supported. Use the template to populate a standard Model Card scaffold.",
+      "intendedUse": "Intended use",
+      "intendedUseHelp": "State the primary use case, target users, and deployment context this system is designed for.",
+      "prohibitedUse": "Prohibited / out-of-scope use",
+      "prohibitedUseHelp": "State what this system must not be used for — out-of-scope populations, decisions, or known misuse vectors."
+    },
+    "useTemplate": "Use template",
+    "descriptionTemplate": "Business goal:\nTarget users:\nInput data:\nOutput / decisions:\nOut of scope:\n",
+    "modelCardTemplate": "## Model details\n- Model name / version:\n- Owner / team:\n- Deployment date:\n\n## Intended use\n- Primary use case:\n- Target users:\n- Business value:\n\n## Training data\n- Data sources:\n- Data volume:\n- Sensitive data / PII:\n\n## Evaluation\n- Key metrics:\n- Known biases:\n\n## Limitations & risks\n- Known limitations:\n- Out of scope:\n\n## Compliance & ethics\n- Applicable regulations (e.g. EU AI Act, GDPR):\n- Fairness considerations:\n\n## Monitoring & updates\n- Runtime monitoring:\n- Rollback plan:\n",
+    "intendedUseTemplate": "Primary use case:\nTarget users:\nDeployment context:\n",
+    "prohibitedUseTemplate": "Not permitted for:\nOut-of-scope populations / decisions:\nKnown misuse vectors:\n",
+    "classification": {
+      "title": "AI Analysis",
+      "description": "LLM-generated classification & risk hints based on the description and model card. Review before acting.",
+      "run": "Run analysis",
+      "rerun": "Re-run",
+      "analyzeAll": "Analyze {count} unanalyzed",
+      "bulkQueued": "{count} queued",
+      "queued": "Analysis queued…",
+      "loading": "Loading…",
+      "empty": "No analysis yet. Click \"Run analysis\" to generate.",
+      "yes": "Yes",
+      "no": "No",
+      "field": {
+        "domain": "Business domain",
+        "dataSensitivity": "Data sensitivity",
+        "containsPii": "Contains PII",
+        "adm": "Automated decision-making",
+        "euAiAct": "EU AI Act category",
+        "confidence": "Confidence",
+        "complianceTags": "Compliance tags",
+        "suggestedRisks": "Suggested risks"
+      },
+      "sensitivity": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      },
+      "severity": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      },
+      "euAct": {
+        "prohibited": "Prohibited",
+        "high": "High-risk",
+        "limited": "Limited risk",
+        "minimal": "Minimal risk",
+        "unknown": "Unknown"
+      },
+      "reason": {
+        "auto_created": "auto on create",
+        "auto_updated": "auto on update",
+        "manual": "manual"
+      },
+      "provenance": "Generated by {provider}/{model} on {when} ({reason})",
+      "timeout": "Analysis timed out. It may still be running — try refreshing shortly.",
+      "error": "Analysis failed. Please try again.",
+      "bulkError": "Failed to start bulk analysis."
+    },
+    "stages": {
+      "proposed": "Proposed",
+      "development": "Development",
+      "production": "Production",
+      "deprecated": "Deprecated",
+      "retired": "Retired"
+    },
+    "deprecate": {
+      "action": "Deprecate",
+      "sunsetDate": "Sunset date (optional)",
+      "reason": "Reason / migration guidance",
+      "submit": "Deprecate system",
+      "bannerTitle": "This system is deprecated",
+      "deprecatedBy": "Deprecated by {name} on {date}",
+      "noSunset": "No sunset date set"
+    },
+    "sunset": {
+      "daysLeft": "{days} days to sunset",
+      "overdue": "Sunset overdue by {days} days",
+      "today": "Sunset is today"
+    },
+    "autonomy": {
+      "assistant": "AI Assistant",
+      "simple_agent": "Simple Agent",
+      "collaborative_agent": "Collaborative Agent",
+      "agent_ecosystem": "Agent Ecosystem"
+    },
+    "deploy": {
+      "built": "Built in house",
+      "blended": "Blended",
+      "embedded": "Embedded SaaS",
+      "byo": "Bring your own"
+    },
+    "addVersion": "Add version",
+    "cancel": "Cancel",
+    "deployedAt": "Deployed at",
+    "noVersions": "No model versions recorded yet.",
+    "version": "Version"
+  },
+  "risk": {
+    "title": "Risk & Regulations",
+    "frameworks": "Frameworks",
+    "controls": "Controls",
+    "assess": "Assess",
+    "latest": "Latest",
+    "score": "Score",
+    "levelLabel": "Level",
+    "code": "Code",
+    "control": "Control",
+    "severityLabel": "Severity",
+    "status": "Status",
+    "description": "Description",
+    "usecases": "Use Cases",
+    "noFrameworks": "No frameworks available.",
+    "noUsecases": "No use cases yet.",
+    "noControls": "No controls yet.",
+    "autonomyLabel": "Autonomy",
+    "autonomy": {
+      "assistant": "AI Assistant",
+      "simple_agent": "Simple Agent",
+      "collaborative_agent": "Collaborative Agent",
+      "agent_ecosystem": "Agent Ecosystem"
+    },
+    "notesPlaceholder": "Assessment notes (optional)...",
+    "assessing": "Assessing...",
+    "runAssessment": "Run Assessment",
+    "assessmentError": "Assessment failed. Please try again.",
+    "assessmentSuccess": "Assessment completed successfully.",
+    "downloadReport": "Download report (PDF)",
+    "newFramework": "New Framework",
+    "editFramework": "Edit Framework",
+    "deleteFramework": "Delete Framework",
+    "deleteFrameworkConfirm": "Delete this framework and all its controls? This cannot be undone.",
+    "addControl": "Add Control",
+    "editControl": "Edit Control",
+    "deleteControl": "Delete Control",
+    "deleteControlConfirm": "Delete this control?",
+    "frameworkCreated": "Framework created.",
+    "frameworkUpdated": "Framework updated.",
+    "frameworkDeleted": "Framework deleted.",
+    "controlCreated": "Control created.",
+    "controlUpdated": "Control updated.",
+    "controlDeleted": "Control deleted.",
+    "controlHasStatuses": "Cannot delete: this control has existing use case statuses.",
+    "fields": {
+      "code": "Code",
+      "name": "Name",
+      "version": "Version",
+      "title": "Title",
+      "description": "Description",
+      "severity": "Severity"
+    },
+    "codeHint": "Alphanumeric, dots, dashes, underscores.",
+    "importControls": "Import Controls",
+    "importFile": "Import File",
+    "downloadTemplate": "Download Template",
+    "templateXlsx": "Excel Template",
+    "templateMd": "Markdown Template",
+    "uploadFile": "Upload File",
+    "dropZone": "Drop a file here or click to browse",
+    "parsing": "Parsing file...",
+    "previewControls": "Preview Controls",
+    "importing": "Importing...",
+    "importSuccess": "Controls imported successfully.",
+    "importError": "Import failed. Please try again.",
+    "noFileSelected": "Please select a file.",
+    "invalidFileType": "Unsupported file type. Use .xlsx, .md, .txt, or .pdf.",
+    "severity": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "level": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "statuses": {
+      "not_applicable": "Not applicable",
+      "not_started": "Not started",
+      "in_progress": "In progress",
+      "satisfied": "Satisfied",
+      "failed": "Failed"
+    },
+    "generateReport": "Generate PDF",
+    "generateReportPending": "Generating…",
+    "generateReportError": "Could not generate PDF.",
+    "noDescription": "No description provided.",
+    "descriptionPlaceholder": "Enter framework description...",
+    "saveDescription": "Save",
+    "catalogRisks": {
+      "title": "Catalog & regulatory risks",
+      "subtitle": "Framework risks linked to this use case (e.g. EU AI Act, NIST AI RMF, ISO 42001, FINOS, MITRE ATLAS).",
+      "empty": "No catalog risks linked yet. Use the Risk Copilot on the use-case detail page to link framework risks.",
+      "severity": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High",
+        "critical": "Critical"
+      }
+    }
+  },
+  "maturity": {
+    "title": "Governance Maturity",
+    "takeAssessment": "Take new assessment",
+    "scoreLabels": {
+      "0": "Not started",
+      "1": "Ad hoc",
+      "2": "Defined",
+      "3": "Institutionalized"
+    },
+    "pillars": {
+      "mandate_and_scope": "Mandate & Scope",
+      "structure_and_roles": "Structure & Roles",
+      "processes": "Processes",
+      "decision_rights": "Decision Rights",
+      "culture": "Culture",
+      "communication": "Communication"
+    },
+    "description": "Assess your organization's AI governance maturity across six pillars.",
+    "assessmentDesc": "Complete the assessment across six governance pillars.",
+    "next": "Next",
+    "back": "Back",
+    "cancel": "Cancel",
+    "selectScore": "Select a score"
+  },
+  "hierarchy": {
+    "title": "Organization hierarchy",
+    "subtitle": "Attach child organizations so they inherit your baseline policies. Children can only add stricter policies of their own.",
+    "loading": "Loading…",
+    "isChildNotice": "This organization belongs to a parent and inherits its baseline policies. Hierarchy is managed by the parent.",
+    "standaloneNotice": "This organization is top-level. Attach children below to push your policies down to them.",
+    "childrenHeading": "Child organizations",
+    "noChildren": "No child organizations yet.",
+    "attachHeading": "Attach a child",
+    "attachHint": "Paste the child organization's ID.",
+    "childOrgIdPlaceholder": "Child organization ID",
+    "attach": "Attach",
+    "detach": "Detach",
+    "attached": "Child attached.",
+    "detached": "Child detached.",
+    "attachError": "Could not attach that organization. Check the ID and that it is eligible."
+  },
+  "policy": {
+    "title": "Policies",
+    "new": "New Policy",
+    "edit": "Edit",
+    "save": "Save",
+    "playground": "Playground",
+    "evaluations": "Evaluations",
+    "apiKeys": "API Keys",
+    "fields": {
+      "name": "Name",
+      "description": "Description",
+      "ruleJson": "Rule (JSON)",
+      "severity": "Severity",
+      "mode": "Mode",
+      "scope": "Scope",
+      "enabled": "Enabled"
+    },
+    "severity": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "mode": {
+      "block": "Block",
+      "warn": "Warn",
+      "log": "Log"
+    },
+    "scope": {
+      "input": "Input",
+      "output": "Output",
+      "both": "Both"
+    },
+    "installSamples": "Install sample policies",
+    "noPolicies": "No policies yet.",
+    "inheritedPolicies": "Inherited policies",
+    "inheritedFromHq": "Inherited from HQ",
+    "inheritedReadonly": "Managed by your parent organization — read-only here.",
+    "createKey": "Create key",
+    "keyLabel": "Key label",
+    "keyShow": "Please copy the key now — it will only be shown once.",
+    "revoke": "Revoke",
+    "pasteKey": "Paste API key (aigp_…)",
+    "provider": "Provider",
+    "model": "Model",
+    "prompt": "Your prompt…",
+    "send": "Send",
+    "streaming": "Streaming…",
+    "policyHits": "Policy hits",
+    "noHits": "No hits",
+    "blocked": "Blocked",
+    "warn": "Warn",
+    "recentEvals": "Recent evaluations",
+    "exportCsv": "Export CSV",
+    "guide": {
+      "openGuide": "Guide",
+      "title": "How to Use Policies",
+      "description": "Follow these 4 steps to set up content safety guardrails for your AI applications.",
+      "step1": {
+        "title": "Create a Policy",
+        "description": "Define rules to inspect LLM input/output. Choose block (stop the call), warn (allow but flag), or log (record only). Set scope to input, output, or both."
+      },
+      "step2": {
+        "title": "Generate an API Key",
+        "description": "Create an API key to authenticate external systems calling the AIGP gateway. The key starts with aigp_ and is needed for the Playground and runtime integration."
+      },
+      "step3": {
+        "title": "Test in Playground",
+        "description": "Paste your API key and send real prompts to verify your policies work as expected. See block/warn hits in real time."
+      },
+      "step4": {
+        "title": "Review Evaluations",
+        "description": "View all policy hit history — which prompts were flagged, by which policy, and the matched text. Export to CSV for compliance reporting."
+      },
+      "goTo": "Go to",
+      "skip": "Skip",
+      "next": "Next",
+      "back": "Back",
+      "finish": "Done"
+    },
+    "ruleHelper": {
+      "toggle": "Rule Templates & Guide",
+      "templates": "Templates",
+      "reference": "Reference",
+      "insert": "Insert",
+      "tplRegex": "Regex Match",
+      "tplRegexDesc": "Match text against a regular expression pattern",
+      "tplKeywords": "Keyword Blocklist",
+      "tplKeywordsDesc": "Flag if text contains any keyword from a list",
+      "tplLength": "Length Limit",
+      "tplLengthDesc": "Block input exceeding a character count",
+      "tplAnd": "Combined (AND)",
+      "tplAndDesc": "All conditions must be true",
+      "tplOr": "Combined (OR)",
+      "tplOrDesc": "At least one condition must be true",
+      "tplAutonomy": "Autonomy Gate",
+      "tplAutonomyDesc": "Apply stricter rules for autonomous use cases",
+      "refVars": "Context Variables",
+      "refVarText": "The input or output text being evaluated",
+      "refVarScope": "Current evaluation scope: \"input\" or \"output\"",
+      "refVarUseCaseId": "Use case ID",
+      "refVarAutonomy": "Use case autonomy level (e.g. \"full\", \"supervised\")",
+      "refVarOrgId": "Organization ID",
+      "refOps": "Operators",
+      "refOpRegex": "True if text matches regex pattern",
+      "refOpContains": "True if text contains any keyword (case-insensitive)",
+      "refOpLength": "True if text length exceeds number",
+      "refOpAnd": "All conditions must be true",
+      "refOpOr": "At least one condition must be true",
+      "refOpNot": "Negates a condition",
+      "refOpEq": "Equality comparison",
+      "refOpVar": "Read a context variable",
+      "refCombinators": "Combinators",
+      "refCombinatorsDesc": "Use \"and\" / \"or\" to combine multiple conditions. Use \"!\" to negate.",
+      "refTip": "Tip: Test your rules in the Playground before deploying."
+    }
+  },
+  "workflow": {
+    "title": "Workflow",
+    "description": "Approval flows for AI use cases.",
+    "empty": {
+      "title": "No workflows yet",
+      "description": "Workflows start automatically when a use case is created."
+    },
+    "stage": {
+      "draft": "Draft",
+      "in_review": "In review",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "requested_changes": "Changes requested"
+    },
+    "action": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "requestChanges": "Request changes"
+    },
+    "col": {
+      "usecase": "Use case",
+      "stage": "Stage",
+      "actor": "Actor",
+      "updatedAt": "Updated"
+    },
+    "template": "Template",
+    "state": "State",
+    "step": "Step",
+    "assignedTo": "Assigned to",
+    "noWorkflows": "No open workflows.",
+    "takeAction": "Take action",
+    "commentPlaceholder": "Decision comment (optional)...",
+    "processing": "Processing...",
+    "approve": "Approve",
+    "reject": "Reject",
+    "requestChanges": "Request changes",
+    "notAssignable": "Only the following role can decide",
+    "decisionError": "Action failed. Please try again.",
+    "decision": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "requested_changes": "Changes requested"
+    },
+    "startWorkflow": "Start workflow",
+    "selectUsecase": "Select a use case...",
+    "selectTemplate": "Select a template...",
+    "noEligibleUsecases": "No use cases available to start a workflow.",
+    "templates": {
+      "title": "Workflow Templates",
+      "description": "Manage approval workflow templates.",
+      "empty": {
+        "title": "No templates yet",
+        "description": "Create a template to define custom approval flows."
+      },
+      "create": "New template",
+      "edit": "Edit",
+      "delete": "Delete",
+      "default": "Default",
+      "makeDefault": "Set as default",
+      "stepCount": "{count, plural, =1 {# step} other {# steps}}",
+      "form": {
+        "name": "Template name",
+        "namePlaceholder": "e.g. Standard Promotion",
+        "description": "Description",
+        "descriptionPlaceholder": "Brief description of this workflow...",
+        "isDefault": "Set as default template",
+        "steps": "Steps",
+        "addStep": "Add step",
+        "stepName": "Step name",
+        "stepNamePlaceholder": "e.g. Risk Assessment",
+        "assigneeRole": "Assign by role",
+        "assigneeUser": "Assign by user",
+        "instructions": "Instructions",
+        "instructionsPlaceholder": "Instructions for this step (optional)...",
+        "dragToReorder": "Drag to reorder",
+        "save": "Save template",
+        "saving": "Saving...",
+        "deleteConfirm": {
+          "title": "Delete template?",
+          "body": "This action cannot be undone. Templates with active workflows cannot be deleted."
+        },
+        "deleteSuccess": "Template deleted",
+        "saveSuccess": "Template saved",
+        "noSteps": "Add at least one step to continue"
+      }
+    }
+  },
+  "incident": {
+    "title": "Security Incident",
+    "status": {
+      "open": "Open",
+      "investigating": "Investigating",
+      "mitigated": "Mitigated",
+      "closed": "Closed"
+    },
+    "severity": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "list": {
+      "showMerged": "Show merged",
+      "autoCreatedTooltip": "Auto-opened from policy evaluation"
+    },
+    "openCount": "Open incidents",
+    "create": {
+      "success": "Incident created"
+    },
+    "close": {
+      "success": "Incident closed"
+    },
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "Briefly describe the incident…",
+      "severity": "Severity",
+      "rootCause": "Root cause",
+      "rootCausePlaceholder": "Analyze root cause (optional)…",
+      "relatedUsecase": "Related use case"
+    },
+    "category": {
+      "hijack": "Hijack",
+      "capability_breach": "Capability breach",
+      "data_leak": "Data leak",
+      "trust_failure": "Trust failure",
+      "cascade": "Cascade",
+      "audit_failure": "Audit failure",
+      "resource_abuse": "Resource abuse",
+      "bias_harm": "Bias harm",
+      "policy_bypass": "Policy bypass",
+      "unclassified": "Unclassified"
+    },
+    "sla": {
+      "dueIn": "Due in",
+      "overdueBy": "Overdue by",
+      "imminent": "Imminent",
+      "ok": "On track"
+    },
+    "automation": {
+      "similar_to": "Similar to",
+      "merge_into": "Merge into #{id}",
+      "dismiss": "Dismiss",
+      "merged_into": "Merged into",
+      "show_merged": "Show merged",
+      "auto_created_tooltip": "Auto-created from policy hit",
+      "source_policy_evaluation": "Source: PolicyEvaluation",
+      "auto_opened_at": "auto-opened {ts}",
+      "settings_title": "Incident automation",
+      "settings_subtitle": "Control when incidents are auto-opened from policy hits and how duplicates are detected.",
+      "auto_open_enabled": "Enable automatic incident creation",
+      "block_always_opens": "Open incident on every block-mode policy hit",
+      "hit_burst_threshold": "Burst threshold (hits)",
+      "hit_burst_window_min": "Window (minutes)",
+      "dedup_enabled": "Enable semantic deduplication",
+      "dedup_similarity_threshold": "Similarity threshold",
+      "dedup_lookback_days": "Dedup lookback (days)",
+      "save": "Save"
+    }
+  },
+  "audit": {
+    "title": "Audit Log",
+    "exportCSV": "Export CSV",
+    "noLogs": "No audit log entries.",
+    "timestamp": "Timestamp",
+    "action": "Action",
+    "resource": "Resource",
+    "actor": "Actor",
+    "ip": "IP Address",
+    "sinks": {
+      "title": "Log Forwarding",
+      "add": "Add Sink",
+      "description": "Forward audit events to external systems like Splunk or syslog servers.",
+      "empty": "No forwarding sinks configured.",
+      "createTitle": "Add Log Sink",
+      "editTitle": "Edit Log Sink",
+      "deleteConfirm": "Delete sink \"{name}\"?",
+      "enabled": "Active",
+      "disabled": "Disabled",
+      "test": "Test",
+      "testSuccess": "Test event sent successfully.",
+      "testFailed": "Test failed",
+      "type": {
+        "webhook": "Webhook (Splunk HEC)",
+        "syslog": "Syslog",
+        "datadog": "Datadog Logs"
+      },
+      "field": {
+        "name": "Name",
+        "type": "Type",
+        "url": "Endpoint URL",
+        "token": "Auth Token",
+        "host": "Host",
+        "port": "Port",
+        "protocol": "Protocol",
+        "apiKey": "API Key",
+        "enabled": "Enabled"
+      },
+      "col": {
+        "name": "Name",
+        "type": "Type",
+        "endpoint": "Endpoint",
+        "status": "Status"
+      }
+    },
+    "integrity": {
+      "title": "Audit Integrity",
+      "linkLabel": "Integrity",
+      "statsTitle": "Chain status",
+      "totalRows": "Total rows",
+      "firstSeq": "First seq",
+      "lastSeq": "Last seq",
+      "lastTs": "Last write",
+      "lastHash": "Last hash (head)",
+      "loading": "Loading…",
+      "verifyTitle": "Verify chain",
+      "verifyHelp": "Recomputes SHA-256 over the canonical content of each row and checks the prevHash linkage. Read-only operation.",
+      "verifyLast1000": "Verify last 1000",
+      "verifyAll": "Verify entire chain",
+      "verifyCustom": "Run",
+      "customRange": "Custom range",
+      "verifying": "Verifying…",
+      "resultTitle": "Result",
+      "resultOk": "OK",
+      "resultBad": "Tampering detected",
+      "totalChecked": "Checked {count} rows",
+      "firstBadAt": "First failure at seq {seq} ({kind})"
+    }
+  },
+  "evidence": {
+    "title": "Evidence",
+    "noEvidence": "No evidence files uploaded yet.",
+    "filename": "Filename",
+    "usecase": "Use case",
+    "mimeType": "MIME type",
+    "size": "Size",
+    "uploadedBy": "Uploaded by",
+    "uploadedAt": "Uploaded at",
+    "download": "Download",
+    "preview": "Preview",
+    "upload": "Upload Evidence",
+    "uploading": "Uploading…",
+    "file": "File",
+    "noUsecase": "(no linked usecase)",
+    "noControl": "(no linked control)",
+    "control": "Control",
+    "notes": "Notes (optional)",
+    "selectFile": "Please choose a file",
+    "uploadFailed": "Upload failed: ",
+    "allowedTypes": "Supports PDF / image / text / CSV / JSON / ZIP / XLSX, up to 25 MiB.",
+    "loading": "Loading…",
+    "previewFailed": "Preview failed",
+    "close": "Close"
+  },
+  "externalReports": {
+    "queueTitle": "External Reports",
+    "detailTitle": "External Report",
+    "loading": "Loading…",
+    "empty": "No external reports yet.",
+    "reporter": "Reporter",
+    "citedClause": "Cited prohibited-use clause",
+    "triageNotes": "Triage notes",
+    "filter": {
+      "allTypes": "All types",
+      "allStatuses": "All statuses"
+    },
+    "col": {
+      "title": "Title",
+      "type": "Type",
+      "status": "Status",
+      "received": "Received"
+    },
+    "status": {
+      "received": "Received",
+      "triaging": "Triaging",
+      "accepted": "Accepted",
+      "resolved": "Resolved",
+      "rejected": "Rejected",
+      "duplicate": "Duplicate"
+    },
+    "action": {
+      "startTriage": "Start triage",
+      "escalate": "Escalate to incident",
+      "resolve": "Resolve",
+      "reject": "Reject",
+      "markDuplicate": "Mark duplicate"
+    },
+    "similar": {
+      "title": "Similar existing items",
+      "none": "No similar items found.",
+      "incident": "Incident",
+      "report": "Report"
+    },
+    "intake": {
+      "title": "Public Intake",
+      "manageLink": "Manage public intake",
+      "system": "System",
+      "status": "Status",
+      "url": "Public URL",
+      "actions": "Actions",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "enable": "Enable",
+      "disable": "Disable",
+      "rotate": "Rotate"
+    },
+    "public": {
+      "title": "Report a concern",
+      "subtitle": "Submit a report about {system}.",
+      "type": "Report type",
+      "typeVulnerability": "Safety vulnerability / jailbreak",
+      "typeUsageViolation": "Usage-policy violation",
+      "titleLabel": "Summary",
+      "descriptionLabel": "Description",
+      "reproLabel": "Reproduction steps (optional)",
+      "emailLabel": "Your email (optional)",
+      "submit": "Submit report",
+      "sending": "Sending…",
+      "thanks": "Thank you. Your report has been received.",
+      "error": "Something went wrong. Please try again."
+    }
+  },
+  "alignmentAudit": {
+    "title": "Alignment Audit",
+    "newAudit": "New audit",
+    "system": "System",
+    "targetModel": "Target model",
+    "outcome": "Outcome",
+    "worstDimension": "Worst dimension",
+    "date": "Date",
+    "running": "Running",
+    "pass": "Pass",
+    "concerns": "Concerns",
+    "fail": "Fail",
+    "maxConcernScore": "Max concern score",
+    "escalate": "Escalate to incident",
+    "escalated": "Escalated to incident",
+    "provider": "Provider",
+    "dimensions": "Dimensions",
+    "start": "Start audit",
+    "noAudits": "No audits yet.",
+    "erroredBanner": "{count} probe(s) errored — consider re-running.",
+    "loading": "Loading…",
+    "judgment": "Judgment",
+    "concernScore": "Concern score",
+    "actualOutput": "Actual output",
+    "progress": "{completed} / {total} probes",
+    "viewIncident": "View incident"
+  },
+  "dataLineage": {
+    "title": "Data Lineage",
+    "description": "Track AI training and inference data sources",
+    "created": "Created",
+    "linkedUsecases": "Linked Usecases",
+    "viewGraph": "View Graph",
+    "delete": "Delete",
+    "deleting": "Deleting...",
+    "deleteConfirmTitle": "Delete this data source?",
+    "empty": "No data sources yet.",
+    "addFirst": "Add your first data source",
+    "new": "Add Data Source",
+    "name": "Name",
+    "sensitivity": "Sensitivity",
+    "origin": "Origin",
+    "view": "View",
+    "lineageGraph": "Lineage Graph",
+    "lineageGraphDescription": "Org-wide data source and usecase links",
+    "section": {
+      "title": "Data Sources",
+      "titleFromDs": "Linked Usecases",
+      "empty": "No data sources linked yet.",
+      "emptyFromDs": "No usecases linked yet."
+    },
+    "action": {
+      "link": "Link Data Source",
+      "linkFromDs": "Link Usecase",
+      "unlink": "Remove link"
+    },
+    "dialog": {
+      "dataSource": "Data source",
+      "usecase": "AI usecase",
+      "direction": "Direction",
+      "purpose": "Purpose (optional)",
+      "searchPlaceholder": "Search…",
+      "confirmUnlink": "Remove this link?",
+      "submit": "Link",
+      "cancel": "Cancel",
+      "noResults": "No matches",
+      "purposeLabel": "purpose"
+    },
+    "direction": {
+      "training": "Training",
+      "inference_input": "Inference input",
+      "inference_output": "Inference output"
+    },
+    "sensitivityLevels": {
+      "restricted": "Restricted",
+      "confidential": "Confidential",
+      "internal": "Internal",
+      "public": "Public"
+    }
+  },
+  "integrations": {
+    "title": "Integrations",
+    "empty": "No webhook endpoints configured.",
+    "addFirst": "Add your first webhook",
+    "new": "Add Webhook",
+    "url": "URL",
+    "events": "Events",
+    "status": "Status",
+    "manage": "Manage",
+    "active": "Active",
+    "disabled": "Disabled",
+    "connector": {
+      "title": "Connectors",
+      "description": "Outbound integrations and bidirectional ticket sync.",
+      "manageAll": "Manage all",
+      "new": "New Connector",
+      "pickDescription": "Pick a connector type to configure.",
+      "empty": "No connectors yet.",
+      "emptyDescription": "Add a Slack, Teams, or ServiceNow connector to deliver events to external systems.",
+      "addFirst": "Add your first connector",
+      "noSubscriptions": "No subscriptions",
+      "syncLog": "Sync log",
+      "testing": "Testing…",
+      "deleteConfirm": "Delete this connector? All sync history will be lost.",
+      "bidirectional": "Bidirectional",
+      "field": {
+        "name": "Name",
+        "type": "Type",
+        "health": "Health",
+        "lastDelivery": "Last delivery",
+        "events": "Subscribed events",
+        "subscribedEvents": "Events",
+        "direction": "Direction",
+        "eventType": "Event",
+        "status": "Status",
+        "time": "Time",
+        "detail": "Detail",
+        "inboundSecret": "Inbound secret",
+        "webhookUrl": "Webhook URL",
+        "username": "Username",
+        "password": "Password",
+        "instanceUrl": "Instance URL"
+      },
+      "health": {
+        "ok": "OK",
+        "failed": "Failed",
+        "never": "Never delivered"
+      },
+      "action": {
+        "test": "Send test",
+        "delete": "Delete"
+      },
+      "slack": {
+        "name": "Slack",
+        "description": "Incoming webhook for a Slack channel.",
+        "docs": "https://api.slack.com/messaging/webhooks"
+      },
+      "teams": {
+        "name": "Microsoft Teams",
+        "description": "Incoming webhook for a Teams channel.",
+        "docs": "https://learn.microsoft.com/microsoftteams/platform/webhooks-and-connectors/"
+      },
+      "servicenow": {
+        "name": "ServiceNow",
+        "description": "Bidirectional incident sync with ServiceNow.",
+        "docs": "See README — Setting up ServiceNow bidirectional sync.",
+        "inboundSecretTitle": "Inbound webhook secret",
+        "inboundSecretHelp": "Save this secret now — it cannot be retrieved later. Paste it into your ServiceNow Business Rule as the X-Webhook-Secret header.",
+        "inboundSecretConfirm": "I've saved it"
+      }
+    }
+  },
+  "provider": {
+    "field": {
+      "name": "Name",
+      "type": "Type",
+      "status": "Status",
+      "lastValidated": "Last validated",
+      "apiKey": "API Key",
+      "baseUrl": "Base URL",
+      "endpoint": "Azure Endpoint URL",
+      "deployment": "Deployment Name",
+      "apiVersion": "API Version",
+      "isActive": "Active",
+      "supportsEmbeddings": "Enable for embeddings (text-embedding-3-small)"
+    },
+    "action": {
+      "ping": "Ping now"
+    },
+    "model": {
+      "label": "Default model",
+      "discover": "Discover",
+      "rediscover": "Re-discover",
+      "discovering": "Discovering…",
+      "discoverFailed": "Failed to list models",
+      "placeholder": "— pick from list —",
+      "inputPlaceholder": "Type a model ID (e.g. gpt-4o-mini)",
+      "customSuffix": "custom",
+      "noneFound": "Provider returned no models. Type one manually below.",
+      "foundCount": "{count} model(s) found"
+    },
+    "connection": {
+      "title": "Provider Connections",
+      "new": "New Connection",
+      "deleteWarning": "This connection's historical invocations will be preserved but no longer linked. Continue?",
+      "deleteConfirm": "Delete this provider connection?"
+    },
+    "reliability": {
+      "title": "Runtime reliability",
+      "fallbackConnection": "Fallback connection",
+      "fallbackModel": "Fallback model",
+      "fallbackModelPlaceholder": "Use fallback default/requested model",
+      "noFallback": "No fallback",
+      "failureThreshold": "Failure threshold",
+      "cooldownSeconds": "Cooldown seconds",
+      "circuitOpen": "circuit open",
+      "circuitOpenUntil": "circuit open until {time}"
+    },
+    "catalog": {
+      "openai": {
+        "name": "OpenAI",
+        "description": "OpenAI direct API"
+      },
+      "anthropic": {
+        "name": "Anthropic",
+        "description": "Anthropic Messages API"
+      },
+      "azureOpenAi": {
+        "name": "Azure OpenAI",
+        "description": "OpenAI deployed on Azure"
+      },
+      "googleGemini": {
+        "name": "Google Gemini",
+        "description": "Gemini Developer API"
+      },
+      "deepseek": {
+        "name": "DeepSeek",
+        "description": "DeepSeek chat / reasoner"
+      },
+      "qwen": {
+        "name": "Qwen (Dashscope)",
+        "description": "Alibaba Cloud Tongyi Qianwen"
+      },
+      "kimi": {
+        "name": "Kimi (Moonshot)",
+        "description": "Moonshot AI"
+      },
+      "zhipu": {
+        "name": "Zhipu GLM",
+        "description": "Zhipu ChatGLM"
+      },
+      "minimax": {
+        "name": "MiniMax",
+        "description": "MiniMax chat completions"
+      },
+      "doubao": {
+        "name": "Doubao (Volcengine)",
+        "description": "ByteDance Doubao via Volcengine Ark"
+      },
+      "wenxin": {
+        "name": "Baidu Qianfan",
+        "description": "ERNIE / Wenxin via Qianfan"
+      },
+      "ollama": {
+        "name": "Ollama",
+        "description": "Local Ollama server"
+      },
+      "customOpenAi": {
+        "name": "Custom OpenAI-compatible",
+        "description": "Any OpenAI-compatible endpoint"
+      },
+      "customAnthropic": {
+        "name": "Custom Anthropic-compatible",
+        "description": "Any Anthropic-compatible endpoint"
+      }
+    }
+  },
+  "common": {
+    "create": "Create",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "loading": "Loading...",
+    "back": "Back",
+    "edit": "Edit",
+    "delete": "Delete",
+    "notFound": "Not found",
+    "testing": "Testing...",
+    "actions": "Actions"
+  },
+  "reports": {
+    "title": "Compliance Reports",
+    "generate": "Generate Report",
+    "generating": "Generating…",
+    "empty": "No reports yet. Click 'Generate Report' to create one.",
+    "deleteConfirm": "Delete this report? Files in storage will be left in place.",
+    "field": {
+      "template": "Template",
+      "period": "Period",
+      "periodStart": "Period start",
+      "periodEnd": "Period end",
+      "generatedAt": "Generated at",
+      "actions": "Actions"
+    },
+    "progress": {
+      "aggregating": "Aggregating data…",
+      "renderingPdf": "Rendering PDF…",
+      "renderingXlsx": "Rendering Excel…"
+    },
+    "templates": {
+      "euAiAct": "EU AI Act 2024/1689",
+      "mindforge": "MindForge AI Risk Management"
+    },
+    "articleTitle": {
+      "Art_27": "Fundamental Rights Impact Assessment"
+    }
+  },
+  "finops": {
+    "costs": {
+      "title": "Cost Dashboard",
+      "kpi": {
+        "totalCost": "Total Cost",
+        "invocations": "Invocations",
+        "inputTokens": "Input Tokens",
+        "outputTokens": "Output Tokens"
+      },
+      "start": "Start",
+      "end": "End",
+      "col": {
+        "bucket": "Bucket",
+        "cost": "Cost (USD)",
+        "invocations": "Invocations",
+        "inputTokens": "Input Tokens",
+        "outputTokens": "Output Tokens"
+      },
+      "empty": "No cost data for this period."
+    },
+    "budget": {
+      "title": "Budgets",
+      "new": "New Budget",
+      "empty": "No budgets configured.",
+      "emptyHint": "Create a budget to monitor usage and enforce spending limits.",
+      "deleteConfirm": "Delete this budget? This cannot be undone.",
+      "scope": {
+        "org": "Organization",
+        "api_key": "API Key",
+        "usecase": "Usecase"
+      },
+      "period": {
+        "daily": "Daily",
+        "weekly": "Weekly",
+        "monthly": "Monthly"
+      },
+      "col": {
+        "scope": "Scope",
+        "period": "Period",
+        "amount": "Amount (USD)",
+        "hardCap": "Hard Cap",
+        "active": "Active",
+        "actions": "Actions"
+      },
+      "form": {
+        "scope": "Scope",
+        "usecase": "Usecase",
+        "selectUsecase": "Select usecase",
+        "apiKey": "API Key",
+        "selectApiKey": "Select API key",
+        "period": "Period",
+        "amount": "Amount (USD)",
+        "hardCap": "Hard cap (block requests when exceeded)"
+      },
+      "createTitle": "Create Budget",
+      "createDesc": "Set a spending limit for an organization, API key, or usecase.",
+      "createBtn": "Create",
+      "invalidAmount": "Please enter a valid positive amount.",
+      "scopeRefRequired": "Please select a specific scope target."
+    },
+    "pricing": {
+      "title": "Pricing",
+      "builtIn": "Built-in Price Catalog",
+      "builtInHint": "Default model prices shipped with the platform, per 1M tokens. Lower priority than per-connection overrides.",
+      "connectionOverrides": "Connection Overrides",
+      "noConnections": "No provider connections configured.",
+      "configureProviders": "Manage providers",
+      "addModel": "Add model price",
+      "modelPlaceholder": "e.g. gpt-4o-mini",
+      "save": "Save",
+      "saving": "Saving…",
+      "remove": "Remove",
+      "removeConfirm": "Remove the override for this model?",
+      "noOverrides": "No model overrides set; the built-in catalog or no-pricing path will be used.",
+      "col": {
+        "model": "Model",
+        "inputPrice": "Input Price / 1M",
+        "outputPrice": "Output Price / 1M",
+        "connection": "Connection",
+        "provider": "Provider",
+        "hasOverride": "Override",
+        "actions": "Actions"
+      }
+    },
+    "import": {
+      "title": "Import Billing",
+      "description": "Import usage data from Azure OpenAI or Alibaba Bailian CSV exports.",
+      "dropzone": "Drag and drop a CSV file here",
+      "selectFile": "Select File",
+      "supportedFormats": "Supported Formats",
+      "bailianLabel": "Alibaba Bailian",
+      "bailianColumns": "Time, Model Name, InputTokens, OutputTokens, Cost",
+      "invalidFileType": "Please select a CSV file.",
+      "import": "Import",
+      "importing": "Importing…",
+      "importFailed": "Import failed. Please check the file format.",
+      "formatDetected": "Format detected",
+      "importMore": "Import Another",
+      "result": {
+        "total": "Total Rows",
+        "imported": "Imported",
+        "skipped": "Skipped",
+        "warnings": "Warnings",
+        "moreErrors": "+{count} more errors"
+      }
+    },
+    "title": "FinOps"
+  },
+  "aivtf": {
+    "title": "AIVTF Process Checklist",
+    "listTitle": "AIVTF Assessments",
+    "new": "New assessment",
+    "scope": "Scope",
+    "scopeOrg": "Organization-level",
+    "scopeUsecase": "Usecase",
+    "status": "Status",
+    "completion": "Completion",
+    "conformance": "Conformance",
+    "createTitle": "New AIVTF assessment",
+    "fieldTitle": "Title",
+    "anchor": "Anchor",
+    "anchorOrg": "Whole organization",
+    "anchorUsecase": "A specific usecase",
+    "selectUsecase": "Select usecase",
+    "create": "Create",
+    "yes": "Yes",
+    "no": "No",
+    "na": "N/A",
+    "unanswered": "Unanswered",
+    "elaboration": "Elaboration",
+    "evidence": "Evidence",
+    "genAiOnly": "GenAI only",
+    "traditionalOnly": "Traditional only",
+    "submit": "Submit",
+    "unsubmit": "Unsubmit",
+    "approve": "Approve",
+    "archive": "Archive",
+    "newVersion": "Revise (new version)",
+    "downloadPdf": "Download PDF",
+    "downloadExcel": "Download Excel",
+    "empty": "No assessments yet."
+  },
+  "mindforgeChecklist": {
+    "title": "MindForge Appendix H Checklist",
+    "listTitle": "MindForge Appendix H Assessments",
+    "new": "New assessment",
+    "scope": "Scope",
+    "scopeOrg": "Organization-level",
+    "scopeUsecase": "Usecase",
+    "status": "Status",
+    "completion": "Completion",
+    "conformance": "Conformance",
+    "createTitle": "New MindForge Appendix H assessment",
+    "fieldTitle": "Title",
+    "anchor": "Anchor",
+    "anchorOrg": "Whole organization",
+    "anchorUsecase": "A specific usecase",
+    "selectUsecase": "Select usecase",
+    "create": "Create",
+    "yes": "Yes",
+    "no": "No",
+    "na": "N/A",
+    "unanswered": "Unanswered",
+    "elaboration": "Elaboration",
+    "guidance": "Guidance",
+    "submit": "Submit",
+    "unsubmit": "Unsubmit",
+    "approve": "Approve",
+    "archive": "Archive",
+    "newVersion": "Revise (new version)",
+    "downloadPdf": "Download PDF",
+    "downloadExcel": "Download Excel",
+    "empty": "No assessments yet."
+  },
+  "transparencyReport": {
+    "title": "Transparency Report",
+    "listTitle": "Transparency Reports",
+    "createTitle": "New Transparency Report",
+    "new": "New report",
+    "empty": "No transparency reports yet.",
+    "fieldTitle": "Title",
+    "periodLabel": "Period label",
+    "periodStart": "Period start",
+    "periodEnd": "Period end",
+    "anchor": "Anchor",
+    "anchorOrg": "Organization-wide",
+    "scope": {
+      "organization": "Organization-level"
+    },
+    "portfolio": {
+      "systems": "Systems",
+      "totals": "Portfolio totals",
+      "system": "System",
+      "tier": "Tier",
+      "readiness": "Readiness",
+      "incidents": "Incidents",
+      "systemCount": "System count",
+      "worstTier": "Worst tier",
+      "highRiskBlocked": "High-risk blocked"
+    },
+    "anchorUsecase": "Specific usecase",
+    "selectUsecase": "Select usecase",
+    "scopeOrg": "Organization-level",
+    "create": "Create",
+    "overallTier": "Overall tier",
+    "noFrt": "no approved FRT",
+    "autoTiers": "Systemic-risk tiers",
+    "autoChanges": "Changes since last edition",
+    "autoIncidents": "Incident summary",
+    "autoQuality": "Model quality & posture",
+    "incidentTotal": "Total",
+    "postureScore": "Posture score",
+    "driftAvg": "Latest drift avg",
+    "tier1": "Tier 1",
+    "tier2": "Tier 2",
+    "tier3": "Tier 3",
+    "tierNone": "Not reached",
+    "delta_up": "up",
+    "delta_down": "down",
+    "delta_same": "unchanged",
+    "delta_new": "new",
+    "status_draft": "Draft",
+    "status_submitted": "Submitted",
+    "status_approved": "Approved",
+    "status_published": "Published",
+    "status_superseded": "Superseded",
+    "section_system_description": "System & model description",
+    "section_safeguards": "Safeguards & mitigations",
+    "section_evaluations": "Capability evaluations & testing",
+    "section_governance": "Governance & accountability",
+    "section_changes_note": "Changes since last edition",
+    "sectionGuide_system_description": "Describe the system this report covers: purpose, capabilities, deployment surface, and the period in scope.",
+    "sectionGuide_safeguards": "Summarize technical and organizational safeguards in place and any changes during the period.",
+    "sectionGuide_evaluations": "Describe the evaluations, red-team exercises, and benchmarks run during the period and what they found.",
+    "sectionGuide_governance": "Describe the governance structure, escalation, and how this report was reviewed and approved.",
+    "sectionGuide_changes_note": "Narrate material changes since the previous published edition; the tier-delta table accompanies this section.",
+    "submit": "Submit",
+    "unsubmit": "Unsubmit",
+    "approve": "Approve",
+    "publish": "Publish",
+    "newVersion": "New version",
+    "downloadPdf": "Download PDF",
+    "downloadExcel": "Download Excel"
+  },
+  "incidentTrends": {
+    "title": "Incident Trends",
+    "subtitle": "Cross-incident systemic risk analysis",
+    "generate": "Generate report",
+    "publish": "Publish",
+    "draft": "Draft",
+    "published": "Published",
+    "superseded": "Superseded",
+    "window": "Window",
+    "execSummary": "Executive summary",
+    "clusters": "Clusters",
+    "longTail": "Long tail",
+    "systemicRecommendation": "Systemic recommendation",
+    "confidence": "Confidence",
+    "delta": "Change vs. prior report",
+    "noReports": "No trend reports yet.",
+    "downloadPdf": "Download PDF",
+    "downloadXlsx": "Download Excel",
+    "diagnostics": "Diagnostics",
+    "incidents": "Incidents",
+    "status": "Status",
+    "generated": "Generated",
+    "category": "Category",
+    "severity": "Severity",
+    "prev": "Prev",
+    "curr": "Curr",
+    "change": "Change",
+    "baseline": "baseline",
+    "noDeltaData": "No delta data (baseline report).",
+    "stats": "Stats",
+    "total": "Total",
+    "clustered": "Clustered",
+    "noClusters": "No clusters in this report.",
+    "unnamedCluster": "Unnamed cluster",
+    "incidentsCount": "{count, plural, one {# incident} other {# incidents}}"
+  },
+  "usageInsights": {
+    "title": "Usage Insights",
+    "subtitle": "Privacy-preserving themes over consented AI tool usage",
+    "generate": "Generate report",
+    "generating": "Generating…",
+    "publish": "Publish",
+    "published": "Published",
+    "draft": "Draft",
+    "superseded": "Superseded",
+    "version": "Version",
+    "window": "Window",
+    "totalInvocations": "Consented invocations",
+    "distinctActors": "Distinct actors",
+    "suppressedClusters": "Suppressed clusters",
+    "kAnonNote": "Themes below the k-anonymity floor are suppressed.",
+    "themeLabel": "Theme",
+    "narrative": "Usage narrative",
+    "systemicObservation": "Systemic observation",
+    "exportPdf": "Export PDF",
+    "exportXlsx": "Export Excel",
+    "empty": "No reports yet.",
+    "noConsentedData": "No consented usage data in the selected window.",
+    "status": "Status",
+    "generated": "Generated",
+    "execSummary": "Executive summary",
+    "delta": "Change vs. prior report",
+    "byTool": "By tool",
+    "tool": "Tool",
+    "byOutcome": "By outcome",
+    "outcome": "Outcome",
+    "prev": "Prev",
+    "curr": "Curr",
+    "change": "Change",
+    "baseline": "baseline",
+    "noDeltaData": "No delta data (baseline report).",
+    "stats": "Stats",
+    "total": "Total",
+    "clustered": "Clustered",
+    "longTail": "Long tail",
+    "themes": "Usage themes",
+    "noThemes": "No themes above the k-anonymity floor.",
+    "unnamedTheme": "Unnamed theme",
+    "invocationCount": "{count, plural, one {# invocation} other {# invocations}}",
+    "topTools": "Top tools",
+    "outcomes": "Outcomes",
+    "confidence": "Confidence",
+    "diagnostics": "Diagnostics"
+  },
+  "frontierRiskTier": {
+    "title": "Frontier Risk Tier",
+    "listTitle": "Frontier Risk Tier Assessments",
+    "createTitle": "New Frontier Risk Tier Assessment",
+    "new": "New assessment",
+    "fieldTitle": "Title",
+    "scope": "Scope",
+    "scopeOrg": "Organization-level",
+    "scopeUsecase": "Usecase",
+    "status": "Status",
+    "completion": "Completion",
+    "overallTier": "Overall tier",
+    "anchor": "Anchor",
+    "anchorOrg": "Organization-wide",
+    "anchorUsecase": "Specific usecase",
+    "selectUsecase": "Select usecase",
+    "create": "Create",
+    "met": "Met",
+    "notMet": "Not met",
+    "na": "N/A",
+    "unanswered": "Unanswered",
+    "tier1": "Tier 1",
+    "tier2": "Tier 2",
+    "tier3": "Tier 3",
+    "tierNone": "Not reached",
+    "elaboration": "Notes / evidence",
+    "guidance": "Guidance",
+    "submit": "Submit",
+    "unsubmit": "Unsubmit",
+    "approve": "Approve",
+    "archive": "Archive",
+    "newVersion": "New version",
+    "downloadPdf": "Download PDF",
+    "downloadExcel": "Download Excel",
+    "empty": "No assessments yet.",
+    "effectiveTierSetting": "This assessment sets effective tier = {tier}",
+    "effectiveTierZero": "This assessment sets effective tier = 0 (no thresholds met)"
+  },
+  "asiRedteamChecklist": {
+    "title": "ASI Red-Team Checklist",
+    "listTitle": "ASI red-team checklist assessments",
+    "new": "New assessment",
+    "scope": "Scope",
+    "scopeOrg": "Organization-level",
+    "scopeUsecase": "Usecase",
+    "status": "Status",
+    "completion": "Completion",
+    "conformance": "Coverage",
+    "createTitle": "New ASI red-team checklist",
+    "fieldTitle": "Title",
+    "anchor": "Anchor",
+    "anchorOrg": "Organization-wide",
+    "anchorUsecase": "Specific usecase",
+    "selectUsecase": "Select a usecase",
+    "create": "Create",
+    "yes": "Yes",
+    "no": "No",
+    "na": "N/A",
+    "unanswered": "Unanswered",
+    "elaboration": "Notes / evidence",
+    "guidance": "Guidance",
+    "submit": "Submit",
+    "unsubmit": "Unsubmit",
+    "approve": "Approve",
+    "archive": "Archive",
+    "newVersion": "New version",
+    "downloadPdf": "Download PDF",
+    "downloadExcel": "Download Excel",
+    "empty": "No assessments yet.",
+    "atlas": "MITRE ATLAS",
+    "llmTop10": "LLM Top 10",
+    "agenticThreats": "Agentic Threats",
+    "aivss": "AIVSS"
+  },
+  "fria": {
+    "title": "Fundamental Rights Impact Assessment",
+    "startNew": "Start FRIA",
+    "loading": "Loading…",
+    "history": "History",
+    "updatedAt": "Updated",
+    "emptyHint": "No FRIA started for this usecase yet.",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "selfApproveBlocked": "You cannot approve your own FRIA",
+    "status": {
+      "draft": "Draft",
+      "submitted": "Submitted",
+      "approved": "Approved",
+      "archived": "Archived"
+    },
+    "actions": {
+      "save": "Save draft",
+      "submit": "Submit for review",
+      "withdraw": "Withdraw",
+      "approve": "Approve",
+      "supersede": "Start new version",
+      "archive": "Archive",
+      "exportPdf": "Export PDF"
+    },
+    "sections": {
+      "system": "1. System Identification",
+      "purpose": "2. Purpose and Intended Use",
+      "rights": "3. Fundamental Rights Assessment",
+      "governanceControls": "4. Governance Controls Mapping",
+      "overallRisk": "5. Overall Risk Assessment",
+      "mitigationPlan": "6. Mitigation Plan",
+      "consultations": "7. Consultation Record",
+      "signOff": "8. Sign-Off",
+      "reviewSchedule": "9. Review and Update"
+    },
+    "rights": {
+      "humanDignity": "Human Dignity (Art. 1)",
+      "nonDiscrimination": "Non-Discrimination (Art. 21)",
+      "privacy": "Privacy & Data Protection (Art. 7-8)",
+      "effectiveRemedy": "Effective Remedy (Art. 47)",
+      "freeExpression": "Free Expression (Art. 11)",
+      "education": "Education (Art. 14)",
+      "workersRights": "Workers' Rights (Art. 31)",
+      "childrenRights": "Children's Rights (Art. 24)"
+    }
+  },
+  "redteam": {
+    "title": "AI Trust",
+    "judgeLabel": "Judge",
+    "judgeBuiltin": "Built-in checkers",
+    "judgeNemo": "NeMo Guardrails",
+    "judgeNemoHint": "Routes each response through NeMo guardrails for judgment (requires the NeMo sidecar; runs on the built-in engine).",
+    "linkSystem": {
+      "label": "Link to AI system",
+      "none": "— None —",
+      "saved": "Saved",
+      "error": "Failed to update link"
+    },
+    "category": {
+      "jailbreak": "Jailbreak",
+      "prompt_injection": "Prompt injection",
+      "bias": "Bias",
+      "harmful": "Harmful content",
+      "pii_leak": "PII leak",
+      "toxicity": "Toxicity"
+    },
+    "overview": {
+      "subtitle": "Run red-team adversarial tests against your connected AI models to automatically surface jailbreaks, prompt injection, bias, harmful content, privacy leaks and toxicity — then export auditable reports and model cards.",
+      "whatItTests": "What it tests",
+      "categories": {
+        "jailbreak": "Tricks the model into bypassing its safety guardrails",
+        "prompt_injection": "Hijacks model behavior via injected instructions",
+        "bias": "Detects bias and discrimination in outputs",
+        "harmful": "Identifies harmful or dangerous content",
+        "pii_leak": "Detects leakage of personal/private information",
+        "toxicity": "Detects abusive and toxic language"
+      },
+      "howToUse": "How to use it",
+      "step1Title": "1. Pick a target & tests",
+      "step1Body": "Go to Evaluation Runs → New Run, choose a provider connection (the model under test), enter the model name, and select the risk categories to run.",
+      "step2Title": "2. Start the evaluation",
+      "step2Body": "Hit start — the Moonshot engine runs each category against its own datasets, asynchronously in the background. No need to wait.",
+      "step3Title": "3. Review the results",
+      "step3Body": "The run detail page shows pass/fail live, the judgment and reason for every finding, and IMDA framework coverage. Generate a model card in one click.",
+      "enter": {
+        "runs": "Evaluation Runs",
+        "runsDesc": "Launch red-team evaluations and review past runs and results",
+        "library": "Prompt Library",
+        "libraryDesc": "Browse the built-in adversarial library and upload custom prompt sets",
+        "modelCards": "Model Cards",
+        "modelCardsDesc": "Generate exportable model safety cards for a use case",
+        "checklist": "ASI Red-Team Checklist",
+        "checklistDesc": "Attest red-team coverage against the OWASP Top 10 for Agentic Applications (ASI01–ASI10)."
+      }
+    },
+    "runs": {
+      "title": "Evaluation Runs"
+    },
+    "run": {
+      "detailTitle": "Evaluation Run",
+      "new": "New Run",
+      "start": "Start evaluation",
+      "starting": "Starting…",
+      "abort": "Abort",
+      "abortConfirm": "Abort this evaluation? Partial results will be saved.",
+      "viewIncident": "View aggregated incident",
+      "selected": "Selected: {count}",
+      "selectAllInCategory": "Select all in category",
+      "field": {
+        "connection": "Provider connection",
+        "model": "Model",
+        "status": "Status",
+        "total": "Total",
+        "passed": "Passed",
+        "failed": "Failed",
+        "error": "Errors",
+        "startedAt": "Started"
+      }
+    },
+    "library": {
+      "builtin": "Built-in library",
+      "custom": "Custom prompts",
+      "customSets": "Custom sets",
+      "setName": "Set name",
+      "uploadOk": "Upload successful",
+      "uploadError": "Upload failed"
+    },
+    "finding": {
+      "promptRef": "Prompt",
+      "category": "Category",
+      "severity": "Severity",
+      "judgment": "Judgment",
+      "reason": "Reason"
+    },
+    "modelCard": {
+      "title": "Model Cards",
+      "chooseUsecase": "Choose use case",
+      "markdown": "Generate Markdown",
+      "pdf": "Generate PDF",
+      "generating": "Generating…"
+    }
+  },
+  "redteamAttestation": {
+    "title": "External red-team attestations",
+    "disclaimer": "Org-reported. The platform does not independently verify these attestations.",
+    "empty": "No external red-team attestation on record.",
+    "add": "Add attestation",
+    "attester": "Attester name",
+    "attesterOrg": "Attester organization",
+    "attesterContact": "Attester contact",
+    "scope": "Scope",
+    "methodology": "Methodology",
+    "engagementStart": "Engagement start",
+    "engagementEnd": "Engagement end",
+    "attestedAt": "Attested on",
+    "summary": "Summary",
+    "file": "Signed report (PDF)",
+    "download": "Download report",
+    "delete": "Delete",
+    "submit": "Save attestation",
+    "submitting": "Saving…",
+    "uploadFailed": "Upload failed: ",
+    "selectFile": "Select a PDF report."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No notifications",
+    "markAllRead": "Mark all read",
+    "viewAll": "View all",
+    "unreadOnly": "Unread only",
+    "tabAll": "All",
+    "tabUnread": "Unread",
+    "loadMore": "Load more",
+    "stepAssigned": {
+      "title": "New approval awaiting you",
+      "body": "{usecaseName} — step: {stepName}"
+    },
+    "workflowCancelled": {
+      "title": "Workflow rejected",
+      "body": "{usecaseName} was rejected"
+    },
+    "goLiveDecision": {
+      "approved": {
+        "title": "Go-live approved",
+        "body": "{usecaseName} was approved for go-live"
+      },
+      "live": {
+        "title": "System marked live",
+        "body": "{usecaseName} is now live"
+      },
+      "rejected": {
+        "title": "Go-live rejected",
+        "body": "{usecaseName} was rejected for go-live"
+      },
+      "withdrawn": {
+        "title": "Go-live decision withdrawn",
+        "body": "The go-live decision for {usecaseName} was withdrawn"
+      },
+      "staleApproval": {
+        "title": "Go-live approval stale",
+        "body": "{usecaseName} no longer matches the approved capability tier or model version"
+      }
+    },
+    "incidentTrendsAlert": {
+      "title": "Incident trend alert — report v{version}",
+      "body": "{count} worsening trend signal(s) detected. Open the report for detail."
+    },
+    "usecaseDeprecated": {
+      "title": "System deprecated",
+      "body": "{usecaseName} has been deprecated"
+    },
+    "externalReports": {
+      "received": {
+        "title": "New external report",
+        "body": "A new {type} report \"{title}\" was received."
+      }
+    },
+    "mcpDriftAlert": {
+      "title": "MCP tool drift detected",
+      "body": "Toolset changed on \"{serverName}\": {added} added, {removed} removed, {changed} changed."
+    },
+    "emptyHint": "Workflow, go-live and alert notifications will appear here."
+  },
+  "policyAssistant": {
+    "title": "Generate with AI",
+    "usageToday": "Today {used} / {limit}",
+    "placeholder": "e.g., Block prompts containing complete credit-card numbers",
+    "generate": "Generate",
+    "generating": "Generating…",
+    "selfChecks": "Self-checks",
+    "expectedHit": "should match",
+    "expectedMiss": "should NOT match",
+    "status": {
+      "ok": "OK",
+      "needs_review": "Needs review",
+      "failed": "Failed"
+    }
+  },
+  "mcp": {
+    "title": "MCP Servers",
+    "addServer": "Add Server",
+    "empty": "No MCP servers registered",
+    "fields": {
+      "name": "Name",
+      "endpoint": "Endpoint",
+      "transport": "Transport",
+      "authType": "Auth Type",
+      "riskTier": "Risk Tier",
+      "status": "Status",
+      "owner": "Owner",
+      "notes": "Notes"
+    },
+    "transport": {
+      "stdio": "stdio",
+      "http": "HTTP"
+    },
+    "authType": {
+      "none": "None",
+      "token": "Token",
+      "oauth": "OAuth"
+    },
+    "riskTier": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "archived": "Archived"
+    },
+    "tools": {
+      "title": "Tools",
+      "addTool": "Add Tool",
+      "empty": "No tools registered",
+      "name": "Tool Name",
+      "description": "Description",
+      "inputSchema": "Input Schema"
+    },
+    "invocations": {
+      "title": "Recent Invocations",
+      "empty": "No invocations recorded",
+      "toolName": "Tool",
+      "actor": "Actor",
+      "outcome": "Outcome",
+      "consent": "Consent",
+      "timestamp": "Time"
+    },
+    "outcome": {
+      "success": "Success",
+      "failure": "Failure",
+      "denied": "Denied"
+    },
+    "drift": {
+      "badge": "Drift pending review",
+      "panelTitle": "Tool drift review",
+      "panelIntro": "The server's advertised toolset no longer matches the approved baseline. Review the changes and approve the new baseline if they are expected.",
+      "added": "Added tools",
+      "removed": "Removed tools",
+      "changed": "Changed tools",
+      "descriptionChanged": "description changed",
+      "schemaChanged": "input schema changed",
+      "before": "Before",
+      "after": "After",
+      "approve": "Approve new baseline",
+      "approved": "New baseline approved.",
+      "historyTitle": "Tool snapshots",
+      "historySource": {
+        "polled": "polled",
+        "manual": "manual"
+      },
+      "manualTitle": "Submit tool snapshot",
+      "manualIntro": "For stdio or OAuth servers, paste the server's tools/list JSON output here to check it against the approved baseline.",
+      "manualPlaceholder": "Paste tools/list JSON…",
+      "manualSubmit": "Submit snapshot",
+      "manualMatches": "Snapshot matches the approved baseline.",
+      "manualBaselineCreated": "First snapshot recorded as baseline.",
+      "manualDrift": "Drift detected — review the changes above.",
+      "manualInvalid": "Not a valid tools/list JSON payload.",
+      "tokenLabel": "Bearer token (optional)",
+      "tokenHint": "Used only for daily tools/list polling. Stored encrypted; never displayed again.",
+      "tokenSet": "A token is stored. Enter a new value to replace it."
+    }
+  },
+  "members": {
+    "title": "Team Members",
+    "noMembers": "No members found.",
+    "col": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "joinedAt": "Joined",
+      "actions": "Actions"
+    },
+    "role": {
+      "admin": "Admin",
+      "risk_officer": "Risk Officer",
+      "ai_owner": "AI Owner",
+      "auditor": "Auditor",
+      "viewer": "Viewer"
+    },
+    "invite": {
+      "button": "Invite member",
+      "title": "Invite a new member",
+      "emailLabel": "Email",
+      "roleLabel": "Role",
+      "submit": "Send invitation",
+      "success": "Invitation sent.",
+      "error": {
+        "alreadyMember": "This email already belongs to a member.",
+        "pendingExists": "A pending invitation already exists for this email.",
+        "invalidEmail": "Please enter a valid email."
+      }
+    },
+    "pending": {
+      "title": "Pending invitations",
+      "col": {
+        "email": "Email",
+        "role": "Role",
+        "expires": "Expires",
+        "actions": ""
+      },
+      "revoke": "Revoke",
+      "empty": "No pending invitations.",
+      "expiredBadge": "Expired"
+    },
+    "remove": {
+      "button": "Remove",
+      "confirm": "Remove",
+      "confirmTitle": "Remove member?",
+      "confirmBody": "{name} will lose access to this organisation.",
+      "error": {
+        "lastAdmin": "Cannot remove the last admin.",
+        "self": "You cannot remove yourself."
+      }
+    },
+    "acceptInvite": {
+      "title": {
+        "success": "Invitation accepted",
+        "setPassword": "Set a password",
+        "sso": "Sign in with SSO",
+        "signIn": "Sign in to accept"
+      },
+      "passwordLabel": "Password (at least 8 characters)",
+      "submit": "Accept invitation",
+      "ssoButton": "Continue with SSO",
+      "goToDashboard": "Go to dashboard",
+      "error": {
+        "invalid": "This invitation link is invalid.",
+        "expired": "This invitation has expired.",
+        "revoked": "This invitation was revoked.",
+        "already_accepted": "This invitation has already been used.",
+        "email_mismatch": "This invitation was sent to a different email."
+      }
+    }
+  },
+  "drift": {
+    "title": "Drift Monitoring",
+    "addBenchmark": "New Benchmark",
+    "empty": "No benchmarks defined",
+    "fields": {
+      "name": "Name",
+      "description": "Description",
+      "threshold": "Threshold",
+      "promptCount": "Prompts",
+      "runCount": "Runs"
+    },
+    "status": {
+      "pending": "Pending",
+      "running": "Running",
+      "completed": "Completed",
+      "failed": "Failed"
+    },
+    "form": {
+      "prompts": "Prompts",
+      "addPrompt": "Add Prompt",
+      "removePrompt": "Remove",
+      "promptText": "Prompt Text",
+      "expectedBehavior": "Expected Behavior",
+      "referenceOutput": "Reference Output",
+      "targetProvider": "Target Provider",
+      "targetModel": "Target Model",
+      "judgeModel": "Judge Model"
+    },
+    "linkSystem": {
+      "label": "Link to AI system",
+      "none": "— None —"
+    },
+    "run": {
+      "title": "Runs",
+      "start": "Start Run",
+      "empty": "No runs yet",
+      "avgScore": "Avg Score",
+      "degraded": "Degraded",
+      "promptCount": "Prompts",
+      "completedCount": "Completed",
+      "startedAt": "Started",
+      "completedAt": "Completed"
+    },
+    "result": {
+      "title": "Results",
+      "prompt": "Prompt",
+      "expected": "Expected",
+      "actual": "Actual Output",
+      "score": "Score",
+      "judgment": "Judgment",
+      "targetLatency": "Target Latency",
+      "targetTokens": "Target Tokens",
+      "judgeLatency": "Judge Latency",
+      "judgeTokens": "Judge Tokens"
+    },
+    "actions": {
+      "viewResults": "View Results",
+      "deleteConfirm": "Delete this benchmark?"
+    }
+  },
+  "riskCopilot": {
+    "title": "AI Risk Suggestions",
+    "intro": "Ask the AI to identify risks that apply to this use case and recommend mitigations.",
+    "suggestButton": "Suggest risks with AI",
+    "running": "Analysing…",
+    "rerun": "Re-run",
+    "lastRun": "Last run",
+    "tokens": "{input} in / {output} out tokens · {ms} ms · {model}",
+    "diagnostics": "Diagnostics",
+    "noResults": "AI found no applicable risks. See diagnostics for why.",
+    "disabledShort": "Add a longer description (≥20 characters) to enable.",
+    "disabledRbac": "You don't have permission to run this.",
+    "disabledConfig": "AI copilot not configured. Set RISK_COPILOT_PROVIDER, RISK_COPILOT_API_KEY, and RISK_COPILOT_MODEL.",
+    "disabledCatalog": "Risk catalog is empty — run the FINOS seed first.",
+    "acceptOne": "Accept",
+    "rejectOne": "Reject",
+    "acceptAll": "Accept all pending",
+    "rejectAll": "Reject all pending",
+    "alreadyLinked": "Already linked",
+    "implementedSkipped": "{n} control(s) already implemented, skipped",
+    "evidence": "Evidence",
+    "rationale": "Rationale",
+    "mitigations": "Recommended controls",
+    "severity": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "linked": {
+      "title": "Linked risks",
+      "empty": "No risks linked to this use case yet.",
+      "remove": "Remove",
+      "source": {
+        "ai": "AI-suggested",
+        "manual": "Manual"
+      }
+    }
+  },
+  "incidentRca": {
+    "title": "AI Root Cause",
+    "intro": "Ask the AI to draft a structured root-cause analysis from this incident's context.",
+    "suggestButton": "Summarize root cause with AI",
+    "running": "Analysing…",
+    "rerun": "Re-run",
+    "lastRun": "Last run",
+    "tokens": "{input} in / {output} out tokens · {ms} ms · {model}",
+    "diagnostics": "Diagnostics",
+    "disabledRbac": "You don't have permission to run this.",
+    "summary": "Summary",
+    "rootCause": "Root Cause",
+    "timeline": "Timeline",
+    "recommendations": "Recommendations",
+    "noTimeline": "No verifiable timeline events.",
+    "accept": "Accept and write to root cause",
+    "reject": "Reject",
+    "alreadyAccepted": "Accepted by {who} at {when}",
+    "priority": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    }
+  },
+  "sso": {
+    "title": "Single Sign-On",
+    "subtitle": "Configure your organization's OIDC identity provider. Members signing in through it are provisioned automatically.",
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "saved": "Saved.",
+    "saveError": "Could not save. Check the values and try again.",
+    "rotate": "Rotate",
+    "rotateSave": "Save secret",
+    "rotated": "Secret rotated.",
+    "disabledNotice": "SSO is currently disabled — members cannot sign in through it.",
+    "fields": {
+      "issuer": "Issuer URL",
+      "clientId": "Client ID",
+      "clientSecret": "Client Secret",
+      "newSecret": "New secret",
+      "buttonLabel": "Sign-in button label",
+      "buttonLabelPlaceholder": "Sign in with SSO",
+      "allowedDomains": "Allowed email domains",
+      "allowedDomainsHint": "Comma-separated. Leave blank to allow any domain.",
+      "enabled": "Enable SSO sign-in"
+    }
+  },
+  "scim": {
+    "title": "SCIM Provisioning",
+    "subtitle": "Let your identity provider automatically create, update, and deactivate members in this org via SCIM 2.0.",
+    "loading": "Loading…",
+    "notConfigured": "SCIM is not configured for this org yet.",
+    "ssoRequired": "Configure SSO before enabling SCIM provisioning.",
+    "ssoRequiredCta": "Go to SSO settings",
+    "enable": "Enable",
+    "disable": "Disable",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "save": "Save",
+    "cancel": "Cancel",
+    "saved": "Saved.",
+    "saveError": "Could not save. Check the values and try again.",
+    "rotateToken": "Rotate token",
+    "rotateConfirm": "Rotating replaces the current bearer token. Update it in your IdP immediately, or provisioning will stop working. Continue?",
+    "tokenRevealTitle": "New bearer token (shown once)",
+    "tokenRevealBody": "Copy this now and paste it into your identity provider's SCIM configuration. It will not be shown again.",
+    "fields": {
+      "tokenPrefix": "Current token",
+      "roleAttribute": "Role attribute",
+      "roleAttributeHint": "Dot-path into the SCIM user payload used to resolve a role, e.g. \"department\" or \"urn:custom.department\".",
+      "roleValueMap": "Role value map",
+      "roleValueMapHint": "One \"attribute-value: role\" pair per line, e.g. eng: admin",
+      "endpointUrl": "SCIM endpoint URL"
+    }
+  },
+  "agentTesting": {
+    "learnMore": "Learn more ↗",
+    "connect": {
+      "title": "Connect your agent",
+      "tests": "This is where you register your agent's API — the entry point for every test below.",
+      "prereq": "Your agent needs an OpenAI-compatible HTTP API and an API key.",
+      "cta": "Add a connection"
+    },
+    "mouth": {
+      "title": "Red-teaming tests your agent’s “mouth”",
+      "tests": "Adversarial prompts probe what your agent says: jailbreak, toxicity, prompt injection, bias, and PII leakage.",
+      "prereq": "Connect a provider first so the red-team has an endpoint to attack.",
+      "cta": "Start a red-team run"
+    },
+    "hands": {
+      "title": "MCP audit tests your agent's “hands”",
+      "tests": "The invocation log records which tools your agent calls, so you can catch unauthorized or excessive tool use.",
+      "prereq": "Your agent's tools must be exposed through MCP (or otherwise instrumented).",
+      "cta": "Register an MCP server"
+    },
+    "compliance": {
+      "title": "Governance covers the compliance layer",
+      "tests": "Register your agent as a use-case and assess it against the framework catalogs (EU AI Act, NIST AI RMF, ISO 42001, and more).",
+      "prereq": "No technical prerequisite — start by describing the agent.",
+      "cta": "Register a use-case"
+    }
+  },
+  "dossier": {
+    "readinessTitle": "Go-live readiness",
+    "state": {
+      "not_ready": "Not ready",
+      "conditionally_ready": "Conditionally ready",
+      "ready": "Ready",
+      "live": "Live",
+      "needs_re_review": "Needs re-review"
+    },
+    "blockingFailing": "{count} blocking issue(s)",
+    "advisoryOpen": "{count} advisory item(s)",
+    "status": {
+      "pass": "Pass",
+      "warn": "Attention",
+      "fail": "Fail",
+      "na": "N/A"
+    },
+    "severity": {
+      "blocking": "Blocking",
+      "advisory": "Advisory"
+    },
+    "open": "Open",
+    "requiredAtTier": "Required at tier {tier}",
+    "capability": {
+      "badge": "Capability tier {tier}",
+      "notAssessed": "Tier not assessed",
+      "tierZero": "Capability tier 0 (no thresholds met)"
+    },
+    "checks": {
+      "classified": {
+        "label": "EU AI Act classification",
+        "detail": "System must be classified before go-live."
+      },
+      "risk_management": {
+        "label": "Risk management (Art. 9)",
+        "detail": "{count} control(s) not yet satisfied."
+      },
+      "regulatory_risks": {
+        "label": "Regulatory risks reviewed",
+        "detail": "{count} linked risk(s) lack a rationale."
+      },
+      "data_governance": {
+        "label": "Data governance (Art. 10)",
+        "detail": "Link data sources; set sensitivity when PII is present."
+      },
+      "documentation": {
+        "label": "Technical documentation (Art. 11)",
+        "detail": "Add a model card and at least one version."
+      },
+      "logging": {
+        "label": "Record-keeping (Art. 12)",
+        "detail": "No logged activity for this system yet."
+      },
+      "fria": {
+        "label": "Fundamental Rights Impact Assessment (Art. 27)",
+        "detail": "No approved FRIA on record."
+      },
+      "transparency": {
+        "label": "Transparency (Art. 13/50)",
+        "detail": "No published transparency report."
+      },
+      "redteam": {
+        "label": "Adversarial testing (Art. 15)",
+        "detail": "No completed red-team evaluation."
+      },
+      "drift": {
+        "label": "Ongoing monitoring (Art. 15)",
+        "detail": "Add a drift benchmark and run it."
+      },
+      "incidents": {
+        "label": "No open serious incidents",
+        "detail": "{count} open high/critical incident(s)."
+      },
+      "human_oversight": {
+        "label": "Human oversight (Art. 14)",
+        "detail": "Attest that human oversight measures are in place."
+      },
+      "external_redteam": {
+        "label": "Independent external red-team (Art. 15)",
+        "detail": "No independent external red-team attestation on record."
+      },
+      "capability_tier_assessed": {
+        "label": "Frontier capability tier assessed (RSP)",
+        "detail": "No approved Frontier Risk Tier assessment on record."
+      },
+      "alignment_audit": {
+        "label": "Behavioral alignment audit (Art. 15)",
+        "detail": "No passing alignment audit on record."
+      }
+    },
+    "systemCard": {
+      "export": "Export System Card",
+      "markdown": "Markdown",
+      "pdf": "PDF",
+      "failed": "Export failed"
+    },
+    "goLive": {
+      "title": "Go-live decision",
+      "none": "No decision recorded.",
+      "decidedBy": "Decided by {name}",
+      "approve": "Approve go-live",
+      "markLive": "Mark as live",
+      "reject": "Reject",
+      "withdraw": "Withdraw",
+      "rationale": "Rationale",
+      "conditions": "Conditions (one per line)",
+      "blockingError": "Cannot approve: blocking checks are still failing.",
+      "currentStatus": "Current status",
+      "boundFingerprint": "Approved at tier {tier} / model {model}",
+      "staleWarning": "The capability tier or model version has changed since approval. Re-review before relying on this go-live decision."
+    },
+    "oversight": {
+      "title": "Human oversight attestation (Art. 14)",
+      "attest": "I attest human oversight measures are in place"
+    }
+  },
+  "agenticGovernance": {
+    "title": "Agentic Governance",
+    "listTitle": "Agentic Governance Assessments",
+    "createTitle": "New Agentic Governance Assessment",
+    "subtitle": "Attest the governance controls around an agentic AI use-case.",
+    "new": "New assessment",
+    "empty": "No assessments yet.",
+    "fieldTitle": "Title",
+    "scope": "Scope",
+    "status": "Status",
+    "scopeOrg": "Organization-level",
+    "scopeUsecase": "Usecase",
+    "anchor": "Anchor",
+    "anchorOrg": "Organization-wide",
+    "anchorUsecase": "Specific usecase",
+    "selectUsecase": "Select a usecase",
+    "create": "Create",
+    "completion": "Completion",
+    "conformance": "Coverage",
+    "downloadPdf": "Download PDF",
+    "downloadExcel": "Download Excel",
+    "submit": "Submit",
+    "unsubmit": "Unsubmit",
+    "approve": "Approve",
+    "archive": "Archive",
+    "newVersion": "New version",
+    "yes": "Yes",
+    "no": "No",
+    "na": "N/A",
+    "unanswered": "Unanswered",
+    "elaboration": "Notes / evidence",
+    "guidance": "Guidance",
+    "seeAlso": "See also"
+  },
+  "trustCenter": {
+    "public": {
+      "heading": "Trust Center",
+      "dataAsOf": "Data as of {date} (version {version})",
+      "frameworks": "Adopted frameworks",
+      "systems": "AI systems",
+      "goLivePassed": "Go-live review passed",
+      "goLivePending": "Go-live review pending",
+      "redteam": "Independent red-teaming",
+      "redteamCount": "{count} independent attestations, most recent {date}",
+      "redteamNone": "No independent attestations recorded",
+      "transparency": "Transparency reports",
+      "sbom": "Software bill of materials",
+      "sbomAvailable": "Available on request — {count} components",
+      "sbomUnavailable": "Not published",
+      "contact": "Request the full dossier: {email}",
+      "requestAccess": "Have an access link? Open it to view the full dossier."
+    },
+    "full": {
+      "heading": "Confidential dossier",
+      "notice": "Confidential — shared under the terms of your access link. Do not redistribute.",
+      "versions": "Published versions",
+      "readiness": "Readiness checks",
+      "attestations": "Independent red-team attestations",
+      "download": "Download report (PDF)",
+      "sbom": "Full CycloneDX SBOM",
+      "transparency": "Transparency reports"
+    },
+    "admin": {
+      "title": "Trust Center",
+      "profileHeading": "Public profile",
+      "slug": "URL slug",
+      "displayName": "Display name",
+      "intro": "Introduction",
+      "contactEmail": "Contact email",
+      "enabled": "Site is live",
+      "save": "Save profile",
+      "staleBanner": "The newest published snapshot is more than 90 days old.",
+      "snapshotsHeading": "Snapshots",
+      "createDraft": "Create draft",
+      "previewPublic": "Preview public tier",
+      "previewConfidential": "Preview confidential tier",
+      "publish": "Publish",
+      "withdraw": "Withdraw",
+      "deleteDraft": "Delete draft",
+      "tokensHeading": "Access links",
+      "issueToken": "Issue access link",
+      "tokenLabel": "Label",
+      "tokenRecipient": "Recipient email",
+      "tokenExpires": "Expires",
+      "tokenShownOnce": "Copy this link now — it is shown only once.",
+      "revoke": "Revoke",
+      "revoked": "Revoked",
+      "lastUsed": "Last used",
+      "useCount": "Uses"
+    }
+  }
+}

@@ -1,0 +1,86 @@
+enum AgChkStatus {
+  draft
+  submitted
+  approved
+  archived
+}
+
+enum AgChkAnswerState {
+  unanswered
+  yes
+  no
+  na
+}
+
+model AgChkSection {
+  id      String       @id @default(cuid())
+  num     Int          @unique
+  key     String       @unique
+  title   String
+  intent  String
+  seeAlso Json         @default("[]")
+  order   Int
+  items   AgChkItem[]
+
+  @@map("ag_chk_section")
+}
+
+model AgChkItem {
+  id        String       @id @default(cuid())
+  sectionId String
+  section   AgChkSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  code      String       @unique
+  text      String
+  guidance  String?
+  order     Int
+
+  @@map("ag_chk_item")
+}
+
+model AgChkAssessment {
+  id             String      @id @default(cuid())
+  orgId          String
+  usecaseId      String?
+  version        Int         @default(1)
+  status         AgChkStatus @default(draft)
+  title          String
+  createdById    String
+  submittedAt    DateTime?
+  submittedById  String?
+  approvedAt     DateTime?
+  approvedById   String?
+  archivedAt     DateTime?
+  archivedById   String?
+  supersededById String?     @unique
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  org          Organization      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase      AiUsecase?        @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+  createdBy    User              @relation("AgChkCreator", fields: [createdById], references: [id])
+  submittedBy  User?             @relation("AgChkSubmitter", fields: [submittedById], references: [id])
+  approvedBy   User?             @relation("AgChkApprover", fields: [approvedById], references: [id])
+  archivedBy   User?             @relation("AgChkArchiver", fields: [archivedById], references: [id])
+  supersededBy AgChkAssessment?  @relation("AgChkSupersede", fields: [supersededById], references: [id])
+  supersedes   AgChkAssessment[] @relation("AgChkSupersede")
+  answers      AgChkAnswer[]
+
+  @@unique([usecaseId, version])
+  @@index([orgId, usecaseId, status])
+  @@index([orgId, status, updatedAt(sort: Desc)])
+  @@map("ag_chk_assessment")
+}
+
+model AgChkAnswer {
+  id           String           @id @default(cuid())
+  assessmentId String
+  assessment   AgChkAssessment  @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  itemCode     String
+  status       AgChkAnswerState @default(unanswered)
+  elaboration  String?
+  evidenceRefs Json             @default("[]")
+  updatedAt    DateTime         @updatedAt
+
+  @@unique([assessmentId, itemCode])
+  @@map("ag_chk_answer")
+}

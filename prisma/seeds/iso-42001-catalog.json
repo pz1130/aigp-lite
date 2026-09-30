@@ -1,0 +1,589 @@
+{
+  "_meta": {
+    "license": "Catalog of control identifiers + original summaries. ISO/IEC 42001:2023 normative text is copyrighted by ISO/IEC and is NOT reproduced here. See iso-42001-catalog.LICENSE.",
+    "attribution": "Control structure based on ISO/IEC 42001:2023, Annex A (Reference controls). Summaries are original AIGF wording.",
+    "upstreamRef": "ISO-42001-2023",
+    "importerVersion": 1
+  },
+  "risks": [
+    {
+      "code": "iso-r-impact",
+      "title": "Unassessed impact on individuals and society",
+      "category": "IMPACT",
+      "summary": "Deploying AI without assessing its impact on individuals, groups, and society can cause unfair, unsafe, or rights-infringing outcomes that go unnoticed until harm occurs.",
+      "description": "ISO/IEC 42001 emphasises impact assessment (Annex A.5). Where impacts on individuals or society are not identified and documented, the organization cannot demonstrate that AI use is responsible, and harmful effects may accumulate undetected.",
+      "frameworkRefs": {
+        "nistAiRmf": ["nist-harm-people"],
+        "finosAigf": ["ri-16"]
+      },
+      "relatedRiskCodes": ["iso-r-lifecycle"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "iso-r-data",
+      "title": "Poor data quality and provenance",
+      "category": "DATA",
+      "summary": "AI built on data of unknown provenance, poor quality, or unsuitable preparation produces unreliable and potentially biased results.",
+      "description": "ISO/IEC 42001 Annex A.7 addresses data for AI systems. Inadequate data acquisition, quality control, provenance tracking, or preparation undermines the trustworthiness of any model trained or operated on that data.",
+      "frameworkRefs": {
+        "finosAigf": ["ri-19"],
+        "nistAiRmf": ["nist-harm-people"]
+      },
+      "relatedRiskCodes": ["iso-r-impact"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "iso-r-lifecycle",
+      "title": "Uncontrolled AI system life cycle",
+      "category": "LIFECYCLE",
+      "summary": "Without defined development, verification, deployment, and monitoring processes, AI systems can be released and operated in ways that diverge from their intended, responsible purpose.",
+      "description": "ISO/IEC 42001 Annex A.6 covers the AI system life cycle. Gaps in responsible design, verification and validation, deployment control, or operational monitoring let systems drift from their intended use without detection.",
+      "frameworkRefs": {
+        "nistAiRmf": ["nist-harm-org"],
+        "finosAigf": ["ri-18"]
+      },
+      "relatedRiskCodes": ["iso-r-data"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "iso-r-thirdparty",
+      "title": "Unclear third-party and customer responsibilities",
+      "category": "RELATIONSHIPS",
+      "summary": "When responsibilities across suppliers, customers, and the organization are not allocated, AI risks fall through the gaps between parties.",
+      "description": "ISO/IEC 42001 Annex A.10 addresses third-party and customer relationships. Failing to allocate responsibilities or to manage suppliers and customers leaves accountability ambiguous when an AI system causes harm.",
+      "frameworkRefs": {
+        "nistAiRmf": ["nist-harm-ecosystem"],
+        "mitreAtlas": ["atlas-5"]
+      },
+      "relatedRiskCodes": ["iso-r-lifecycle"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    }
+  ],
+  "mitigations": [
+    {
+      "code": "A.2.2",
+      "title": "AI policy",
+      "category": "Policies related to AI",
+      "summary": "Establish and document an organizational policy that sets direction for the responsible development and use of AI.",
+      "description": "A top-level AI policy gives the AI management system its mandate and links AI activity to organizational objectives and obligations.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.2.2"],
+        "nistAiRmf": ["GOVERN-1.2"],
+        "finosAigf": ["mi-2"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.2.3", "A.2.4"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.2.3",
+      "title": "Alignment of AI policy with other organizational policies",
+      "category": "Policies related to AI",
+      "summary": "Ensure the AI policy is consistent with the organization's other policies (e.g. security, privacy, quality).",
+      "description": "Aligning AI policy with adjacent governance domains avoids conflicting requirements and closes gaps between AI and existing controls.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.2.3"],
+        "nistAiRmf": ["GOVERN-1.2"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.2.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.2.4",
+      "title": "Review of the AI policy",
+      "category": "Policies related to AI",
+      "summary": "Review the AI policy at planned intervals and when significant change occurs to keep it suitable and effective.",
+      "description": "Periodic review keeps the AI policy current as technology, regulation, and organizational context evolve.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.2.4"],
+        "nistAiRmf": ["GOVERN-1.5"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.2.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.3.2",
+      "title": "AI roles and responsibilities",
+      "category": "Internal organization",
+      "summary": "Define, allocate, and communicate roles and responsibilities for AI across the organization.",
+      "description": "Clear ownership of AI duties ensures accountability for development, operation, and oversight is assigned rather than assumed.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.3.2"],
+        "nistAiRmf": ["GOVERN-2.1"]
+      },
+      "mitigatesRiskCodes": ["iso-r-thirdparty"],
+      "relatedMitigationCodes": ["A.3.3"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.3.3",
+      "title": "Reporting of concerns",
+      "category": "Internal organization",
+      "summary": "Provide a process for personnel to report concerns about the organization's AI systems.",
+      "description": "A safe reporting channel surfaces issues early and supports a safety-first culture around AI.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.3.3"],
+        "nistAiRmf": ["GOVERN-4.3"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.3.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.4.2",
+      "title": "Resource documentation",
+      "category": "Resources for AI systems",
+      "summary": "Identify and document the resources required for AI systems across their life cycle.",
+      "description": "Documenting data, tooling, compute, and human resources makes resourcing decisions and dependencies explicit.",
+      "frameworkRefs": { "iso42001Clause": ["A.4.2"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.4.3", "A.4.4", "A.4.5", "A.4.6"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.4.3",
+      "title": "Data resources",
+      "category": "Resources for AI systems",
+      "summary": "Document the data resources used by AI systems.",
+      "description": "Recording which data resources support each system underpins data governance, provenance, and impact assessment.",
+      "frameworkRefs": { "iso42001Clause": ["A.4.3"], "finosAigf": ["ri-19"] },
+      "mitigatesRiskCodes": ["iso-r-data"],
+      "relatedMitigationCodes": ["A.7.2", "A.7.5"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.4.4",
+      "title": "Tooling resources",
+      "category": "Resources for AI systems",
+      "summary": "Document the tooling resources used to develop and operate AI systems.",
+      "description": "Tracking tooling supports reproducibility, security review, and supply-chain awareness.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.4.4"],
+        "mitreAtlas": ["atlas-5"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.4.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.4.5",
+      "title": "System and computing resources",
+      "category": "Resources for AI systems",
+      "summary": "Document the system and computing resources that AI systems depend on.",
+      "description": "Knowing the compute and infrastructure footprint supports availability, cost, and sustainability decisions.",
+      "frameworkRefs": { "iso42001Clause": ["A.4.5"], "finosAigf": ["ri-7"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.4.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.4.6",
+      "title": "Human resources",
+      "category": "Resources for AI systems",
+      "summary": "Document the human resources and competencies needed for AI systems.",
+      "description": "Identifying required skills and roles ensures the organization can responsibly build and operate its AI.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.4.6"],
+        "nistAiRmf": ["GOVERN-2.2"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.4.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.5.2",
+      "title": "AI system impact assessment process",
+      "category": "Assessing impacts of AI systems",
+      "summary": "Establish a process to assess the potential impacts of AI systems on individuals, groups, and society.",
+      "description": "A defined impact-assessment process makes the consideration of AI consequences systematic rather than ad hoc.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.5.2"],
+        "nistAiRmf": ["MAP-5.1"]
+      },
+      "mitigatesRiskCodes": ["iso-r-impact"],
+      "relatedMitigationCodes": ["A.5.3", "A.5.4", "A.5.5"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.5.3",
+      "title": "Documentation of AI system impact assessments",
+      "category": "Assessing impacts of AI systems",
+      "summary": "Document the results of AI system impact assessments.",
+      "description": "Recorded impact assessments provide evidence of due diligence and inform later risk decisions.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.5.3"],
+        "nistAiRmf": ["MAP-5.1"]
+      },
+      "mitigatesRiskCodes": ["iso-r-impact"],
+      "relatedMitigationCodes": ["A.5.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.5.4",
+      "title": "Assessing AI system impact on individuals or groups",
+      "category": "Assessing impacts of AI systems",
+      "summary": "Assess how AI systems may affect individuals or groups of individuals.",
+      "description": "Focusing on individual and group impacts addresses fairness, rights, and safety concerns specific to affected people.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.5.4"],
+        "finosAigf": ["ri-16"],
+        "nistAiRmf": ["MEASURE-2.11"]
+      },
+      "mitigatesRiskCodes": ["iso-r-impact"],
+      "relatedMitigationCodes": ["A.5.5"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.5.5",
+      "title": "Assessing societal impacts of AI systems",
+      "category": "Assessing impacts of AI systems",
+      "summary": "Assess the broader societal impacts of AI systems.",
+      "description": "Considering societal effects captures harms that extend beyond direct users to communities and the public.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.5.5"],
+        "nistAiRmf": ["nist-harm-ecosystem"]
+      },
+      "mitigatesRiskCodes": ["iso-r-impact"],
+      "relatedMitigationCodes": ["A.5.4"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.6.1.2",
+      "title": "Objectives for responsible development of AI systems",
+      "category": "AI system life cycle",
+      "summary": "Define objectives that guide the responsible development of AI systems.",
+      "description": "Explicit responsible-development objectives anchor design choices to trustworthiness goals.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.6.1.2"],
+        "nistAiRmf": ["MAP-1.3"]
+      },
+      "mitigatesRiskCodes": ["iso-r-lifecycle"],
+      "relatedMitigationCodes": ["A.6.1.3"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.6.1.3",
+      "title": "Processes for responsible design and development of AI systems",
+      "category": "AI system life cycle",
+      "summary": "Establish processes for the responsible design and development of AI systems.",
+      "description": "Defined design-and-development processes operationalise responsible-AI objectives during the build phase.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.6.1.3"],
+        "nistAiRmf": ["MAP-2.3"]
+      },
+      "mitigatesRiskCodes": ["iso-r-lifecycle"],
+      "relatedMitigationCodes": ["A.6.1.2", "A.6.2.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.6.2.2",
+      "title": "AI system requirements and specification",
+      "category": "AI system life cycle",
+      "summary": "Specify and document requirements for AI systems.",
+      "description": "Clear requirements and specifications give development a measurable target and a basis for verification.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.6.2.2"],
+        "nistAiRmf": ["MAP-1.6"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.6.2.4"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.6.2.3",
+      "title": "Documentation of AI system design and development",
+      "category": "AI system life cycle",
+      "summary": "Document the design and development of AI systems.",
+      "description": "Design-and-development documentation supports traceability, review, and maintenance over the life cycle.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.6.2.3"],
+        "nistAiRmf": ["MAP-2.1"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.6.2.7"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.6.2.4",
+      "title": "AI system verification and validation",
+      "category": "AI system life cycle",
+      "summary": "Verify and validate AI systems against their requirements before and during use.",
+      "description": "Verification and validation provide evidence that the system performs as intended and within acceptable risk.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.6.2.4"],
+        "finosAigf": ["mi-5"],
+        "nistAiRmf": ["MEASURE-2.5"]
+      },
+      "mitigatesRiskCodes": ["iso-r-lifecycle"],
+      "relatedMitigationCodes": ["A.6.2.2", "A.6.2.5"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.6.2.5",
+      "title": "AI system deployment",
+      "category": "AI system life cycle",
+      "summary": "Manage and document the deployment of AI systems.",
+      "description": "Controlled deployment ensures systems enter production only when acceptance criteria are met.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.6.2.5"],
+        "nistAiRmf": ["MANAGE-1.1"]
+      },
+      "mitigatesRiskCodes": ["iso-r-lifecycle"],
+      "relatedMitigationCodes": ["A.6.2.4", "A.6.2.6"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.6.2.6",
+      "title": "AI system operation and monitoring",
+      "category": "AI system life cycle",
+      "summary": "Operate and monitor AI systems throughout their use.",
+      "description": "Ongoing operation and monitoring detects degradation, misuse, or drift after deployment.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.6.2.6"],
+        "finosAigf": ["mi-4"],
+        "nistAiRmf": ["MEASURE-2.4"]
+      },
+      "mitigatesRiskCodes": ["iso-r-lifecycle"],
+      "relatedMitigationCodes": ["A.6.2.5", "A.6.2.8"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.6.2.7",
+      "title": "AI system technical documentation",
+      "category": "AI system life cycle",
+      "summary": "Maintain technical documentation for AI systems.",
+      "description": "Technical documentation supports operation, audit, and handover across the system's life.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.6.2.7"],
+        "nistAiRmf": ["MEASURE-2.8"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.6.2.3", "A.8.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.6.2.8",
+      "title": "AI system recording of event logs",
+      "category": "AI system life cycle",
+      "summary": "Record event logs generated by AI systems during operation.",
+      "description": "Event logging provides the audit trail needed for incident investigation and accountability.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.6.2.8"],
+        "finosAigf": ["mi-4"],
+        "nistAiRmf": ["MANAGE-4.1"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.6.2.6"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.7.2",
+      "title": "Data for development and enhancement of AI systems",
+      "category": "Data for AI systems",
+      "summary": "Define how data for developing and enhancing AI systems is determined and managed.",
+      "description": "Governing development data underpins model quality and reduces bias introduced through data.",
+      "frameworkRefs": { "iso42001Clause": ["A.7.2"], "finosAigf": ["ri-19"] },
+      "mitigatesRiskCodes": ["iso-r-data"],
+      "relatedMitigationCodes": ["A.7.3", "A.7.4"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.7.3",
+      "title": "Acquisition of data",
+      "category": "Data for AI systems",
+      "summary": "Manage the acquisition of data for AI systems, including its sources and legality.",
+      "description": "Controlled data acquisition addresses licensing, consent, and sourcing risks before data enters the pipeline.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.7.3"],
+        "finosAigf": ["mi-7", "ri-23"]
+      },
+      "mitigatesRiskCodes": ["iso-r-data"],
+      "relatedMitigationCodes": ["A.7.5"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.7.4",
+      "title": "Quality of data for AI systems",
+      "category": "Data for AI systems",
+      "summary": "Define and manage the quality of data used by AI systems.",
+      "description": "Data-quality controls ensure that models are trained and operated on fit-for-purpose data.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.7.4"],
+        "finosAigf": ["mi-6", "ri-19"],
+        "nistAiRmf": ["MAP-2.3"]
+      },
+      "mitigatesRiskCodes": ["iso-r-data"],
+      "relatedMitigationCodes": ["A.7.2", "A.7.6"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.7.5",
+      "title": "Data provenance",
+      "category": "Data for AI systems",
+      "summary": "Record and manage the provenance of data used by AI systems.",
+      "description": "Provenance tracking establishes where data came from, supporting trust, reproducibility, and compliance.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.7.5"],
+        "finosAigf": ["mi-13"],
+        "mitreAtlas": ["atlas-5"]
+      },
+      "mitigatesRiskCodes": ["iso-r-data"],
+      "relatedMitigationCodes": ["A.7.3"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.7.6",
+      "title": "Data preparation",
+      "category": "Data for AI systems",
+      "summary": "Define and manage how data is prepared for use in AI systems.",
+      "description": "Documented data preparation (cleaning, labelling, transformation) keeps datasets consistent and reduces hidden bias.",
+      "frameworkRefs": { "iso42001Clause": ["A.7.6"], "finosAigf": ["mi-6"] },
+      "mitigatesRiskCodes": ["iso-r-data"],
+      "relatedMitigationCodes": ["A.7.4"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.8.2",
+      "title": "System documentation and information for users",
+      "category": "Information for interested parties",
+      "summary": "Provide users with documentation and information needed to use AI systems appropriately.",
+      "description": "User-facing documentation enables informed, intended use and surfaces system limitations.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.8.2"],
+        "finosAigf": ["mi-13"],
+        "nistAiRmf": ["MAP-2.2"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.8.5"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.8.3",
+      "title": "External reporting",
+      "category": "Information for interested parties",
+      "summary": "Provide a mechanism for external interested parties to report issues with AI systems.",
+      "description": "External reporting channels let affected parties raise concerns and feed them into governance.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.8.3"],
+        "nistAiRmf": ["MEASURE-3.3"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.8.4"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.8.4",
+      "title": "Communication of incidents",
+      "category": "Information for interested parties",
+      "summary": "Communicate AI-related incidents to relevant interested parties.",
+      "description": "Incident communication ensures affected parties and regulators are informed and able to respond.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.8.4"],
+        "nistAiRmf": ["MANAGE-4.3"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.8.3"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.8.5",
+      "title": "Information for interested parties",
+      "category": "Information for interested parties",
+      "summary": "Determine and provide the information that interested parties need about AI systems.",
+      "description": "Tailored information for interested parties supports transparency and informed decision-making.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.8.5"],
+        "nistAiRmf": ["GOVERN-4.2"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.8.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.9.2",
+      "title": "Processes for responsible use of AI systems",
+      "category": "Use of AI systems",
+      "summary": "Establish processes for the responsible use of AI systems.",
+      "description": "Responsible-use processes govern how deployed systems are used in practice, not just how they are built.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.9.2"],
+        "nistAiRmf": ["GOVERN-1.2"]
+      },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.9.3", "A.9.4"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.9.3",
+      "title": "Objectives for responsible use of AI systems",
+      "category": "Use of AI systems",
+      "summary": "Define objectives for the responsible use of AI systems.",
+      "description": "Responsible-use objectives set expectations for operators and users of the system.",
+      "frameworkRefs": { "iso42001Clause": ["A.9.3"] },
+      "mitigatesRiskCodes": [],
+      "relatedMitigationCodes": ["A.9.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.9.4",
+      "title": "Intended use of the AI system",
+      "category": "Use of AI systems",
+      "summary": "Define and communicate the intended use of AI systems and constrain use to it.",
+      "description": "Specifying intended use makes out-of-scope or misuse recognisable and governable.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.9.4"],
+        "finosAigf": ["ri-18"],
+        "nistAiRmf": ["MAP-3.3"]
+      },
+      "mitigatesRiskCodes": ["iso-r-lifecycle"],
+      "relatedMitigationCodes": ["A.9.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.10.2",
+      "title": "Allocating responsibilities",
+      "category": "Third-party and customer relationships",
+      "summary": "Allocate responsibilities for AI systems among the organization, its suppliers, and its customers.",
+      "description": "Clear responsibility allocation across parties prevents accountability gaps in shared AI value chains.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.10.2"],
+        "nistAiRmf": ["GOVERN-6.1"]
+      },
+      "mitigatesRiskCodes": ["iso-r-thirdparty"],
+      "relatedMitigationCodes": ["A.10.3", "A.10.4"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.10.3",
+      "title": "Suppliers",
+      "category": "Third-party and customer relationships",
+      "summary": "Manage AI risks arising from suppliers and the components they provide.",
+      "description": "Supplier governance addresses third-party data, models, and tooling that the organization relies on.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.10.3"],
+        "finosAigf": ["mi-20", "ri-26"],
+        "mitreAtlas": ["atlas-5"],
+        "nistAiRmf": ["MANAGE-3.1"]
+      },
+      "mitigatesRiskCodes": ["iso-r-thirdparty"],
+      "relatedMitigationCodes": ["A.10.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "code": "A.10.4",
+      "title": "Customers",
+      "category": "Third-party and customer relationships",
+      "summary": "Manage AI obligations and information flows toward customers of AI systems.",
+      "description": "Customer-facing governance ensures downstream users receive the information and protections they need.",
+      "frameworkRefs": {
+        "iso42001Clause": ["A.10.4"],
+        "nistAiRmf": ["MANAGE-1.4"]
+      },
+      "mitigatesRiskCodes": ["iso-r-thirdparty"],
+      "relatedMitigationCodes": ["A.10.2"],
+      "sourceUrl": "https://www.iso.org/standard/81230.html"
+    }
+  ]
+}

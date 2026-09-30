@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "license": "Control identifiers + original summaries; no ISO normative text.",
+    "upstreamRef": "test-iso-0000",
+    "importerVersion": 1
+  },
+  "risks": [
+    {
+      "code": "iso-test-r1",
+      "title": "Test Risk One",
+      "category": "DATA",
+      "summary": "Summary of test risk one.",
+      "description": "Description body for test risk one.",
+      "frameworkRefs": { "nistAiRmf": ["nist-harm-people"] },
+      "relatedRiskCodes": ["iso-test-r2"],
+      "sourceUrl": "https://example.invalid/iso/r1"
+    },
+    {
+      "code": "iso-test-r2",
+      "title": "Test Risk Two",
+      "category": "LIFECYCLE",
+      "summary": "Summary two.",
+      "description": "Body two.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": [],
+      "sourceUrl": "https://example.invalid/iso/r2"
+    }
+  ],
+  "mitigations": [
+    {
+      "code": "TEST-A.2.2",
+      "title": "Test Control One",
+      "category": "Policies related to AI",
+      "summary": "Purpose one.",
+      "description": "Body one.",
+      "frameworkRefs": { "iso42001Clause": ["A.2.2"] },
+      "mitigatesRiskCodes": ["iso-test-r1", "iso-test-r99"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://example.invalid/iso/c1"
+    },
+    {
+      "code": "TEST-A.6.2.4",
+      "title": "Test Control Two",
+      "category": "AI system life cycle",
+      "summary": "Purpose two.",
+      "description": "Body two.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": ["iso-test-r2"],
+      "relatedMitigationCodes": ["TEST-A.2.2"],
+      "sourceUrl": "https://example.invalid/iso/c2"
+    }
+  ]
+}

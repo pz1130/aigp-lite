@@ -1,0 +1,4 @@
+Source: AI Verify Foundation — Moonshot (https://github.com/aiverify-foundation/moonshot), Apache-2.0.
+The attack prompts in moonshot.ts are adapted from Moonshot's open datasets/recipes.
+Per-entry upstream dataset and license are noted in each prompt's `source` field.
+Only entries whose upstream dataset permits redistribution (Apache-2.0 / CC-BY / public) were included.

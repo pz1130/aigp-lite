@@ -1,0 +1,23 @@
+model Evidence {
+  id           String   @id @default(cuid())
+  orgId        String
+  usecaseId    String?
+  controlId    String?
+  filename     String
+  filePath     String
+  mimeType     String
+  bytes        Int
+  sha256       String
+  uploadedById String
+  uploadedAt   DateTime @default(now())
+  notes        String   @default("") @db.Text
+
+  org        Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase    AiUsecase?   @relation(fields: [usecaseId], references: [id], onDelete: SetNull)
+  control    RiskControl? @relation(fields: [controlId], references: [id], onDelete: SetNull)
+  uploadedBy User         @relation("EvidenceUploader", fields: [uploadedById], references: [id])
+
+  @@index([orgId, usecaseId])
+  @@index([orgId, controlId])
+  @@map("evidence")
+}

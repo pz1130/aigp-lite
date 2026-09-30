@@ -1,0 +1,31 @@
+enum NotificationType {
+  step_assigned
+  workflow_cancelled
+  go_live_decision
+  incident_trends_alert
+  usecase_deprecated
+  external_report_received
+  mcp_drift_alert
+}
+
+model Notification {
+  id                 String           @id @default(cuid())
+  orgId              String
+  recipientUserId    String
+  type               NotificationType
+  titleKey           String
+  bodyKey            String
+  paramsJson         Json
+  linkHref           String
+  workflowInstanceId String?
+  readAt             DateTime?
+  createdAt          DateTime         @default(now())
+
+  org       Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  recipient User         @relation("NotificationRecipient", fields: [recipientUserId], references: [id], onDelete: Cascade)
+
+  @@index([recipientUserId, readAt, createdAt])
+  @@index([orgId])
+  @@index([workflowInstanceId])
+  @@map("notification")
+}

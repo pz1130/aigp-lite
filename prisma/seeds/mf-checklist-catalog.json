@@ -1,0 +1,467 @@
+{
+  "_meta": {
+    "upstreamRef": "MindForge-2025",
+    "source": "MAS/ABS MindForge AI Risk Management (Nov 2025), Appendix H",
+    "license": "see mf-checklist-catalog.json.LICENSE",
+    "note": "Codes and taxonomy follow MindForge. Questions are original AIGP wording, not verbatim publication text."
+  },
+  "sections": [
+    {
+      "num": 1,
+      "key": "governance",
+      "title": "AI Governance & Oversight",
+      "order": 1,
+      "considerations": [
+        {
+          "code": "C1",
+          "title": "Board and Senior Management Oversight",
+          "order": 1,
+          "items": [
+            {
+              "code": "C1-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Has the board formally assigned accountability for AI oversight to a named body or role?"
+            },
+            {
+              "code": "C1-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Does senior management receive and review AI risk reports on a regular cadence?"
+            },
+            {
+              "code": "C1-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Are high-impact AI initiatives subject to approval by an appropriate senior authority before proceeding?"
+            }
+          ]
+        },
+        {
+          "code": "C2",
+          "title": "AI Governance Framework and Structure",
+          "order": 2,
+          "items": [
+            {
+              "code": "C2-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Is there a documented enterprise-wide AI governance framework in place?"
+            },
+            {
+              "code": "C2-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Is AI risk integrated into the firm's overall enterprise risk management process?"
+            },
+            {
+              "code": "C2-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Are AI governance forums and escalation paths clearly defined and operating?"
+            }
+          ]
+        },
+        {
+          "code": "C3",
+          "title": "Policies, Standards and Procedures",
+          "order": 3,
+          "items": [
+            {
+              "code": "C3-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Does the organization maintain a current suite of AI policies?"
+            },
+            {
+              "code": "C3-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Are technical standards for AI development defined and applied?"
+            },
+            {
+              "code": "C3-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Are AI policies reviewed and updated to keep pace with regulatory change?"
+            }
+          ]
+        },
+        {
+          "code": "C4",
+          "title": "Roles, Responsibilities and Competency",
+          "order": 4,
+          "items": [
+            {
+              "code": "C4-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Are AI responsibilities assigned across the three lines of defence?"
+            },
+            {
+              "code": "C4-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Does the organization invest in AI literacy and specialist skills for relevant staff?"
+            },
+            {
+              "code": "C4-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Are model owner and independent validator roles clearly defined?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "num": 2,
+      "key": "risk",
+      "title": "AI Risk Identification and Assessment",
+      "order": 2,
+      "considerations": [
+        {
+          "code": "C5",
+          "title": "AI Risk Identification",
+          "order": 1,
+          "items": [
+            {
+              "code": "C5-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Does the organization maintain a complete inventory of its AI use cases?"
+            },
+            {
+              "code": "C5-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Is a structured risk taxonomy used to identify AI risks consistently?"
+            },
+            {
+              "code": "C5-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Does the organization actively scan for emerging AI threats and risk patterns?"
+            }
+          ]
+        },
+        {
+          "code": "C6",
+          "title": "AI Risk Assessment and Measurement",
+          "order": 2,
+          "items": [
+            {
+              "code": "C6-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Are both inherent and residual AI risks assessed for each use case?"
+            },
+            {
+              "code": "C6-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Is model performance and drift risk measured quantitatively?"
+            },
+            {
+              "code": "C6-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Are AI risk assessment conclusions documented and retained?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "num": 3,
+      "key": "lifecycle",
+      "title": "AI Lifecycle Management",
+      "order": 3,
+      "considerations": [
+        {
+          "code": "C7",
+          "title": "Model Development & Validation",
+          "order": 1,
+          "items": [
+            {
+              "code": "C7-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Is a fairness evaluation performed before a model is deployed?"
+            },
+            {
+              "code": "C7-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Are models tested for robustness and stability prior to release?"
+            },
+            {
+              "code": "C7-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Are models subject to independent validation before production use?"
+            }
+          ]
+        },
+        {
+          "code": "C8",
+          "title": "Data Management",
+          "order": 2,
+          "items": [
+            {
+              "code": "C8-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Is there defined data governance covering datasets used for AI?"
+            },
+            {
+              "code": "C8-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Are access to and retention of AI data subject to defined controls?"
+            },
+            {
+              "code": "C8-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Is the provenance of third-party training data assessed before use?"
+            }
+          ]
+        },
+        {
+          "code": "C9",
+          "title": "Model Deployment and Release",
+          "order": 3,
+          "items": [
+            {
+              "code": "C9-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Is production release gated on evidence that required controls are met?"
+            },
+            {
+              "code": "C9-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Are staged rollouts or canary releases used to manage deployment risk?"
+            },
+            {
+              "code": "C9-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Are deployed models versioned and tracked?"
+            }
+          ]
+        },
+        {
+          "code": "C10",
+          "title": "Model Monitoring and Performance",
+          "order": 4,
+          "items": [
+            {
+              "code": "C10-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Is the ongoing performance of production models monitored?"
+            },
+            {
+              "code": "C10-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Are mechanisms in place to detect data and concept drift?"
+            },
+            {
+              "code": "C10-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Are monitoring alerts reviewed and remediated in a timely manner?"
+            }
+          ]
+        },
+        {
+          "code": "C11",
+          "title": "Model Change and Retirement",
+          "order": 5,
+          "items": [
+            {
+              "code": "C11-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Are changes to production models subject to formal change management?"
+            },
+            {
+              "code": "C11-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Is there a defined process for safely retiring models?"
+            },
+            {
+              "code": "C11-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Is an audit trail preserved across model versions?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "num": 4,
+      "key": "operations",
+      "title": "AI Operations & Monitoring",
+      "order": 4,
+      "considerations": [
+        {
+          "code": "C12",
+          "title": "Human-AI Interaction and Oversight",
+          "order": 1,
+          "items": [
+            {
+              "code": "C12-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Are meaningful human oversight points designed into AI-enabled processes?"
+            },
+            {
+              "code": "C12-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Are users trained on the limitations of the AI systems they use?"
+            },
+            {
+              "code": "C12-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Are human override patterns of AI decisions monitored?"
+            }
+          ]
+        },
+        {
+          "code": "C13",
+          "title": "Third-Party and Outsourcing Management",
+          "order": 2,
+          "items": [
+            {
+              "code": "C13-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Are third-party AI providers assessed before engagement?"
+            },
+            {
+              "code": "C13-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Do contracts require third parties to notify the firm of material model changes?"
+            },
+            {
+              "code": "C13-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Is the performance of outsourced AI services monitored on an ongoing basis?"
+            }
+          ]
+        },
+        {
+          "code": "C14",
+          "title": "Incident Management and Response",
+          "order": 3,
+          "items": [
+            {
+              "code": "C14-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Are an AI incident taxonomy and response playbooks defined?"
+            },
+            {
+              "code": "C14-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Are material AI incidents escalated promptly to the appropriate parties?"
+            },
+            {
+              "code": "C14-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Are post-incident reviews conducted and remediation actions tracked?"
+            }
+          ]
+        },
+        {
+          "code": "C15",
+          "title": "Communication and Transparency",
+          "order": 4,
+          "items": [
+            {
+              "code": "C15-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Is AI use disclosed to customers affected by it?"
+            },
+            {
+              "code": "C15-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Is explainability provided for high-impact AI-driven decisions?"
+            },
+            {
+              "code": "C15-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Are AI limitations communicated to relevant internal stakeholders?"
+            }
+          ]
+        },
+        {
+          "code": "C16",
+          "title": "Audit and Independent Review",
+          "order": 5,
+          "items": [
+            {
+              "code": "C16-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Is independent testing of AI controls scheduled on a defined basis?"
+            },
+            {
+              "code": "C16-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Is the effectiveness of key AI controls tested?"
+            },
+            {
+              "code": "C16-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Are AI audit findings tracked through to closure?"
+            }
+          ]
+        },
+        {
+          "code": "C17",
+          "title": "Regulatory Engagement and Reporting",
+          "order": 6,
+          "items": [
+            {
+              "code": "C17-P1",
+              "order": 1,
+              "guidance": null,
+              "text": "Does the organization monitor supervisory and regulatory AI guidance?"
+            },
+            {
+              "code": "C17-P2",
+              "order": 2,
+              "guidance": null,
+              "text": "Is the organization prepared to produce AI risk reporting required by regulators?"
+            },
+            {
+              "code": "C17-P3",
+              "order": 3,
+              "guidance": null,
+              "text": "Does the organization engage regulators on material AI changes where expected?"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

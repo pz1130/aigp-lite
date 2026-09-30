@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "license": "U.S. Government Work (public domain)",
+    "upstreamRef": "test-nist-0000",
+    "importerVersion": 1
+  },
+  "risks": [
+    {
+      "code": "nist-test-r1",
+      "title": "Test Harm One",
+      "category": "HARM",
+      "summary": "Summary of test harm one.",
+      "description": "Description body for test harm one.",
+      "frameworkRefs": { "finosAigf": ["ri-16"] },
+      "relatedRiskCodes": ["nist-test-r2"],
+      "sourceUrl": "https://example.invalid/nist/r1"
+    },
+    {
+      "code": "nist-test-r2",
+      "title": "Test Harm Two",
+      "category": "HARM",
+      "summary": "Summary two.",
+      "description": "Body two.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": [],
+      "sourceUrl": "https://example.invalid/nist/r2"
+    }
+  ],
+  "mitigations": [
+    {
+      "code": "TEST-GOVERN-1.1",
+      "title": "Test Control One",
+      "category": "GOVERN",
+      "summary": "Purpose one.",
+      "description": "Body one.",
+      "frameworkRefs": { "finosAigf": ["mi-7"] },
+      "mitigatesRiskCodes": ["nist-test-r1", "nist-test-r99"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://example.invalid/nist/c1"
+    },
+    {
+      "code": "TEST-MANAGE-1.3",
+      "title": "Test Control Two",
+      "category": "MANAGE",
+      "summary": "Purpose two.",
+      "description": "Body two.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": ["nist-test-r2"],
+      "relatedMitigationCodes": ["TEST-GOVERN-1.1"],
+      "sourceUrl": "https://example.invalid/nist/c2"
+    }
+  ]
+}

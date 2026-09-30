@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "license": "© European Union (reusable with attribution)",
+    "upstreamRef": "test-eu-0000",
+    "importerVersion": 1
+  },
+  "risks": [
+    {
+      "code": "eu-test-r1",
+      "title": "Test High-Risk One",
+      "category": "HIGH_RISK",
+      "summary": "Summary of test high-risk one.",
+      "description": "Description body for test high-risk one.",
+      "frameworkRefs": { "finosAigf": ["ri-16"] },
+      "relatedRiskCodes": ["eu-test-r2"],
+      "sourceUrl": "https://example.invalid/eu/r1"
+    },
+    {
+      "code": "eu-test-r2",
+      "title": "Test High-Risk Two",
+      "category": "HIGH_RISK",
+      "summary": "Summary two.",
+      "description": "Body two.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": [],
+      "sourceUrl": "https://example.invalid/eu/r2"
+    }
+  ],
+  "mitigations": [
+    {
+      "code": "ART-TEST-9",
+      "title": "Test Obligation One",
+      "category": "PROVIDER_OBLIGATION",
+      "summary": "Purpose one.",
+      "description": "Body one.",
+      "frameworkRefs": { "finosAigf": ["mi-7"] },
+      "mitigatesRiskCodes": ["eu-test-r1", "eu-test-r99"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://example.invalid/eu/c1"
+    },
+    {
+      "code": "ART-TEST-10",
+      "title": "Test Obligation Two",
+      "category": "PROVIDER_OBLIGATION",
+      "summary": "Purpose two.",
+      "description": "Body two.",
+      "frameworkRefs": {},
+      "mitigatesRiskCodes": ["eu-test-r2"],
+      "relatedMitigationCodes": ["ART-TEST-9"],
+      "sourceUrl": "https://example.invalid/eu/c2"
+    }
+  ]
+}

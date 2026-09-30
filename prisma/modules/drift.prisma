@@ -1,0 +1,91 @@
+enum DriftRunStatus {
+  pending
+  running
+  completed
+  failed
+}
+
+model DriftBenchmark {
+  id          String        @id @default(cuid())
+  orgId       String
+  usecaseId   String?
+  name        String        @db.VarChar(200)
+  description String?       @db.Text
+  threshold   Float         @default(7.0)
+  createdById String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  org         Organization  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase     AiUsecase?    @relation(fields: [usecaseId], references: [id], onDelete: SetNull)
+  createdBy   User          @relation("DriftBenchmarkCreator", fields: [createdById], references: [id], onDelete: Cascade)
+  prompts     DriftPrompt[]
+  runs        DriftRun[]
+
+  @@index([orgId])
+  @@index([orgId, usecaseId])
+  @@map("drift_benchmark")
+}
+
+model DriftPrompt {
+  id               String         @id @default(cuid())
+  benchmarkId      String
+  orgId            String
+  sortOrder        Int            @default(0)
+  promptText       String         @db.Text
+  expectedBehavior String         @db.Text
+  referenceOutput  String?        @db.Text
+
+  benchmark        DriftBenchmark @relation(fields: [benchmarkId], references: [id], onDelete: Cascade)
+  org              Organization   @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  results          DriftResult[]
+
+  @@index([orgId])
+  @@map("drift_prompt")
+}
+
+model DriftRun {
+  id              String         @id @default(cuid())
+  orgId           String
+  benchmarkId     String
+  targetProvider  String
+  targetModel     String
+  judgeModel      String
+  status          DriftRunStatus @default(pending)
+  avgScore        Float?
+  degraded        Boolean        @default(false)
+  promptCount     Int
+  completedCount  Int            @default(0)
+  errorMessage    String?        @db.Text
+  startedAt       DateTime       @default(now())
+  completedAt     DateTime?
+
+  org             Organization   @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  benchmark       DriftBenchmark @relation(fields: [benchmarkId], references: [id], onDelete: Cascade)
+  results         DriftResult[]
+
+  @@index([orgId, startedAt(sort: Desc)])
+  @@index([orgId, benchmarkId, startedAt])
+  @@map("drift_run")
+}
+
+model DriftResult {
+  id              String      @id @default(cuid())
+  runId           String
+  promptId        String
+  orgId           String
+  actualOutput    String      @db.Text
+  score           Float
+  judgment        String      @db.Text
+  targetLatencyMs Int?
+  targetTokens    Int?
+  judgeLatencyMs  Int?
+  judgeTokens     Int?
+
+  run             DriftRun    @relation(fields: [runId], references: [id], onDelete: Cascade)
+  prompt          DriftPrompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  org             Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
+  @@map("drift_result")
+}

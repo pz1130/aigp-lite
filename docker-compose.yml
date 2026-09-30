@@ -1,0 +1,181 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: aigp
+      POSTGRES_PASSWORD: aigp
+      POSTGRES_DB: aigp
+    ports:
+      - "5432:5432"
+    volumes:
+      - aigp_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aigp -d aigp"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - aigp_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  migrate:
+    build:
+      context: .
+      target: migrate # has full devDependencies for prisma CLI + tsx
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://aigp:aigp@db:5432/aigp?schema=public
+
+  web:
+    build: .
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://aigp:aigp@db:5432/aigp?schema=public
+      REDIS_URL: redis://redis:6379
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-dev-secret-change-me-in-prod}
+      NEXTAUTH_URL: http://localhost:3000
+      AIGP_ENCRYPTION_KEY: ${AIGP_ENCRYPTION_KEY}
+      AIGP_ENCRYPTION_SEED: ${AIGP_ENCRYPTION_SEED:-aigp-dev-default}
+      AIGP_STORAGE_DRIVER: ${AIGP_STORAGE_DRIVER:-local}
+      AIGP_STORAGE_ROOT: ${AIGP_STORAGE_ROOT:-/app/storage/evidence}
+      AIGP_S3_BUCKET: ${AIGP_S3_BUCKET:-}
+      AIGP_S3_REGION: ${AIGP_S3_REGION:-us-east-1}
+      AIGP_S3_ENDPOINT: ${AIGP_S3_ENDPOINT:-}
+      AIGP_S3_FORCE_PATH_STYLE: ${AIGP_S3_FORCE_PATH_STYLE:-false}
+      AIGP_S3_PREFIX: ${AIGP_S3_PREFIX:-evidence}
+      AIGP_S3_ACCESS_KEY_ID: ${AIGP_S3_ACCESS_KEY_ID:-}
+      AIGP_S3_SECRET_ACCESS_KEY: ${AIGP_S3_SECRET_ACCESS_KEY:-}
+      AIGP_ABORT_REDIS_REST_URL: ${AIGP_ABORT_REDIS_REST_URL:-}
+      AIGP_ABORT_REDIS_REST_TOKEN: ${AIGP_ABORT_REDIS_REST_TOKEN:-}
+      AIGP_ABORT_REDIS_TTL_SECONDS: ${AIGP_ABORT_REDIS_TTL_SECONDS:-3600}
+      AIGP_MOONSHOT_URL: ${AIGP_MOONSHOT_URL:-http://moonshot:5000}
+      AIGP_MOONSHOT_API_KEY: ${AIGP_MOONSHOT_API_KEY:-}
+      AIGP_NEMO_URL: ${AIGP_NEMO_URL:-http://nemo:9000}
+      AIGP_NEMO_API_KEY: ${AIGP_NEMO_API_KEY:-}
+      AIGP_NEMO_CONFIG_ID: ${AIGP_NEMO_CONFIG_ID:-aigp_judge}
+    ports:
+      - "3000:3000"
+    volumes:
+      - aigp_storage:/app/storage
+
+  worker:
+    build:
+      context: .
+      target: worker
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_URL: postgresql://aigp:aigp@db:5432/aigp?schema=public
+      REDIS_URL: redis://redis:6379
+      AIGP_WORKER_CONCURRENCY: ${AIGP_WORKER_CONCURRENCY:-2}
+      AIGP_ENCRYPTION_KEY: ${AIGP_ENCRYPTION_KEY}
+      AIGP_ENCRYPTION_SEED: ${AIGP_ENCRYPTION_SEED:-aigp-dev-default}
+      AIGP_STORAGE_DRIVER: ${AIGP_STORAGE_DRIVER:-local}
+      AIGP_STORAGE_ROOT: ${AIGP_STORAGE_ROOT:-/app/storage/evidence}
+      AIGP_S3_BUCKET: ${AIGP_S3_BUCKET:-}
+      AIGP_S3_REGION: ${AIGP_S3_REGION:-us-east-1}
+      AIGP_S3_ENDPOINT: ${AIGP_S3_ENDPOINT:-}
+      AIGP_S3_FORCE_PATH_STYLE: ${AIGP_S3_FORCE_PATH_STYLE:-false}
+      AIGP_S3_PREFIX: ${AIGP_S3_PREFIX:-evidence}
+      AIGP_S3_ACCESS_KEY_ID: ${AIGP_S3_ACCESS_KEY_ID:-}
+      AIGP_S3_SECRET_ACCESS_KEY: ${AIGP_S3_SECRET_ACCESS_KEY:-}
+      AIGP_MOONSHOT_URL: ${AIGP_MOONSHOT_URL:-http://moonshot:5000}
+      AIGP_MOONSHOT_API_KEY: ${AIGP_MOONSHOT_API_KEY:-}
+      AIGP_NEMO_URL: ${AIGP_NEMO_URL:-http://nemo:9000}
+      AIGP_NEMO_API_KEY: ${AIGP_NEMO_API_KEY:-}
+      AIGP_NEMO_CONFIG_ID: ${AIGP_NEMO_CONFIG_ID:-aigp_judge}
+      # Drift judge config — runBenchmark reads these on the worker.
+      AIGP_DRIFT_ENABLED: ${AIGP_DRIFT_ENABLED:-}
+      AIGP_DRIFT_JUDGE_PROVIDER: ${AIGP_DRIFT_JUDGE_PROVIDER:-}
+      AIGP_DRIFT_JUDGE_ANTHROPIC_KEY: ${AIGP_DRIFT_JUDGE_ANTHROPIC_KEY:-}
+      AIGP_DRIFT_JUDGE_ANTHROPIC_MODEL: ${AIGP_DRIFT_JUDGE_ANTHROPIC_MODEL:-}
+      AIGP_DRIFT_JUDGE_OPENAI_KEY: ${AIGP_DRIFT_JUDGE_OPENAI_KEY:-}
+      AIGP_DRIFT_JUDGE_OPENAI_MODEL: ${AIGP_DRIFT_JUDGE_OPENAI_MODEL:-}
+      AIGP_DRIFT_JUDGE_GOOGLE_KEY: ${AIGP_DRIFT_JUDGE_GOOGLE_KEY:-}
+      AIGP_DRIFT_JUDGE_GOOGLE_MODEL: ${AIGP_DRIFT_JUDGE_GOOGLE_MODEL:-}
+    volumes:
+      - aigp_storage:/app/storage
+
+  # AI Verify Moonshot sidecar. No official image exists — built from the pip
+  # package (see docker/moonshot/Dockerfile). Real Moonshot's Web API is async/
+  # session-based; the adapter (src/lib/redteam/moonshot/client.ts) bridges it to
+  # AIGP's contract and was verified end-to-end against this sidecar (Task 10,
+  # 2026-06-13). Default-on: web + worker default AIGP_MOONSHOT_URL to
+  # http://moonshot:5000 (see those services), so the red-team integration is
+  # wired up out of the box. Override AIGP_MOONSHOT_URL= (empty) in .env to disable.
+  moonshot:
+    build:
+      context: ./docker/moonshot
+    restart: unless-stopped
+    # Internal sidecar: reached over the compose network as `moonshot:5000` by
+    # web/worker. Deliberately NOT published to the host — there is no host-side
+    # consumer, and host :5000 is taken by macOS AirPlay. For ad-hoc debugging
+    # use `docker compose exec moonshot curl localhost:5000/openapi.json`, or add
+    # a temporary `ports: ["5099:5000"]` override.
+    # NOTE: these are inert — Moonshot's web-api reads HOST_ADDRESS/HOST_PORT from a
+    # `.env` FILE (via python-dotenv), not from OS env, so this block does NOT affect
+    # the bind. The actual 0.0.0.0 bind is baked into the image (docker/moonshot/
+    # Dockerfile writes the web_api package-dir `.env`). Kept only as documentation
+    # of the intended bind.
+    environment:
+      HOST_ADDRESS: 0.0.0.0
+      HOST_PORT: 5000
+    healthcheck:
+      # FastAPI always serves /openapi.json — a binding-agnostic liveness probe.
+      # Swap to a real Moonshot health route once the adapter pins the contract.
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fsS http://localhost:5000/openapi.json >/dev/null || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 90s
+
+  # NeMo Guardrails sidecar. No official image exists — built from the pip
+  # package (see docker/nemo/Dockerfile), which runs the bundled HTTP server
+  # (`nemoguardrails server`). The red-team judge adapter
+  # (src/lib/redteam/nemo/client.ts) POSTs (prompt, response) exchanges to
+  # /v1/chat/completions with config_id=aigp_judge and reads
+  # guardrails.log.activated_rails[] to decide pass/fail. Default-on: web + worker default
+  # AIGP_NEMO_URL to http://nemo:9000 (see those services), so the NeMo judge is
+  # wired up out of the box. Override AIGP_NEMO_URL= (empty) in .env to disable.
+  nemo:
+    build:
+      context: ./docker/nemo
+    restart: unless-stopped
+    # Internal sidecar: reached over the compose network as `nemo:9000` by
+    # web/worker. Deliberately NOT published to the host. For ad-hoc debugging
+    # run a throwaway curl on the compose network, or add a temporary
+    # `ports: ["9099:9000"]` override.
+    volumes:
+      - ./nemo-configs:/config:ro
+
+volumes:
+  aigp_pg:
+  aigp_storage:
+  aigp_redis:

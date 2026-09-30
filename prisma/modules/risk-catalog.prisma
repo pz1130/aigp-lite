@@ -1,0 +1,69 @@
+enum RiskCatalogSource {
+  FINOS_AIGF
+  MITRE_ATLAS
+  NIST_AI_RMF
+  ISO_42001
+  EU_AI_ACT
+  MINDFORGE
+  OWASP_ASI
+  custom
+}
+
+model RiskCatalog {
+  id                String              @id @default(cuid())
+  source            RiskCatalogSource
+  code              String
+  title             String
+  category          String?
+  summary           String              @db.Text
+  description       String              @db.Text
+  frameworkRefs     Json                @default("{}")
+  relatedRiskCodes  Json                @default("[]")
+  orgId             String?
+  sourceUrl         String?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  org         Organization?            @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  mitigations RiskCatalogMitigation[]
+  usecaseLinks     UsecaseCatalogRiskLink[]
+  copilotItems     RiskCopilotSuggestionItem[]
+
+  @@unique([source, code, orgId])
+  @@index([source])
+  @@index([orgId])
+  @@map("risk_catalog")
+}
+
+model RiskCatalogMitigation {
+  riskCatalogId String
+  controlId     String
+
+  risk    RiskCatalog @relation(fields: [riskCatalogId], references: [id], onDelete: Cascade)
+  control RiskControl @relation(fields: [controlId], references: [id], onDelete: Cascade)
+
+  @@id([riskCatalogId, controlId])
+  @@index([controlId])
+  @@map("risk_catalog_mitigation")
+}
+
+enum CrosswalkRelation {
+  equivalent
+  related
+}
+
+model ControlCrosswalk {
+  id              String            @id @default(cuid())
+  sourceControlId String
+  targetControlId String
+  relation        CrosswalkRelation @default(related)
+  note            String?           @db.Text
+  createdAt       DateTime          @default(now())
+
+  source RiskControl @relation("CrosswalkSource", fields: [sourceControlId], references: [id], onDelete: Cascade)
+  target RiskControl @relation("CrosswalkTarget", fields: [targetControlId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceControlId, targetControlId])
+  @@index([targetControlId])
+  @@map("control_crosswalk")
+}

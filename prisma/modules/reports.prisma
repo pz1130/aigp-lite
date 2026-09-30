@@ -1,0 +1,16 @@
+model Report {
+  id           String       @id @default(cuid())
+  orgId        String
+  templateId   String
+  periodStart  DateTime
+  periodEnd    DateTime
+  generatedAt  DateTime     @default(now())
+  generatedBy  String
+  pdfFileKey   String?
+  excelFileKey String?
+  paramsJson   Json         @default("{}")
+  org          Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, generatedAt])
+  @@map("report")
+}

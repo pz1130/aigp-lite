@@ -1,0 +1,14 @@
+# nemo-configs/hitl-killswitch/rails/approval-gate.co
+define user request high risk action
+  "delete the production database"
+  "transfer the funds"
+  "send the mass email"
+  "execute the high risk action"
+
+define flow require approval for high risk action
+  user request high risk action
+  bot request human approval
+  stop
+
+define bot request human approval
+  "This is a high-risk action and requires explicit human approval before it can run. No action has been taken."

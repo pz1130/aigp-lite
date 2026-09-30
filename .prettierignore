@@ -1,0 +1,16 @@
+node_modules
+.next
+out
+build
+dist
+coverage
+playwright-report
+test-results
+storage
+pnpm-lock.yaml
+package-lock.json
+# Transient subagent-driven-development scratch (git-ignored); regenerated per
+# run, so it must not gate `format:check`.
+.superpowers
+# Prisma 7 generated client
+src/generated/

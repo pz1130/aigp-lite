@@ -1,0 +1,1030 @@
+{
+  "_meta": {
+    "upstreamRef": "MindForge-2025",
+    "source": "MAS/ABS MindForge AI Risk Management (Nov 2025)",
+    "license": "see mindforge-catalog.LICENSE",
+    "note": "Practice codes and taxonomy structure follow MindForge. Summaries are original AIGP wording, not verbatim publication text."
+  },
+  "risks": [
+    {
+      "code": "MF-R-FB-1",
+      "title": "Discriminatory outcomes across customer segments",
+      "category": "Fairness & Bias",
+      "summary": "Model decisions systematically favour or disadvantage comparable customers in protected or sensitive groups.",
+      "description": "Fairness & Bias risk: Model decisions systematically favour or disadvantage comparable customers in protected or sensitive groups. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {
+        "ABS Top-10 GenAI": ["yes"]
+      },
+      "relatedRiskCodes": ["MF-R-FB-2", "MF-R-FB-3", "MF-R-FB-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-FB-2",
+      "title": "Proxy discrimination through correlated features",
+      "category": "Fairness & Bias",
+      "summary": "Seemingly neutral input variables act as proxies for protected attributes and drive unequal treatment.",
+      "description": "Fairness & Bias risk: Seemingly neutral input variables act as proxies for protected attributes and drive unequal treatment. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-FB-1", "MF-R-FB-3", "MF-R-FB-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-FB-3",
+      "title": "Feedback-loop amplification of historical bias",
+      "category": "Fairness & Bias",
+      "summary": "Training on past decisions reinforces existing disparities as the model learns from biased historical outcomes.",
+      "description": "Fairness & Bias risk: Training on past decisions reinforces existing disparities as the model learns from biased historical outcomes. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-FB-1", "MF-R-FB-2", "MF-R-FB-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-FB-4",
+      "title": "Unequal error rates across population subgroups",
+      "category": "Fairness & Bias",
+      "summary": "The model performs materially worse for some customer segments, creating disparate impact even when average accuracy appears acceptable.",
+      "description": "Fairness & Bias risk: The model performs materially worse for some customer segments, creating disparate impact even when average accuracy appears acceptable. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-FB-1", "MF-R-FB-2", "MF-R-FB-3"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-ETH-1",
+      "title": "Generation of harmful or offensive content",
+      "category": "Ethics",
+      "summary": "The AI system produces toxic, abusive or socially harmful outputs when prompted or under edge-case inputs.",
+      "description": "Ethics risk: The AI system produces toxic, abusive or socially harmful outputs when prompted or under edge-case inputs. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {
+        "ABS Top-10 GenAI": ["yes"]
+      },
+      "relatedRiskCodes": ["MF-R-ETH-2", "MF-R-ETH-3"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-ETH-2",
+      "title": "Erosion of customer trust through unethical automation",
+      "category": "Ethics",
+      "summary": "Opaque or manipulative AI interactions undermine confidence in the institution's use of automated decision-making.",
+      "description": "Ethics risk: Opaque or manipulative AI interactions undermine confidence in the institution's use of automated decision-making. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-ETH-1", "MF-R-ETH-3"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-ETH-3",
+      "title": "Conflict with organisational values or conduct standards",
+      "category": "Ethics",
+      "summary": "AI behaviour or recommended actions diverge from the firm's stated ethical principles and code of conduct.",
+      "description": "Ethics risk: AI behaviour or recommended actions diverge from the firm's stated ethical principles and code of conduct. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-ETH-1", "MF-R-ETH-2"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-AG-1",
+      "title": "Third-party model and tooling supply-chain risk",
+      "category": "Accountability & Governance",
+      "summary": "Reliance on external model providers, APIs or data vendors creates gaps in accountability when failures occur.",
+      "description": "Accountability & Governance risk: Reliance on external model providers, APIs or data vendors creates gaps in accountability when failures occur. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {
+        "ABS Top-10 GenAI": ["yes"]
+      },
+      "relatedRiskCodes": ["MF-R-AG-2", "MF-R-AG-3", "MF-R-AG-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-AG-2",
+      "title": "Unclear ownership for AI decisions and outcomes",
+      "category": "Accountability & Governance",
+      "summary": "Roles and escalation paths for AI-driven decisions are undefined, delaying remediation when harm materialises.",
+      "description": "Accountability & Governance risk: Roles and escalation paths for AI-driven decisions are undefined, delaying remediation when harm materialises. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-AG-1", "MF-R-AG-3", "MF-R-AG-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-AG-3",
+      "title": "Insufficient documentation for audit and challenge",
+      "category": "Accountability & Governance",
+      "summary": "Decision logic, data lineage and model change history are inadequately recorded for internal or regulatory review.",
+      "description": "Accountability & Governance risk: Decision logic, data lineage and model change history are inadequately recorded for internal or regulatory review. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-AG-1", "MF-R-AG-2", "MF-R-AG-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-AG-4",
+      "title": "Governance structures not scaled to AI complexity",
+      "category": "Accountability & Governance",
+      "summary": "Existing risk committees and approval workflows do not cover agentic or generative AI deployment patterns.",
+      "description": "Accountability & Governance risk: Existing risk committees and approval workflows do not cover agentic or generative AI deployment patterns. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-AG-1", "MF-R-AG-2", "MF-R-AG-3"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-TR-1",
+      "title": "Over-reliance on AI-generated outputs",
+      "category": "Transparency",
+      "summary": "Staff or customers accept AI recommendations without adequate verification, amplifying errors and compliance gaps.",
+      "description": "Transparency risk: Staff or customers accept AI recommendations without adequate verification, amplifying errors and compliance gaps. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {
+        "ABS Top-10 GenAI": ["yes"]
+      },
+      "relatedRiskCodes": ["MF-R-TR-2", "MF-R-TR-3"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-TR-2",
+      "title": "Inadequate disclosure of AI involvement to customers",
+      "category": "Transparency",
+      "summary": "Users are not clearly informed when they interact with or are assessed by an AI system.",
+      "description": "Transparency risk: Users are not clearly informed when they interact with or are assessed by an AI system. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-TR-1", "MF-R-TR-3"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-TR-3",
+      "title": "Limited explainability for high-impact decisions",
+      "category": "Transparency",
+      "summary": "Material credit, fraud or eligibility decisions cannot be explained in terms customers or regulators can understand.",
+      "description": "Transparency risk: Material credit, fraud or eligibility decisions cannot be explained in terms customers or regulators can understand. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {
+        "ABS Top-10 GenAI": ["yes"]
+      },
+      "relatedRiskCodes": ["MF-R-TR-1", "MF-R-TR-2"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-LR-1",
+      "title": "Intellectual property and content-licence infringement",
+      "category": "Legal & Regulatory",
+      "summary": "Training data or generated outputs may infringe third-party copyrights, licences or contractual use restrictions.",
+      "description": "Legal & Regulatory risk: Training data or generated outputs may infringe third-party copyrights, licences or contractual use restrictions. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {
+        "ABS Top-10 GenAI": ["yes"]
+      },
+      "relatedRiskCodes": ["MF-R-LR-2", "MF-R-LR-3", "MF-R-LR-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-LR-2",
+      "title": "Non-compliance with sector AI and data-protection rules",
+      "category": "Legal & Regulatory",
+      "summary": "Deployment or data handling fails to meet applicable financial-sector, privacy or AI-specific regulatory requirements.",
+      "description": "Legal & Regulatory risk: Deployment or data handling fails to meet applicable financial-sector, privacy or AI-specific regulatory requirements. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {
+        "ABS Top-10 GenAI": ["yes"]
+      },
+      "relatedRiskCodes": ["MF-R-LR-1", "MF-R-LR-3", "MF-R-LR-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-LR-3",
+      "title": "Cross-border data-transfer and residency violations",
+      "category": "Legal & Regulatory",
+      "summary": "Model training or inference processes data across jurisdictions without required safeguards or approvals.",
+      "description": "Legal & Regulatory risk: Model training or inference processes data across jurisdictions without required safeguards or approvals. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-LR-1", "MF-R-LR-2", "MF-R-LR-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-LR-4",
+      "title": "Inadequate contract terms with AI vendors",
+      "category": "Legal & Regulatory",
+      "summary": "Third-party agreements lack clarity on liability, data use, model-change notification and regulatory cooperation.",
+      "description": "Legal & Regulatory risk: Third-party agreements lack clarity on liability, data use, model-change notification and regulatory cooperation. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-LR-1", "MF-R-LR-2", "MF-R-LR-3"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-RS-1",
+      "title": "Hallucination and factually incorrect outputs",
+      "category": "Robustness & Stability",
+      "summary": "Generative models produce confident but false statements that could mislead staff or customers.",
+      "description": "Robustness & Stability risk: Generative models produce confident but false statements that could mislead staff or customers. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {
+        "ABS Top-10 GenAI": ["yes"]
+      },
+      "relatedRiskCodes": ["MF-R-RS-2", "MF-R-RS-3", "MF-R-RS-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-RS-2",
+      "title": "Performance degradation under input distribution shift",
+      "category": "Robustness & Stability",
+      "summary": "Model accuracy falls when production data diverges from the training distribution.",
+      "description": "Robustness & Stability risk: Model accuracy falls when production data diverges from the training distribution. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-RS-1", "MF-R-RS-3", "MF-R-RS-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-RS-3",
+      "title": "Fragility to adversarial or edge-case inputs",
+      "category": "Robustness & Stability",
+      "summary": "Small perturbations or unusual inputs cause large, unpredictable changes in model behaviour.",
+      "description": "Robustness & Stability risk: Small perturbations or unusual inputs cause large, unpredictable changes in model behaviour. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-RS-1", "MF-R-RS-2", "MF-R-RS-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-RS-4",
+      "title": "Agentic workflow runaway or unintended tool use",
+      "category": "Robustness & Stability",
+      "summary": "Autonomous agents execute unplanned sequences of actions beyond the intended operational boundary.",
+      "description": "Robustness & Stability risk: Autonomous agents execute unplanned sequences of actions beyond the intended operational boundary. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-RS-1", "MF-R-RS-2", "MF-R-RS-3"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-CDS-1",
+      "title": "Training or inference data privacy leakage",
+      "category": "Cyber & Data Security",
+      "summary": "Sensitive customer or proprietary data is exposed through model memorisation, logs or prompt handling.",
+      "description": "Cyber & Data Security risk: Sensitive customer or proprietary data is exposed through model memorisation, logs or prompt handling. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {
+        "ABS Top-10 GenAI": ["yes"]
+      },
+      "relatedRiskCodes": ["MF-R-CDS-2", "MF-R-CDS-3", "MF-R-CDS-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-CDS-2",
+      "title": "Prompt injection and model manipulation attacks",
+      "category": "Cyber & Data Security",
+      "summary": "Adversarial prompts override system instructions or extract confidential context from the model.",
+      "description": "Cyber & Data Security risk: Adversarial prompts override system instructions or extract confidential context from the model. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {
+        "ABS Top-10 GenAI": ["yes"]
+      },
+      "relatedRiskCodes": ["MF-R-CDS-1", "MF-R-CDS-3", "MF-R-CDS-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-CDS-3",
+      "title": "Insecure integration with internal systems and APIs",
+      "category": "Cyber & Data Security",
+      "summary": "AI components connect to core banking systems without adequate authentication, authorisation or monitoring.",
+      "description": "Cyber & Data Security risk: AI components connect to core banking systems without adequate authentication, authorisation or monitoring. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-CDS-1", "MF-R-CDS-2", "MF-R-CDS-4"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "MF-R-CDS-4",
+      "title": "Insufficient secrets and credential management for AI pipelines",
+      "category": "Cyber & Data Security",
+      "summary": "API keys, model endpoints and data-store credentials are shared or stored without rotation and access controls.",
+      "description": "Cyber & Data Security risk: API keys, model endpoints and data-store credentials are shared or stored without rotation and access controls. Institutions should identify, assess and mitigate this risk through applicable MindForge Practices and operational controls.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": ["MF-R-CDS-1", "MF-R-CDS-2", "MF-R-CDS-3"],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    }
+  ],
+  "mitigations": [
+    {
+      "code": "C1-P1",
+      "title": "Define board AI accountability",
+      "category": "1. AI Governance & Oversight",
+      "summary": "Set clear board and senior-management accountability for AI strategy, material deployments and risk appetite.",
+      "description": "Consideration C1 — Board and Senior Management Oversight. Set clear board and senior-management accountability for AI strategy, material deployments and risk appetite.",
+      "frameworkRefs": {
+        "MindForge Section": ["1. AI Governance & Oversight"],
+        "MindForge Consideration": [
+          "C1 — Board and Senior Management Oversight"
+        ]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C1-P2",
+      "title": "Review periodic AI risk reports",
+      "category": "1. AI Governance & Oversight",
+      "summary": "Receive structured reporting on AI risks, incidents, model changes and control effectiveness at least quarterly.",
+      "description": "Consideration C1 — Board and Senior Management Oversight. Receive structured reporting on AI risks, incidents, model changes and control effectiveness at least quarterly.",
+      "frameworkRefs": {
+        "MindForge Section": ["1. AI Governance & Oversight"],
+        "MindForge Consideration": [
+          "C1 — Board and Senior Management Oversight"
+        ]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C1-P3",
+      "title": "Approve high-impact AI initiatives",
+      "category": "1. AI Governance & Oversight",
+      "summary": "Escalate and approve AI use cases with significant customer, financial or reputational impact before production.",
+      "description": "Consideration C1 — Board and Senior Management Oversight. Escalate and approve AI use cases with significant customer, financial or reputational impact before production.",
+      "frameworkRefs": {
+        "MindForge Section": ["1. AI Governance & Oversight"],
+        "MindForge Consideration": [
+          "C1 — Board and Senior Management Oversight"
+        ]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C2-P1",
+      "title": "Establish enterprise AI governance framework",
+      "category": "1. AI Governance & Oversight",
+      "summary": "Document the end-to-end governance structure covering traditional, generative and agentic AI across the organisation.",
+      "description": "Consideration C2 — AI Governance Framework and Structure. Document the end-to-end governance structure covering traditional, generative and agentic AI across the organisation.",
+      "frameworkRefs": {
+        "MindForge Section": ["1. AI Governance & Oversight"],
+        "MindForge Consideration": [
+          "C2 — AI Governance Framework and Structure"
+        ]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C2-P2",
+      "title": "Integrate AI into enterprise risk management",
+      "category": "1. AI Governance & Oversight",
+      "summary": "Align AI governance with existing ERM, operational risk and technology risk frameworks.",
+      "description": "Consideration C2 — AI Governance Framework and Structure. Align AI governance with existing ERM, operational risk and technology risk frameworks.",
+      "frameworkRefs": {
+        "MindForge Section": ["1. AI Governance & Oversight"],
+        "MindForge Consideration": [
+          "C2 — AI Governance Framework and Structure"
+        ]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C2-P3",
+      "title": "Define AI governance forums and escalation paths",
+      "category": "1. AI Governance & Oversight",
+      "summary": "Create committees or working groups with mandates, membership and decision rights for AI matters.",
+      "description": "Consideration C2 — AI Governance Framework and Structure. Create committees or working groups with mandates, membership and decision rights for AI matters.",
+      "frameworkRefs": {
+        "MindForge Section": ["1. AI Governance & Oversight"],
+        "MindForge Consideration": [
+          "C2 — AI Governance Framework and Structure"
+        ]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C3-P1",
+      "title": "Maintain AI policy suite",
+      "category": "1. AI Governance & Oversight",
+      "summary": "Publish and maintain policies covering acceptable AI use, data handling, model risk and third-party AI services.",
+      "description": "Consideration C3 — Policies, Standards and Procedures. Publish and maintain policies covering acceptable AI use, data handling, model risk and third-party AI services.",
+      "frameworkRefs": {
+        "MindForge Section": ["1. AI Governance & Oversight"],
+        "MindForge Consideration": ["C3 — Policies, Standards and Procedures"]
+      },
+      "mitigatesRiskCodes": ["MF-R-LR-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C3-P2",
+      "title": "Set technical standards for AI development",
+      "category": "1. AI Governance & Oversight",
+      "summary": "Define minimum standards for data quality, model validation, security and documentation across AI lifecycles.",
+      "description": "Consideration C3 — Policies, Standards and Procedures. Define minimum standards for data quality, model validation, security and documentation across AI lifecycles.",
+      "frameworkRefs": {
+        "MindForge Section": ["1. AI Governance & Oversight"],
+        "MindForge Consideration": ["C3 — Policies, Standards and Procedures"]
+      },
+      "mitigatesRiskCodes": ["MF-R-LR-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C3-P3",
+      "title": "Keep policies current with regulatory change",
+      "category": "1. AI Governance & Oversight",
+      "summary": "Review and update AI policies when regulations, supervisory guidance or material incidents occur.",
+      "description": "Consideration C3 — Policies, Standards and Procedures. Review and update AI policies when regulations, supervisory guidance or material incidents occur.",
+      "frameworkRefs": {
+        "MindForge Section": ["1. AI Governance & Oversight"],
+        "MindForge Consideration": ["C3 — Policies, Standards and Procedures"]
+      },
+      "mitigatesRiskCodes": ["MF-R-LR-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C4-P1",
+      "title": "Assign three-lines AI responsibilities",
+      "category": "1. AI Governance & Oversight",
+      "summary": "Clarify first-, second- and third-line roles for AI development, independent challenge and audit.",
+      "description": "Consideration C4 — Roles, Responsibilities and Competency. Clarify first-, second- and third-line roles for AI development, independent challenge and audit.",
+      "frameworkRefs": {
+        "MindForge Section": ["1. AI Governance & Oversight"],
+        "MindForge Consideration": [
+          "C4 — Roles, Responsibilities and Competency"
+        ]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C4-P2",
+      "title": "Build AI literacy and specialist skills",
+      "category": "1. AI Governance & Oversight",
+      "summary": "Provide role-based training so staff understand AI capabilities, limits and escalation triggers.",
+      "description": "Consideration C4 — Roles, Responsibilities and Competency. Provide role-based training so staff understand AI capabilities, limits and escalation triggers.",
+      "frameworkRefs": {
+        "MindForge Section": ["1. AI Governance & Oversight"],
+        "MindForge Consideration": [
+          "C4 — Roles, Responsibilities and Competency"
+        ]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C4-P3",
+      "title": "Define model owner and validator roles",
+      "category": "1. AI Governance & Oversight",
+      "summary": "Assign accountable owners and independent validators for each material AI model in production.",
+      "description": "Consideration C4 — Roles, Responsibilities and Competency. Assign accountable owners and independent validators for each material AI model in production.",
+      "frameworkRefs": {
+        "MindForge Section": ["1. AI Governance & Oversight"],
+        "MindForge Consideration": [
+          "C4 — Roles, Responsibilities and Competency"
+        ]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C5-P1",
+      "title": "Maintain AI use-case inventory",
+      "category": "2. AI Risk Identification and Assessment",
+      "summary": "Catalog all AI systems in development and production, including third-party and embedded models.",
+      "description": "Consideration C5 — AI Risk Identification. Catalog all AI systems in development and production, including third-party and embedded models.",
+      "frameworkRefs": {
+        "MindForge Section": ["2. AI Risk Identification and Assessment"],
+        "MindForge Consideration": ["C5 — AI Risk Identification"]
+      },
+      "mitigatesRiskCodes": ["MF-R-ETH-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C5-P2",
+      "title": "Apply taxonomy-based risk identification",
+      "category": "2. AI Risk Identification and Assessment",
+      "summary": "Map each use case to the MindForge risk taxonomy dimensions and document inherent risks.",
+      "description": "Consideration C5 — AI Risk Identification. Map each use case to the MindForge risk taxonomy dimensions and document inherent risks.",
+      "frameworkRefs": {
+        "MindForge Section": ["2. AI Risk Identification and Assessment"],
+        "MindForge Consideration": ["C5 — AI Risk Identification"]
+      },
+      "mitigatesRiskCodes": ["MF-R-ETH-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C5-P3",
+      "title": "Scan for emerging AI threat patterns",
+      "category": "2. AI Risk Identification and Assessment",
+      "summary": "Monitor industry incidents, red-team findings and threat intelligence relevant to deployed AI types.",
+      "description": "Consideration C5 — AI Risk Identification. Monitor industry incidents, red-team findings and threat intelligence relevant to deployed AI types.",
+      "frameworkRefs": {
+        "MindForge Section": ["2. AI Risk Identification and Assessment"],
+        "MindForge Consideration": ["C5 — AI Risk Identification"]
+      },
+      "mitigatesRiskCodes": ["MF-R-ETH-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C6-P1",
+      "title": "Assess inherent and residual AI risk",
+      "category": "2. AI Risk Identification and Assessment",
+      "summary": "Evaluate likelihood and impact of identified risks before and after controls for each material use case.",
+      "description": "Consideration C6 — AI Risk Assessment and Measurement. Evaluate likelihood and impact of identified risks before and after controls for each material use case.",
+      "frameworkRefs": {
+        "MindForge Section": ["2. AI Risk Identification and Assessment"],
+        "MindForge Consideration": ["C6 — AI Risk Assessment and Measurement"]
+      },
+      "mitigatesRiskCodes": ["MF-R-RS-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C6-P2",
+      "title": "Quantify model performance and drift risk",
+      "category": "2. AI Risk Identification and Assessment",
+      "summary": "Measure accuracy, stability and drift indicators against defined thresholds.",
+      "description": "Consideration C6 — AI Risk Assessment and Measurement. Measure accuracy, stability and drift indicators against defined thresholds.",
+      "frameworkRefs": {
+        "MindForge Section": ["2. AI Risk Identification and Assessment"],
+        "MindForge Consideration": ["C6 — AI Risk Assessment and Measurement"]
+      },
+      "mitigatesRiskCodes": ["MF-R-RS-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C6-P3",
+      "title": "Document risk assessment conclusions",
+      "category": "2. AI Risk Identification and Assessment",
+      "summary": "Record assessment outcomes, assumptions, limitations and sign-off for audit and regulatory review.",
+      "description": "Consideration C6 — AI Risk Assessment and Measurement. Record assessment outcomes, assumptions, limitations and sign-off for audit and regulatory review.",
+      "frameworkRefs": {
+        "MindForge Section": ["2. AI Risk Identification and Assessment"],
+        "MindForge Consideration": ["C6 — AI Risk Assessment and Measurement"]
+      },
+      "mitigatesRiskCodes": ["MF-R-RS-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C7-P1",
+      "title": "Pre-deployment fairness evaluation",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Evaluate model outcomes across customer segments and document fairness findings prior to release.",
+      "description": "Consideration C7 — Model Development & Validation. Evaluate model outcomes across customer segments and document fairness findings prior to release.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C7 — Model Development & Validation"]
+      },
+      "mitigatesRiskCodes": ["MF-R-FB-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C7-P2",
+      "title": "Robustness and stability testing",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Test model behaviour under distribution shift and document robustness findings prior to release.",
+      "description": "Consideration C7 — Model Development & Validation. Test model behaviour under distribution shift and document robustness findings prior to release.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C7 — Model Development & Validation"]
+      },
+      "mitigatesRiskCodes": ["MF-R-FB-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C7-P3",
+      "title": "Independent model validation",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Subject material models to independent validation covering methodology, data and implementation integrity.",
+      "description": "Consideration C7 — Model Development & Validation. Subject material models to independent validation covering methodology, data and implementation integrity.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C7 — Model Development & Validation"]
+      },
+      "mitigatesRiskCodes": ["MF-R-FB-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C8-P1",
+      "title": "Define data governance for AI datasets",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Establish ownership, quality criteria and lineage for training, validation and production data.",
+      "description": "Consideration C8 — Data Management. Establish ownership, quality criteria and lineage for training, validation and production data.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C8 — Data Management"]
+      },
+      "mitigatesRiskCodes": ["MF-R-CDS-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C8-P2",
+      "title": "Control data access and retention",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Restrict access to sensitive data used in AI pipelines and enforce retention and deletion rules.",
+      "description": "Consideration C8 — Data Management. Restrict access to sensitive data used in AI pipelines and enforce retention and deletion rules.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C8 — Data Management"]
+      },
+      "mitigatesRiskCodes": ["MF-R-CDS-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C8-P3",
+      "title": "Assess third-party training data provenance",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Verify licensing, consent and quality of external data used to train or fine-tune models.",
+      "description": "Consideration C8 — Data Management. Verify licensing, consent and quality of external data used to train or fine-tune models.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C8 — Data Management"]
+      },
+      "mitigatesRiskCodes": ["MF-R-CDS-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C9-P1",
+      "title": "Gate production release on control evidence",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Require documented validation, security review and approval before deploying models to production.",
+      "description": "Consideration C9 — Model Deployment and Release. Require documented validation, security review and approval before deploying models to production.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C9 — Model Deployment and Release"]
+      },
+      "mitigatesRiskCodes": ["MF-R-RS-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C9-P2",
+      "title": "Manage staged rollout and canary releases",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Deploy material model changes through phased rollout with rollback criteria.",
+      "description": "Consideration C9 — Model Deployment and Release. Deploy material model changes through phased rollout with rollback criteria.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C9 — Model Deployment and Release"]
+      },
+      "mitigatesRiskCodes": ["MF-R-RS-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C9-P3",
+      "title": "Version and track deployed models",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Maintain a registry of production model versions, parameters and deployment environments.",
+      "description": "Consideration C9 — Model Deployment and Release. Maintain a registry of production model versions, parameters and deployment environments.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C9 — Model Deployment and Release"]
+      },
+      "mitigatesRiskCodes": ["MF-R-RS-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C10-P1",
+      "title": "Monitor ongoing model performance",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Track accuracy, latency, drift and business KPIs against defined tolerances in production.",
+      "description": "Consideration C10 — Model Monitoring and Performance. Track accuracy, latency, drift and business KPIs against defined tolerances in production.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C10 — Model Monitoring and Performance"]
+      },
+      "mitigatesRiskCodes": ["MF-R-RS-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C10-P2",
+      "title": "Detect data and concept drift",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Alert when input distributions or outcome patterns shift materially from validation baselines.",
+      "description": "Consideration C10 — Model Monitoring and Performance. Alert when input distributions or outcome patterns shift materially from validation baselines.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C10 — Model Monitoring and Performance"]
+      },
+      "mitigatesRiskCodes": ["MF-R-RS-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C10-P3",
+      "title": "Review monitoring alerts and remediate",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Investigate threshold breaches, document root cause and implement corrective actions promptly.",
+      "description": "Consideration C10 — Model Monitoring and Performance. Investigate threshold breaches, document root cause and implement corrective actions promptly.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C10 — Model Monitoring and Performance"]
+      },
+      "mitigatesRiskCodes": ["MF-R-RS-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C11-P1",
+      "title": "Control model change management",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Require impact assessment, re-validation and approval for material model or data changes.",
+      "description": "Consideration C11 — Model Change and Retirement. Require impact assessment, re-validation and approval for material model or data changes.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C11 — Model Change and Retirement"]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C11-P2",
+      "title": "Plan safe model retirement",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Decommission obsolete models with data archival, dependency mapping and customer communication where needed.",
+      "description": "Consideration C11 — Model Change and Retirement. Decommission obsolete models with data archival, dependency mapping and customer communication where needed.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C11 — Model Change and Retirement"]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C11-P3",
+      "title": "Preserve audit trail across model versions",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Retain validation records, approval evidence and performance history for retired models.",
+      "description": "Consideration C11 — Model Change and Retirement. Retain validation records, approval evidence and performance history for retired models.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C11 — Model Change and Retirement"]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C12-P1",
+      "title": "Design meaningful human oversight points",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Define where human review, override or escalation is required for AI-assisted decisions.",
+      "description": "Consideration C12 — Human-AI Interaction and Oversight. Define where human review, override or escalation is required for AI-assisted decisions.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C12 — Human-AI Interaction and Oversight"]
+      },
+      "mitigatesRiskCodes": ["MF-R-TR-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C12-P2",
+      "title": "Train users on AI limitations",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Ensure operators understand when to challenge, override or escalate AI recommendations.",
+      "description": "Consideration C12 — Human-AI Interaction and Oversight. Ensure operators understand when to challenge, override or escalate AI recommendations.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C12 — Human-AI Interaction and Oversight"]
+      },
+      "mitigatesRiskCodes": ["MF-R-TR-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C12-P3",
+      "title": "Monitor human-AI override patterns",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Analyse override rates and reasons to detect model issues or training gaps.",
+      "description": "Consideration C12 — Human-AI Interaction and Oversight. Analyse override rates and reasons to detect model issues or training gaps.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C12 — Human-AI Interaction and Oversight"]
+      },
+      "mitigatesRiskCodes": ["MF-R-TR-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C13-P1",
+      "title": "Assess third-party AI providers",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Due-diligence vendors on model governance, security, data use and regulatory compliance.",
+      "description": "Consideration C13 — Third-Party and Outsourcing Management. Due-diligence vendors on model governance, security, data use and regulatory compliance.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": [
+          "C13 — Third-Party and Outsourcing Management"
+        ]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C13-P2",
+      "title": "Contract for model-change notification",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Require vendors to notify the firm of material model updates affecting behaviour or risk.",
+      "description": "Consideration C13 — Third-Party and Outsourcing Management. Require vendors to notify the firm of material model updates affecting behaviour or risk.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": [
+          "C13 — Third-Party and Outsourcing Management"
+        ]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C13-P3",
+      "title": "Monitor outsourced AI service performance",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Track SLA, incident and control effectiveness for critical third-party AI dependencies.",
+      "description": "Consideration C13 — Third-Party and Outsourcing Management. Track SLA, incident and control effectiveness for critical third-party AI dependencies.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": [
+          "C13 — Third-Party and Outsourcing Management"
+        ]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C14-P1",
+      "title": "Define AI incident taxonomy and playbooks",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Classify AI-related incidents and maintain response procedures aligned with operational resilience.",
+      "description": "Consideration C14 — Incident Management and Response. Classify AI-related incidents and maintain response procedures aligned with operational resilience.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C14 — Incident Management and Response"]
+      },
+      "mitigatesRiskCodes": ["MF-R-CDS-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C14-P2",
+      "title": "Escalate material AI incidents promptly",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Report significant AI failures, bias events or security breaches through established channels.",
+      "description": "Consideration C14 — Incident Management and Response. Report significant AI failures, bias events or security breaches through established channels.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C14 — Incident Management and Response"]
+      },
+      "mitigatesRiskCodes": ["MF-R-CDS-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C14-P3",
+      "title": "Conduct post-incident review and remediation",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Analyse root cause, customer impact and control gaps after material AI incidents.",
+      "description": "Consideration C14 — Incident Management and Response. Analyse root cause, customer impact and control gaps after material AI incidents.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C14 — Incident Management and Response"]
+      },
+      "mitigatesRiskCodes": ["MF-R-CDS-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C15-P1",
+      "title": "Disclose AI use to affected customers",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Inform customers when AI materially influences decisions or interactions, per regulatory expectations.",
+      "description": "Consideration C15 — Communication and Transparency. Inform customers when AI materially influences decisions or interactions, per regulatory expectations.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C15 — Communication and Transparency"]
+      },
+      "mitigatesRiskCodes": ["MF-R-TR-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C15-P2",
+      "title": "Provide explainability for high-impact decisions",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Offer understandable explanations or challenge routes for automated eligibility and risk decisions.",
+      "description": "Consideration C15 — Communication and Transparency. Offer understandable explanations or challenge routes for automated eligibility and risk decisions.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C15 — Communication and Transparency"]
+      },
+      "mitigatesRiskCodes": ["MF-R-TR-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C15-P3",
+      "title": "Communicate AI limitations internally",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Share known model limitations and prohibited use cases with business and operations teams.",
+      "description": "Consideration C15 — Communication and Transparency. Share known model limitations and prohibited use cases with business and operations teams.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C15 — Communication and Transparency"]
+      },
+      "mitigatesRiskCodes": ["MF-R-TR-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C16-P1",
+      "title": "Schedule independent AI control testing",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Include AI controls in internal audit plans proportional to materiality and risk.",
+      "description": "Consideration C16 — Audit and Independent Review. Include AI controls in internal audit plans proportional to materiality and risk.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C16 — Audit and Independent Review"]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C16-P2",
+      "title": "Test effectiveness of key AI controls",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Verify that governance, validation and monitoring controls operate as designed.",
+      "description": "Consideration C16 — Audit and Independent Review. Verify that governance, validation and monitoring controls operate as designed.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C16 — Audit and Independent Review"]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C16-P3",
+      "title": "Track audit findings to closure",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Remediate AI audit issues within agreed timelines and verify sustained fix.",
+      "description": "Consideration C16 — Audit and Independent Review. Remediate AI audit issues within agreed timelines and verify sustained fix.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C16 — Audit and Independent Review"]
+      },
+      "mitigatesRiskCodes": ["MF-R-AG-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C17-P1",
+      "title": "Monitor supervisory AI guidance",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Track MAS, ABS and relevant authority guidance on AI risk and update controls accordingly.",
+      "description": "Consideration C17 — Regulatory Engagement and Reporting. Track MAS, ABS and relevant authority guidance on AI risk and update controls accordingly.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C17 — Regulatory Engagement and Reporting"]
+      },
+      "mitigatesRiskCodes": ["MF-R-LR-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C17-P2",
+      "title": "Prepare regulatory AI risk reporting",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Maintain evidence and metrics needed for supervisory inquiries and industry surveys.",
+      "description": "Consideration C17 — Regulatory Engagement and Reporting. Maintain evidence and metrics needed for supervisory inquiries and industry surveys.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C17 — Regulatory Engagement and Reporting"]
+      },
+      "mitigatesRiskCodes": ["MF-R-LR-2"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    },
+    {
+      "code": "C17-P3",
+      "title": "Engage regulators on material AI changes",
+      "category": "4. AI Operations & Monitoring",
+      "summary": "Proactively discuss significant new AI deployments or incidents when supervisory dialogue is warranted.",
+      "description": "Consideration C17 — Regulatory Engagement and Reporting. Proactively discuss significant new AI deployments or incidents when supervisory dialogue is warranted.",
+      "frameworkRefs": {
+        "MindForge Section": ["4. AI Operations & Monitoring"],
+        "MindForge Consideration": ["C17 — Regulatory Engagement and Reporting"]
+      },
+      "mitigatesRiskCodes": ["MF-R-LR-3"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.abs.org.sg/consumer-banking/ai-risk-management"
+    }
+  ]
+}

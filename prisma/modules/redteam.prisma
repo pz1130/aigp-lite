@@ -1,0 +1,126 @@
+enum EvaluationStatus {
+  pending
+  running
+  completed
+  failed
+  aborted
+}
+
+model Evaluation {
+  id              String           @id @default(cuid())
+  orgId           String
+  usecaseId       String?
+  connectionId    String
+  model           String
+  promptSourceIds String[]
+  totalPrompts    Int              @default(0)
+  passedCount     Int              @default(0)
+  failedCount     Int              @default(0)
+  errorCount      Int              @default(0)
+  status          EvaluationStatus @default(pending)
+  errorMessage    String?
+  engine          String           @default("builtin")
+  judge           String           @default("builtin")
+  externalRunId   String?
+  incidentId      String?
+  startedAt       DateTime?
+  finishedAt      DateTime?
+  createdAt       DateTime         @default(now())
+  createdBy       String
+
+  org             Organization        @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase         AiUsecase?          @relation(fields: [usecaseId], references: [id], onDelete: SetNull)
+  connection      ProviderConnection  @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  findings        EvaluationFinding[]
+  redteamAttestations RedteamAttestation[]
+
+  @@index([orgId, createdAt])
+  @@index([orgId, usecaseId])
+  @@map("evaluation")
+}
+
+model EvaluationFinding {
+  id             String     @id @default(cuid())
+  evaluationId   String
+  promptRef      String
+  promptText     String
+  category       String
+  severity       String
+  response       String
+  judgment       String
+  judgmentReason String?
+  latencyMs      Int
+  inputTokens    Int        @default(0)
+  outputTokens   Int        @default(0)
+
+  evaluation     Evaluation @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+
+  @@index([evaluationId, judgment])
+  @@map("evaluation_finding")
+}
+
+model RedteamPromptCustom {
+  id               String       @id @default(cuid())
+  orgId            String
+  setName          String
+  promptId         String
+  category         String
+  severity         String
+  text             String
+  checker          String
+  expectedBehavior String
+  createdAt        DateTime     @default(now())
+  createdBy        String
+
+  org              Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([orgId, setName, promptId])
+  @@index([orgId, setName])
+  @@map("redteam_prompt_custom")
+}
+
+model NemoGuardrailEvidence {
+  id             String   @id @default(cuid())
+  orgId          String
+  obligationCode String   // e.g. "ART-14"
+  configRef      String   // e.g. "nemo-configs/hitl-killswitch"
+  approvalGatePassed Boolean
+  killSwitchPassed   Boolean
+  transcript     Json     // HitlDemoResult
+  capturedAt     DateTime @default(now())
+  createdBy      String
+
+  org            Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, obligationCode])
+  @@map("nemo_guardrail_evidence")
+}
+
+model RedteamAttestation {
+  id              String    @id @default(cuid())
+  orgId           String
+  usecaseId       String
+  evaluationId    String?
+  attesterName    String
+  attesterOrg     String    @default("")
+  attesterContact String    @default("")
+  scope           String    @db.Text
+  methodology     String    @default("") @db.Text
+  engagementStart DateTime?
+  engagementEnd   DateTime?
+  attestedAt      DateTime
+  summary         String    @default("") @db.Text
+  storageKey      String
+  reportSha256    String
+  reportBytes     Int
+  createdAt       DateTime  @default(now())
+  createdBy       String
+
+  org        Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase    AiUsecase    @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+  evaluation Evaluation?  @relation(fields: [evaluationId], references: [id], onDelete: SetNull)
+
+  @@index([orgId, usecaseId])
+  @@index([orgId, createdAt])
+  @@map("redteam_attestation")
+}

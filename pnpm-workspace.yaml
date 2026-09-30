@@ -1,0 +1,40 @@
+# Force a single ioredis copy: bullmq pins ioredis exactly, so without this
+# the app's own ioredis version and bullmq's diverge and BullMQ's
+# ConnectionOptions type rejects our Redis instances. "$ioredis" tracks the
+# version declared in package.json dependencies.
+overrides:
+  ioredis: $ioredis
+
+minimumReleaseAgeExclude:
+  - "@sentry/browser-utils@10.63.0"
+  - "@sentry/browser@10.63.0"
+  - "@sentry/core@10.63.0"
+  - "@sentry/feedback@10.63.0"
+  - "@sentry/nextjs@10.63.0"
+  - "@sentry/node-core@10.63.0"
+  - "@sentry/node@10.63.0"
+  - "@sentry/opentelemetry@10.63.0"
+  - "@sentry/react@10.63.0"
+  - "@sentry/replay-canvas@10.63.0"
+  - "@sentry/replay@10.63.0"
+  - "@sentry/server-utils@10.63.0"
+  - "@sentry/vercel-edge@10.63.0"
+  - lucide-react@1.23.0
+
+allowBuilds:
+  "@parcel/watcher": set this to true or false
+  "@prisma/engines": set this to true or false
+  "@scarf/scarf": set this to true or false
+  "@sentry/cli": set this to true or false
+  "@swc/core": set this to true or false
+  "@tree-sitter-grammars/tree-sitter-yaml": set this to true or false
+  argon2: set this to true or false
+  core-js-pure: set this to true or false
+  esbuild: set this to true or false
+  libxmljs2: set this to true or false
+  msgpackr-extract: set this to true or false
+  prisma: set this to true or false
+  sharp: set this to true or false
+  tree-sitter: set this to true or false
+  tree-sitter-json: set this to true or false
+  unrs-resolver: set this to true or false

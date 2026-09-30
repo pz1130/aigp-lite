@@ -1,0 +1,58 @@
+enum RiskCopilotStatus {
+  ok
+  needs_review
+  failed
+}
+
+enum ItemDecision {
+  pending
+  accepted
+  rejected
+}
+
+model RiskCopilotSuggestion {
+  id            String              @id @default(cuid())
+  orgId         String
+  usecaseId     String
+  status        RiskCopilotStatus
+  retryCount    Int                 @default(0)
+  inputTokens   Int                 @default(0)
+  outputTokens  Int                 @default(0)
+  latencyMs     Int                 @default(0)
+  providerType  String
+  model         String
+  rawOutput     Json
+  diagnostics   Json                @default("[]")
+  errorMessage  String?             @db.Text
+  requestedById String
+  requestedAt   DateTime            @default(now())
+
+  org         Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase     AiUsecase    @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+  requestedBy User         @relation("RiskCopilotRequester", fields: [requestedById], references: [id])
+  items       RiskCopilotSuggestionItem[]
+
+  @@index([orgId, usecaseId, requestedAt(sort: Desc)])
+  @@map("risk_copilot_suggestion")
+}
+
+model RiskCopilotSuggestionItem {
+  id             String        @id @default(cuid())
+  suggestionId   String
+  riskCatalogId  String
+  severity       RiskLevel
+  rationale      String        @db.Text
+  evidenceQuote  String
+  mitigationIds  Json          @default("[]")
+  decision       ItemDecision  @default(pending)
+  decidedById    String?
+  decidedAt      DateTime?
+
+  suggestion RiskCopilotSuggestion @relation(fields: [suggestionId], references: [id], onDelete: Cascade)
+  risk       RiskCatalog           @relation(fields: [riskCatalogId], references: [id], onDelete: Cascade)
+  decidedBy  User?                 @relation("RiskCopilotItemDecider", fields: [decidedById], references: [id])
+
+  @@index([suggestionId])
+  @@index([riskCatalogId])
+  @@map("risk_copilot_suggestion_item")
+}

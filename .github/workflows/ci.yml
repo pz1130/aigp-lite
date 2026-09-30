@@ -1,0 +1,356 @@
+name: CI
+
+on:
+  push:
+    branches: [main, feat/**]
+  pull_request:
+    branches: [main]
+
+# Every job below reads its Node version from .nvmrc rather than hardcoding one.
+# That same file feeds `--build-arg NODE_VERSION` in the Docker Image job and is
+# floored by `engines` in package.json, so CI, the shipped image and a dev
+# machine cannot drift apart without one obvious edit.
+jobs:
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: aigp_test
+          POSTGRES_USER: aigp
+          POSTGRES_PASSWORD: aigp_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      # Redis is intentionally present here so enqueueJob takes its real queue
+      # branch (getQueue().add + metric "jobs.enqueued"). Without it that path is
+      # never exercised in CI and queue-path regressions escape (see docs/ci.md).
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build merged Prisma schema + generate client
+        # prisma:generate runs prisma/build-schema.mjs (assembles modular
+        # prisma/modules/*.prisma into schema.prisma) then prisma generate.
+        run: npm run prisma:generate
+
+      - name: Apply database migrations
+        env:
+          DATABASE_URL: postgresql://aigp:aigp_test@localhost:5432/aigp_test
+        # prisma:deploy = build-schema.mjs + prisma migrate deploy. Do NOT
+        # swallow failures with `|| true`; if migrations don't apply the
+        # unit suite explodes downstream with "table does not exist".
+        run: npm run prisma:deploy
+
+      - name: Run type check
+        run: npx tsc --noEmit
+
+      - name: Run unit tests
+        env:
+          DATABASE_URL: postgresql://aigp:aigp_test@localhost:5432/aigp_test
+          # REDIS_URL set => enqueueJob uses the BullMQ queue path. There is no
+          # worker in this process, so any test that enqueues and then asserts on
+          # the job result must mock enqueueJob to run inline (see
+          # src/lib/drift/router.test.ts). An orphaned job is a real bug, not a flake.
+          # Exception: src/worker/smoke.test.ts deliberately boots a real worker and
+          # only runs here (skipIf(!REDIS_URL)); it proves the worker drains a job
+          # end-to-end. See docs/ci.md.
+          REDIS_URL: redis://localhost:6379
+        run: npx vitest run --configLoader runner
+
+  test-no-redis:
+    name: Test Suite (no Redis / inline fallback)
+    runs-on: ubuntu-latest
+
+    # Deliberately NO redis service and NO REDIS_URL below. This leg exercises
+    # enqueueJob's inline fallback (getQueue() returns null -> processor runs in
+    # band) so the no-Redis deployment mode stays green. Two explicit jobs rather
+    # than a matrix because GitHub Actions cannot conditionally attach a service
+    # container off a matrix value. See docs/ci.md.
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: aigp_test
+          POSTGRES_USER: aigp
+          POSTGRES_PASSWORD: aigp_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build merged Prisma schema + generate client
+        run: npm run prisma:generate
+
+      - name: Apply database migrations
+        env:
+          DATABASE_URL: postgresql://aigp:aigp_test@localhost:5432/aigp_test
+        run: npm run prisma:deploy
+
+      - name: Run type check
+        run: npx tsc --noEmit
+
+      - name: Run unit tests
+        env:
+          DATABASE_URL: postgresql://aigp:aigp_test@localhost:5432/aigp_test
+          # No REDIS_URL on purpose => enqueueJob runs processors inline.
+        run: npx vitest run --configLoader runner
+
+  e2e:
+    name: E2E (Playwright)
+    runs-on: ubuntu-latest
+
+    # No redis service on purpose: playwright.config.ts starts the app server
+    # with REDIS_URL="" so background jobs run inline. With a queue and no
+    # worker process, specs that enqueue (incident dedup, drift) would hang.
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: aigp_e2e
+          POSTGRES_USER: aigp
+          POSTGRES_PASSWORD: aigp_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://aigp:aigp_test@localhost:5432/aigp_e2e
+      # globalSetup mints NextAuth JWTs with this secret; the dev server must
+      # verify them with the same one, so it is set job-wide rather than per-step.
+      NEXTAUTH_SECRET: e2e-ci-secret-not-used-outside-ci
+      # Provider credentials are sealed by prisma:seed and opened by the running
+      # app. Both steps must share this key or decryption fails at request time.
+      AIGP_ENCRYPTION_KEY: rrPJm0Z8pMB1oKqCB5CkNMV5nH8AXFEIt8VlA10ClqE=
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        # Only chromium: playwright.config.ts declares no projects, so the suite
+        # runs on the default chromium browser alone.
+        run: npx playwright install --with-deps chromium
+
+      - name: Build merged Prisma schema + generate client
+        run: npm run prisma:generate
+
+      - name: Apply database migrations
+        run: npm run prisma:deploy
+
+      - name: Seed demo org
+        # globalSetup throws if the demo users are missing. The seed is
+        # idempotent, so a re-run on a warm database is a no-op.
+        run: npm run prisma:seed
+
+      - name: Next.js production build
+        # The suite runs against the built standalone server, not `next dev`.
+        # A dev server compiles each route on its first request, and on a 2-core
+        # runner those compiles blow past the 10-15s per-call timeouts that ~10
+        # specs hardcode — timeouts no Playwright config knob can raise. Paying
+        # ~3min here buys a server with no compile step and matches Docker.
+        run: npm run build
+
+      - name: Run Playwright suite
+        # playwright.config.ts owns the servers: the standalone Next server on
+        # :3001 (with AIGP_ENABLE_TEST_OUTBOX=1, since NODE_ENV=production would
+        # otherwise close isTestMode() and 404 the /api/test/outbox that
+        # accept-invite reads) plus the SSE mock provider on :4010.
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Check formatting
+        run: npx prettier --check .
+      - name: Check imports
+        run: npx eslint src --ext .ts,.tsx
+
+  build:
+    name: Production Build
+    runs-on: ubuntu-latest
+    # Mirrors the Dockerfile `builder` stage: `next build` runs with NO env vars
+    # and NO database, so this job needs neither a postgres service nor
+    # DATABASE_URL / crypto keys. Guards against prod-build regressions (webpack,
+    # RSC, route collection) that the test/lint jobs never exercise — especially
+    # important right after the Next 16 upgrade. See docs/ci.md.
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Build merged Prisma schema + generate client
+        run: npm run prisma:generate
+      - name: Next.js production build
+        run: npm run build
+
+  docker:
+    name: Docker Image
+    runs-on: ubuntu-latest
+    # Nothing ever built the Dockerfile before this job existed, so a broken
+    # `output: "standalone"` — or a stage that stopped installing what it runs —
+    # would have been found by whoever deployed it. Build every stage
+    # docker-compose actually uses, then boot the runner and make it serve a
+    # request. `Production Build` above only proves `next build` works on the
+    # runner host; it says nothing about the image.
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Resolve Node version
+        id: node
+        run: echo "version=$(cat .nvmrc)" >> "$GITHUB_OUTPUT"
+
+      - name: Build runner image
+        # `runner` depends on base -> builder, so this single build also covers
+        # `npm ci`, `prisma generate` and `next build` inside the image.
+        run: >
+          docker build
+          --build-arg NODE_VERSION=${{ steps.node.outputs.version }}
+          --target runner
+          --tag aigp-lite:ci
+          .
+
+      - name: Build migrate and worker images
+        # Both branch off `base`, which the build above already cached, so these
+        # cost little more than their own CMD layer. docker-compose ships them.
+        run: |
+          docker build --build-arg NODE_VERSION=${{ steps.node.outputs.version }} --target migrate --tag aigp-lite-migrate:ci .
+          docker build --build-arg NODE_VERSION=${{ steps.node.outputs.version }} --target worker --tag aigp-lite-worker:ci .
+
+      - name: Smoke-test the runner container
+        # The build above only proves the image assembles; this proves
+        # .next/standalone/server.js actually boots and routes — the one artifact
+        # `Production Build` never runs. /api/health is deliberately the target:
+        # it touches no database and no Redis, and src/proxy.ts excludes /api
+        # from the locale matcher, so it answers with nothing else provisioned.
+        # (Any real page 500s here on DatabaseNotReachable, which says nothing
+        # about the image.) HOSTNAME is set because Next's standalone server
+        # binds whatever it finds there, and a loopback bind would be
+        # unreachable from outside the container.
+        run: |
+          docker run -d --name aigp-smoke -p 3000:3000 \
+            -e HOSTNAME=0.0.0.0 \
+            -e NEXTAUTH_SECRET=ci-smoke-secret-not-used-outside-ci \
+            -e NEXTAUTH_URL=http://localhost:3000 \
+            -e DATABASE_URL=postgresql://aigp:aigp@127.0.0.1:5432/aigp \
+            aigp-lite:ci
+          for i in $(seq 1 30); do
+            if curl -fsS http://localhost:3000/api/health; then
+              echo ""
+              echo "health ok after ${i} attempt(s)"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "runner container never answered /api/health"
+          docker logs aigp-smoke
+          exit 1
+
+      - name: Remove smoke container
+        if: always()
+        run: docker rm -f aigp-smoke || true
+
+  dependency-scan:
+    name: Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      # Gate on production dependencies only: several dev-only tooling
+      # advisories (vitest/vite/esbuild's dev-server chain) currently have no
+      # non-breaking fix and would otherwise block every PR. Full report
+      # below still surfaces them for visibility without failing the build.
+      - name: Audit production dependencies (blocking, high+ severity)
+        run: npm audit --omit=dev --audit-level=high
+      - name: Audit all dependencies (report only)
+        if: always()
+        run: npm audit || true
+      - name: Generate CycloneDX SBOM (production dependencies)
+        run: npm run sbom:generate
+      - name: Upload SBOM artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sbom-cyclonedx
+          path: sbom.json

@@ -1,0 +1,21 @@
+{
+  "_meta": {
+    "source": "IMDA / AI Verify Foundation — Starter Kit for LLM-based App Testing",
+    "license": "Apache-2.0 (Moonshot project)",
+    "fetchedAt": "2026-06-13T00:00:00.000Z",
+    "upstreamRef": "starter-kit-2026-06"
+  },
+  "mappings": [
+    { "riskCode": "atlas-1", "imdaRefs": ["Robustness", "Safety"] },
+    {
+      "riskCode": "atlas-2",
+      "imdaRefs": ["Data Governance / Privacy", "Robustness"]
+    },
+    { "riskCode": "atlas-3", "imdaRefs": ["Safety", "Transparency"] },
+    { "riskCode": "atlas-4", "imdaRefs": ["Fairness", "Robustness"] },
+    { "riskCode": "atlas-5", "imdaRefs": ["Data Governance / Privacy"] },
+    { "riskCode": "atlas-6", "imdaRefs": ["Safety"] },
+    { "riskCode": "atlas-7", "imdaRefs": ["Robustness", "Accountability"] },
+    { "riskCode": "atlas-8", "imdaRefs": ["Transparency", "Fairness"] }
+  ]
+}

@@ -1,0 +1,110 @@
+enum PolicySeverity {
+  low
+  medium
+  high
+}
+
+enum EnforcementMode {
+  block
+  warn
+  log
+}
+
+enum PolicyScope {
+  input
+  output
+  both
+}
+
+model Policy {
+  id              String         @id @default(cuid())
+  orgId           String
+  name            String
+  description     String         @default("")
+  ruleJson        Json
+  severity        PolicySeverity
+  enforcementMode EnforcementMode
+  scope           PolicyScope
+  enabled         Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  org             Organization        @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  evaluations     PolicyEvaluation[]
+
+  @@unique([orgId, name])
+  @@index([orgId, enabled])
+  @@map("policy")
+}
+
+model PolicyEvaluation {
+  id        String   @id @default(cuid())
+  orgId     String
+  policyId  String
+  requestId String
+  hit       Boolean
+  snippet   String   @db.Text
+  ts        DateTime @default(now())
+
+  org    Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  policy Policy        @relation(fields: [policyId], references: [id], onDelete: Cascade)
+
+  // M5 back-relation
+  incident Incident? @relation("IncidentPolicyEval")
+
+  @@index([orgId, policyId, ts(sort: Desc)])
+  @@index([requestId])
+  @@map("policy_evaluation")
+}
+
+model LlmInvocation {
+  id          String    @id @default(cuid())
+  orgId       String
+  usecaseId   String?
+  apiKeyId    String?
+  provider    String
+  model       String
+  promptHash  String
+  inputTokens Int
+  outputTokens Int      @default(0)
+  policyHits  Json      @default("[]")
+  blocked     Boolean   @default(false)
+  latencyMs   Int?
+  costUsd     Decimal?  @map("cost_usd") @db.Decimal(12, 6)
+  ts          DateTime  @default(now())
+
+  org      Organization  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase  AiUsecase?    @relation(fields: [usecaseId], references: [id], onDelete: SetNull)
+  apiKey   ApiKey?       @relation(fields: [apiKeyId], references: [id], onDelete: SetNull)
+
+  // M5 back-relation
+  incident Incident? @relation("IncidentLlmInvoke")
+
+  // M8 back-relation
+  connectionId String?
+  connection   ProviderConnection? @relation(fields: [connectionId], references: [id], onDelete: SetNull)
+
+  @@index([orgId, ts(sort: Desc)])
+  @@index([usecaseId])
+  @@index([apiKeyId])
+  @@index([provider, model])
+  @@index([connectionId])
+  @@map("llm_invocation")
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  orgId      String
+  label      String
+  prefix     String
+  hash       String    @unique
+  scopes     Json      @default("[]")
+  createdAt  DateTime  @default(now())
+  lastUsedAt DateTime?
+
+  org        Organization     @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  invocations LlmInvocation[]
+
+  @@index([orgId])
+  @@map("api_key")
+}

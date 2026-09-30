@@ -1,0 +1,38 @@
+ISO/IEC 42001:2023 Annex A catalog
+==================================
+
+Source
+------
+ISO/IEC 42001:2023, Information technology — Artificial intelligence —
+Management system. Annex A (Reference control objectives and controls).
+https://www.iso.org/standard/81230.html
+
+Copyright / licensing status
+----------------------------
+ISO/IEC 42001:2023 is COPYRIGHTED by ISO and IEC. Its normative text is sold
+under licence and may NOT be reproduced. This catalog therefore deliberately
+contains NO ISO/IEC normative text.
+
+What this catalog contains
+--------------------------
+- The Annex A control IDENTIFIERS (e.g. A.2.2, A.6.2.4, A.10.3) and the SHORT
+  control names. Identifiers and short control names are used here as factual
+  references for interoperability, not as a substitute for the standard.
+- ORIGINAL one-line summaries and descriptions authored for this project. These
+  are our own paraphrase of each control's intent; they are NOT the ISO text.
+- `frameworkRefs.iso42001Clause` records the Annex A clause number, plus our own
+  editorial cross-references to other catalogs (FINOS AIGF, NIST AI RMF,
+  MITRE ATLAS).
+
+What this catalog does NOT contain and is NOT
+---------------------------------------------
+- It does not reproduce the requirements, guidance, or wording of ISO/IEC 42001.
+- It is not a copy of, or a substitute for, the standard. Organizations seeking
+  to conform to or be certified against ISO/IEC 42001 must obtain the official
+  standard from ISO or an authorized national body.
+
+Attribution
+-----------
+Where surfaced to users, attribute as:
+"Control structure based on ISO/IEC 42001:2023, Annex A. Summaries are original;
+ISO/IEC normative text is not reproduced."

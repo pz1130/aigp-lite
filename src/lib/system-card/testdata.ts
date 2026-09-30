@@ -1,0 +1,160 @@
+import type { SystemCardData } from "./aggregator";
+
+/** Fixture for the renderer tests (markdown + pdf). Not imported by shipped code. */
+export function sampleSystemCardData(): SystemCardData {
+  return {
+    snapshot: {
+      system: {
+        id: "uc1",
+        name: "Loan Approval",
+        ownerId: "u1",
+        ownerName: "Alice",
+        lifecycleStage: "production",
+        autonomyLevel: "assistant",
+        deploymentType: "built",
+        description: "Approves consumer loans under $50k.",
+        modelCardMd: "Cannot make legal judgments.",
+        intendedUseMd: "Deployed in branch offices to assist loan officers.",
+        prohibitedUseMd:
+          "Cannot be used for employment or credit decisions outside lending.",
+        humanOversightAttested: true,
+        humanOversightAttestedByName: "Alice",
+        humanOversightAttestedAt: new Date("2026-06-01"),
+        updatedAt: new Date("2026-06-15"),
+        sunsetDate: null,
+        deprecatedAt: null,
+        deprecatedByName: null,
+        deprecationReason: "",
+      },
+      classification: {
+        present: true,
+        euAiActCategory: "high",
+        isHighRisk: true,
+        containsPii: true,
+        dataSensitivity: "confidential",
+      },
+      risk: { hasAssessment: true, controlsNotSatisfied: 2 },
+      regulatoryRisks: { total: 6, withoutRationale: 1 },
+      dataGovernance: { dataSourceCount: 3 },
+      documentation: { hasModelCard: true, versionCount: 2 },
+      logging: { invocationCount: 120 },
+      fria: { approvedCount: 1 },
+      transparency: { publishedCount: 1 },
+      redteam: { completedCount: 1 },
+      externalRedteam: { attestationCount: 1 },
+      drift: { benchmarkCount: 1, completedRunCount: 4 },
+      alignmentAudit: { status: "pass" },
+      incidents: { openHighOrCritical: 1 },
+      capability: { assessed: true, effectiveTier: 1 },
+      modelRef: "v2.0",
+      goLive: {
+        id: "gl1",
+        status: "approved",
+        rationale: "All blocking checks pass.",
+        conditions: ["Quarterly re-review"],
+        decidedById: "u1",
+        decidedByName: "Alice",
+        decidedAt: new Date("2026-06-20"),
+        boundTier: 1,
+        boundModelRef: "v2.0",
+        staleApproval: false,
+      },
+    },
+    readiness: {
+      checks: [
+        {
+          id: "classified",
+          status: "pass",
+          severity: "blocking",
+          articleRefs: ["Art. 6"],
+          deepLink: "/inventory/uc1",
+          metric: {},
+        },
+        {
+          id: "risk_management",
+          status: "warn",
+          severity: "blocking",
+          articleRefs: ["Art. 9"],
+          deepLink: "/risk",
+          metric: { controlsNotSatisfied: 2 },
+        },
+      ],
+      state: "conditionally_ready",
+      blockingFailing: 0,
+      advisoryOpen: 1,
+    },
+    latestAssessment: {
+      level: "high",
+      scoreInt: 12,
+      assessedAt: new Date("2026-04-15"),
+      notes: "Bias exposure on thin-file applicants.",
+    },
+    evaluations: [
+      {
+        id: "e1",
+        createdAt: new Date("2026-05-01"),
+        model: "gpt-4o-mini",
+        totalPrompts: 20,
+        passedCount: 18,
+        failedCount: 2,
+        errorCount: 0,
+      },
+    ],
+    externalAttestations: [
+      {
+        id: "att1",
+        attesterName: "Trail of Bits",
+        attesterOrg: "Trail of Bits, Inc.",
+        scope: "Prompt injection, tool abuse, data exfiltration",
+        attestedAt: new Date("2026-05-20"),
+        engagementStart: new Date("2026-05-01"),
+        engagementEnd: new Date("2026-05-15"),
+        reportSha256: "a".repeat(64),
+        summary: "No critical findings; 2 medium remediated.",
+      },
+    ],
+    driftBenchmarks: [
+      {
+        id: "b1",
+        name: "Core QA benchmark",
+        threshold: 7,
+        latestRun: {
+          avgScore: 8.2,
+          degraded: false,
+          completedAt: new Date("2026-06-28"),
+        },
+      },
+    ],
+    friaRecords: [
+      {
+        id: "f1",
+        title: "FRIA 2026",
+        version: 1,
+        status: "approved",
+        updatedAt: new Date("2026-03-10"),
+      },
+    ],
+    transparencyReports: [
+      {
+        id: "t1",
+        title: "Q1 2026 Transparency Report",
+        version: 1,
+        publishedAt: new Date("2026-04-02"),
+      },
+    ],
+    openIncidents: [
+      {
+        id: "i1",
+        title: "Elevated false rejections",
+        severity: "high",
+        openedAt: new Date("2026-06-30"),
+      },
+    ],
+    knownLimitations: "Cannot make legal judgments.",
+    intendedUse: "Deployed in branch offices to assist loan officers.",
+    prohibitedUse:
+      "Cannot be used for employment or credit decisions outside lending.",
+    generatedAt: new Date("2026-07-06T10:00:00Z"),
+    generatedBy: { id: "u1", name: "Alice" },
+  };
+}

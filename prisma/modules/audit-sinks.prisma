@@ -1,0 +1,32 @@
+enum AuditSinkType {
+  webhook    // Splunk HEC or generic HTTP POST
+  syslog     // RFC 5424 UDP/TCP
+  datadog    // Datadog Logs API (HEC-compatible)
+}
+
+model AuditSink {
+  id        String        @id @default(cuid())
+  orgId     String
+  name      String
+  type      AuditSinkType
+  enabled   Boolean       @default(true)
+
+  // webhook / datadog non-secret fields
+  url       String?       // HEC endpoint URL
+
+  // syslog fields
+  host      String?
+  port      Int?
+  protocol  String?       @default("udp") // "udp" | "tcp"
+
+  // secrets (HEC token, Datadog API key) — AES-256-GCM blob of { token?, apiKey? }
+  secretsEncrypted Bytes?
+
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, enabled])
+  @@map("audit_sink")
+}

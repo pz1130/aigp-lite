@@ -1,0 +1,62 @@
+enum UsageInsightReportStatus {
+  draft
+  published
+  superseded
+}
+
+model UsageInsightReport {
+  id                     String                   @id @default(cuid())
+  orgId                  String
+  version                Int
+  status                 UsageInsightReportStatus @default(draft)
+  windowStart            DateTime
+  windowEnd              DateTime
+  k                      Int                      @default(5)
+  statsJson              Json                     @default("{}")
+  deltaJson              Json?
+  execSummary            String                   @default("") @db.Text
+  diagnostics            Json                     @default("[]")
+  providerType           String                   @default("unknown")
+  model                  String                   @default("unknown")
+  inputTokens            Int                      @default(0)
+  outputTokens           Int                      @default(0)
+  latencyMs              Int                      @default(0)
+  totalInvocations       Int                      @default(0)
+  clusterCount           Int                      @default(0)
+  suppressedClusterCount Int                      @default(0)
+  generatedById          String
+  publishedAt            DateTime?
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+
+  org         Organization           @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  generatedBy User                   @relation("UsageInsightReportGenerator", fields: [generatedById], references: [id])
+  clusters    UsageInsightCluster[]
+
+  @@index([orgId, status])
+  @@index([orgId, version])
+  @@map("usage_insight_report")
+}
+
+model UsageInsightCluster {
+  id                  String   @id @default(cuid())
+  orgId               String
+  reportId            String
+  themeLabel          String   @default("")
+  narrative           String   @default("") @db.Text
+  systemicObservation String   @default("") @db.Text
+  confidence          String   @default("")
+  invocationCount     Int      @default(0)
+  distinctActorCount  Int      @default(0)
+  topToolNames        Json     @default("[]")
+  outcomeBreakdown    Json     @default("{}")
+  deltaVsPrior        Json?
+  isLongTail          Boolean  @default(false)
+  createdAt           DateTime @default(now())
+
+  org    Organization       @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  report UsageInsightReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, reportId])
+  @@map("usage_insight_cluster")
+}

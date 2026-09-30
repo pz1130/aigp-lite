@@ -1,0 +1,5 @@
+# Excluded from `git archive` (used to build the public snapshot):
+# internal planning notes and third-party files we do not redistribute.
+/docs/superpowers export-ignore
+/docs/reference/aivtf export-ignore
+/Figure_1_*.png export-ignore

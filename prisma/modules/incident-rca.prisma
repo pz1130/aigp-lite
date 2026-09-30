@@ -1,0 +1,37 @@
+enum IncidentRcaStatus {
+  ok
+  needs_review
+  failed
+}
+
+model IncidentRcaDraft {
+  id              String             @id @default(cuid())
+  orgId           String
+  incidentId      String
+  status          IncidentRcaStatus
+  retryCount      Int                @default(0)
+  inputTokens     Int                @default(0)
+  outputTokens    Int                @default(0)
+  latencyMs       Int                @default(0)
+  providerType    String
+  model           String
+  summary         String             @db.Text @default("")
+  rootCause       String             @db.Text @default("")
+  timeline        Json               @default("[]")
+  recommendations Json               @default("[]")
+  rawOutput       Json
+  diagnostics     Json               @default("[]")
+  errorMessage    String?            @db.Text
+  requestedById   String
+  requestedAt     DateTime           @default(now())
+  acceptedById    String?
+  acceptedAt      DateTime?
+
+  org         Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  incident    Incident     @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  requestedBy User         @relation("IncidentRcaRequester", fields: [requestedById], references: [id])
+  acceptedBy  User?        @relation("IncidentRcaAccepter", fields: [acceptedById], references: [id])
+
+  @@index([orgId, incidentId, requestedAt(sort: Desc)])
+  @@map("incident_rca_draft")
+}

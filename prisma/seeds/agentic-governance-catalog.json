@@ -1,0 +1,286 @@
+{
+  "_meta": {
+    "upstreamRef": "agentic-governance-v1",
+    "source": "AIGP original governance checklist for agentic AI use-cases",
+    "license": "see agentic-governance-catalog.json.LICENSE",
+    "note": "All items are original AIGP wording. No third-party publication text is reproduced."
+  },
+  "sections": [
+    {
+      "num": 1,
+      "key": "ag1-tool-access",
+      "title": "Tool & connection access",
+      "order": 1,
+      "intent": "The agent can only reach the tools, credentials, and destinations it genuinely needs.",
+      "seeAlso": [
+        {
+          "slug": "mcp",
+          "labelEn": "MCP Trust Governance",
+          "labelZh": "MCP 信任治理"
+        }
+      ],
+      "items": [
+        {
+          "code": "AG1-01",
+          "order": 1,
+          "guidance": null,
+          "text": "Every tool or connector the agent can invoke is on an explicit allowlist."
+        },
+        {
+          "code": "AG1-02",
+          "order": 2,
+          "guidance": null,
+          "text": "The agent holds no standing or ambient credentials beyond its least-privilege scope."
+        },
+        {
+          "code": "AG1-03",
+          "order": 3,
+          "guidance": null,
+          "text": "The data-egress destinations the agent can reach are enumerated and restricted."
+        },
+        {
+          "code": "AG1-04",
+          "order": 4,
+          "guidance": null,
+          "text": "Tool permissions are re-reviewed whenever the agent's scope changes."
+        }
+      ]
+    },
+    {
+      "num": 2,
+      "key": "ag2-traceability",
+      "title": "Action logging & traceability",
+      "order": 2,
+      "intent": "What the agent did, and why, can be reconstructed after the fact.",
+      "seeAlso": [
+        {
+          "slug": "audit",
+          "labelEn": "Audit (Merkle log)",
+          "labelZh": "审计(Merkle 日志)"
+        }
+      ],
+      "items": [
+        {
+          "code": "AG2-01",
+          "order": 1,
+          "guidance": null,
+          "text": "Agent actions, tool calls, and intermediate reasoning steps are logged."
+        },
+        {
+          "code": "AG2-02",
+          "order": 2,
+          "guidance": null,
+          "text": "Handoffs between agents, or between agent and human, are recorded and replayable."
+        },
+        {
+          "code": "AG2-03",
+          "order": 3,
+          "guidance": null,
+          "text": "Logs are tamper-evident and retained per policy."
+        },
+        {
+          "code": "AG2-04",
+          "order": 4,
+          "guidance": null,
+          "text": "A specific run can be reconstructed end-to-end from the recorded trail."
+        }
+      ]
+    },
+    {
+      "num": 3,
+      "key": "ag3-oversight",
+      "title": "Human oversight & stage-gates",
+      "order": 3,
+      "intent": "Humans stay in control of consequential and irreversible actions.",
+      "seeAlso": [
+        {
+          "slug": "evidence",
+          "labelEn": "Evidence (HITL / kill-switch)",
+          "labelZh": "证据(人工干预/熔断)"
+        }
+      ],
+      "items": [
+        {
+          "code": "AG3-01",
+          "order": 1,
+          "guidance": null,
+          "text": "Critical or irreversible outputs require explicit human sign-off before taking effect."
+        },
+        {
+          "code": "AG3-02",
+          "order": 2,
+          "guidance": null,
+          "text": "A documented kill-switch can halt the agent mid-run."
+        },
+        {
+          "code": "AG3-03",
+          "order": 3,
+          "guidance": null,
+          "text": "Autonomy thresholds — what the agent may do unsupervised — are written down."
+        },
+        {
+          "code": "AG3-04",
+          "order": 4,
+          "guidance": null,
+          "text": "The human reviewer is given enough context to approve or reject meaningfully."
+        }
+      ]
+    },
+    {
+      "num": 4,
+      "key": "ag4-evaluation",
+      "title": "Evaluation vs baseline",
+      "order": 4,
+      "intent": "The workflow is measured against a known-good baseline before and after launch.",
+      "seeAlso": [
+        {
+          "slug": "drift",
+          "labelEn": "Drift Monitoring",
+          "labelZh": "漂移监测"
+        }
+      ],
+      "items": [
+        {
+          "code": "AG4-01",
+          "order": 1,
+          "guidance": null,
+          "text": "Workflow accuracy is benchmarked against a human baseline before launch."
+        },
+        {
+          "code": "AG4-02",
+          "order": 2,
+          "guidance": null,
+          "text": "Scope or autonomy is only widened after a passing re-benchmark."
+        },
+        {
+          "code": "AG4-03",
+          "order": 3,
+          "guidance": null,
+          "text": "Evaluation covers adversarial and edge-case inputs, not just the happy path."
+        },
+        {
+          "code": "AG4-04",
+          "order": 4,
+          "guidance": null,
+          "text": "Evaluation results are recorded and dated."
+        }
+      ]
+    },
+    {
+      "num": 5,
+      "key": "ag5-resilience",
+      "title": "Operational resilience",
+      "order": 5,
+      "intent": "The agent degrades safely and stays within operational bounds.",
+      "seeAlso": [
+        {
+          "slug": "drift",
+          "labelEn": "Drift Monitoring",
+          "labelZh": "漂移监测"
+        }
+      ],
+      "items": [
+        {
+          "code": "AG5-01",
+          "order": 1,
+          "guidance": null,
+          "text": "A fallback path exists for model or agent outage or degraded performance."
+        },
+        {
+          "code": "AG5-02",
+          "order": 2,
+          "guidance": null,
+          "text": "Performance degradation is detected and alerts a named owner."
+        },
+        {
+          "code": "AG5-03",
+          "order": 3,
+          "guidance": null,
+          "text": "Rate, cost, and loop limits bound the agent's runaway behaviour."
+        },
+        {
+          "code": "AG5-04",
+          "order": 4,
+          "guidance": null,
+          "text": "Recovery from a failed run leaves downstream systems in a consistent state."
+        }
+      ]
+    },
+    {
+      "num": 6,
+      "key": "ag6-accountability",
+      "title": "Accountability & ownership",
+      "order": 6,
+      "intent": "A human is answerable for the agent and its outputs.",
+      "seeAlso": [
+        { "slug": "inventory", "labelEn": "AI Inventory", "labelZh": "AI 清单" }
+      ],
+      "items": [
+        {
+          "code": "AG6-01",
+          "order": 1,
+          "guidance": null,
+          "text": "A named human owner is accountable for each agent-produced output."
+        },
+        {
+          "code": "AG6-02",
+          "order": 2,
+          "guidance": null,
+          "text": "The owner can explain how a given output was produced."
+        },
+        {
+          "code": "AG6-03",
+          "order": 3,
+          "guidance": null,
+          "text": "Roles and escalation paths for agent incidents are assigned."
+        },
+        {
+          "code": "AG6-04",
+          "order": 4,
+          "guidance": null,
+          "text": "The use-case has a documented purpose and approved operating boundaries."
+        }
+      ]
+    },
+    {
+      "num": 7,
+      "key": "ag7-data-validation",
+      "title": "Data sourcing & output validation",
+      "order": 7,
+      "intent": "Inputs are trustworthy and outputs are checked before they are relied upon.",
+      "seeAlso": [
+        {
+          "slug": "data-lineage",
+          "labelEn": "Data Lineage",
+          "labelZh": "数据血缘"
+        }
+      ],
+      "items": [
+        {
+          "code": "AG7-01",
+          "order": 1,
+          "guidance": null,
+          "text": "Input data sources are defined, validated, and authorised for this use."
+        },
+        {
+          "code": "AG7-02",
+          "order": 2,
+          "guidance": null,
+          "text": "Review points exist before outputs enter systems of record."
+        },
+        {
+          "code": "AG7-03",
+          "order": 3,
+          "guidance": null,
+          "text": "Outputs are checked for sensitive-data leakage before release."
+        },
+        {
+          "code": "AG7-04",
+          "order": 4,
+          "guidance": null,
+          "text": "Source-data quality issues are detectable and surfaced."
+        }
+      ]
+    }
+  ]
+}

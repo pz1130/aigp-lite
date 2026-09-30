@@ -1,0 +1,35 @@
+Source: MITRE ATLAS™ (https://atlas.mitre.org)
+Upstream ref: ATLAS v5.4 (atlas-data, https://github.com/mitre-atlas/atlas-data)
+Fetched at: 2026-06-06T00:00:00.000Z
+
+© The MITRE Corporation. ATLAS™ and ATT&CK® are trademarks of The MITRE
+Corporation. Use of the ATLAS knowledge base is governed by the terms of the
+ATLAS materials. The atlas-data corpus is distributed under the Apache License,
+Version 2.0.
+
+The risk entries in mitre-atlas.json are adaptations/summaries authored for this
+project, mapped to ATLAS technique identifiers (AML.T####). They are derivative
+descriptions, not verbatim copies of MITRE ATLAS content.
+
+---
+
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+NOTICE
+   This product includes material derived from the MITRE ATLAS™ knowledge base
+   developed by The MITRE Corporation. The MITRE Corporation does not endorse
+   this product.

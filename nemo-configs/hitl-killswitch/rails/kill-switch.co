@@ -1,0 +1,15 @@
+# nemo-configs/hitl-killswitch/rails/kill-switch.co
+define user request stop
+  "stop"
+  "abort"
+  "kill switch"
+  "emergency stop"
+  "halt"
+
+define flow kill switch stop
+  user request stop
+  bot confirm halt
+  stop
+
+define bot confirm halt
+  "Kill switch engaged. All further actions are halted."

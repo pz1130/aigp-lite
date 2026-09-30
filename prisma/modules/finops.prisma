@@ -1,0 +1,45 @@
+// M10 FinOps: Budget + BudgetAlert tables
+
+enum BudgetScope {
+  org
+  api_key
+  usecase
+}
+
+enum BudgetPeriod {
+  daily
+  weekly
+  monthly
+}
+
+model Budget {
+  id         String       @id @default(cuid())
+  orgId      String
+  scope      BudgetScope
+  scopeRefId String?
+  period     BudgetPeriod
+  amountUsd  Decimal      @db.Decimal(12, 2)
+  hardCap    Boolean      @default(false)
+  isActive   Boolean      @default(true)
+  createdAt  DateTime     @default(now())
+  createdBy  String
+
+  org    Organization  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  alerts BudgetAlert[]
+
+  @@index([orgId, isActive])
+  @@map("budget")
+}
+
+model BudgetAlert {
+  id         String   @id @default(cuid())
+  budgetId   String
+  periodKey  String
+  threshold  Int
+  notifiedAt DateTime @default(now())
+
+  budget Budget @relation(fields: [budgetId], references: [id], onDelete: Cascade)
+
+  @@unique([budgetId, periodKey, threshold])
+  @@map("budget_alert")
+}

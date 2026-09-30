@@ -1,0 +1,40 @@
+.root {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    #1a1740 0%,
+    #050511 60%,
+    #000 100%
+  );
+  overflow: hidden;
+}
+.stars {
+  position: absolute;
+  inset: 0;
+  box-shadow:
+    20vw 15vh 0 0.5px rgba(255, 255, 255, 0.6),
+    45vw 8vh 0 0.5px rgba(255, 255, 255, 0.4),
+    70vw 22vh 0 0.5px rgba(255, 255, 255, 0.55),
+    12vw 40vh 0 0.5px rgba(255, 255, 255, 0.35),
+    60vw 35vh 0 0.5px rgba(255, 255, 255, 0.7),
+    85vw 50vh 0 0.5px rgba(255, 255, 255, 0.45),
+    30vw 60vh 0 0.5px rgba(255, 255, 255, 0.5),
+    55vw 75vh 0 0.5px rgba(255, 255, 255, 0.6),
+    8vw 85vh 0 0.5px rgba(255, 255, 255, 0.35),
+    78vw 90vh 0 0.5px rgba(255, 255, 255, 0.5),
+    25vw 28vh 0 0.4px rgba(255, 255, 255, 0.3),
+    50vw 18vh 0 0.4px rgba(255, 255, 255, 0.3),
+    65vw 68vh 0 0.4px rgba(255, 255, 255, 0.3),
+    38vw 92vh 0 0.4px rgba(255, 255, 255, 0.3),
+    92vw 72vh 0 0.4px rgba(255, 255, 255, 0.35),
+    15vw 55vh 0 0.4px rgba(255, 255, 255, 0.3),
+    5vw 10vh 0 0.4px rgba(255, 255, 255, 0.3),
+    48vw 48vh 0 0.4px rgba(255, 255, 255, 0.4),
+    82vw 30vh 0 0.4px rgba(255, 255, 255, 0.35),
+    33vw 78vh 0 0.4px rgba(255, 255, 255, 0.3);
+  width: 1px;
+  height: 1px;
+  top: 0;
+  left: 0;
+}

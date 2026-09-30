@@ -1,0 +1,85 @@
+enum AsiChkStatus {
+  draft
+  submitted
+  approved
+  archived
+}
+
+enum AsiChkAnswerState {
+  unanswered
+  yes
+  no
+  na
+}
+
+model AsiChkSection {
+  id      String       @id @default(cuid())
+  num     Int          @unique
+  key     String       @unique
+  asiCode String
+  title   String
+  order   Int
+  items   AsiChkItem[]
+
+  @@map("asi_chk_section")
+}
+
+model AsiChkItem {
+  id        String        @id @default(cuid())
+  sectionId String
+  section   AsiChkSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  code      String        @unique
+  text      String
+  guidance  String?
+  order     Int
+
+  @@map("asi_chk_item")
+}
+
+model AsiChkAssessment {
+  id             String       @id @default(cuid())
+  orgId          String
+  usecaseId      String?
+  version        Int          @default(1)
+  status         AsiChkStatus @default(draft)
+  title          String
+  createdById    String
+  submittedAt    DateTime?
+  submittedById  String?
+  approvedAt     DateTime?
+  approvedById   String?
+  archivedAt     DateTime?
+  archivedById   String?
+  supersededById String?      @unique
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  org          Organization       @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase      AiUsecase?         @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+  createdBy    User               @relation("AsiChkCreator", fields: [createdById], references: [id])
+  submittedBy  User?              @relation("AsiChkSubmitter", fields: [submittedById], references: [id])
+  approvedBy   User?              @relation("AsiChkApprover", fields: [approvedById], references: [id])
+  archivedBy   User?              @relation("AsiChkArchiver", fields: [archivedById], references: [id])
+  supersededBy AsiChkAssessment?  @relation("AsiChkSupersede", fields: [supersededById], references: [id])
+  supersedes   AsiChkAssessment[] @relation("AsiChkSupersede")
+  answers      AsiChkAnswer[]
+
+  @@unique([usecaseId, version])
+  @@index([orgId, usecaseId, status])
+  @@index([orgId, status, updatedAt(sort: Desc)])
+  @@map("asi_chk_assessment")
+}
+
+model AsiChkAnswer {
+  id           String            @id @default(cuid())
+  assessmentId String
+  assessment   AsiChkAssessment  @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  itemCode     String
+  status       AsiChkAnswerState @default(unanswered)
+  elaboration  String?
+  evidenceRefs Json              @default("[]")
+  updatedAt    DateTime          @updatedAt
+
+  @@unique([assessmentId, itemCode])
+  @@map("asi_chk_answer")
+}

@@ -1,0 +1,14 @@
+ASI Red-Team Checklist catalog
+
+Section codes and titles follow the OWASP Top 10 for Agentic Applications 2026
+(ASI01–ASI10), OWASP GenAI Security Project / Agentic Security Initiative —
+https://genai.owasp.org. That publication is licensed CC BY-SA 4.0.
+
+The red-team test procedures ("items") in asi-redteam-checklist-catalog.json are
+ORIGINAL wording authored for AIGP-Lite. They are informed by, but are NOT
+verbatim copies of, OWASP test or mitigation text. Appendix-A cross-links
+(MITRE ATLAS, OWASP LLM Top 10, Agentic Threats T1–T17, AIVSS) are resolved at
+runtime from the OWASP_ASI risk catalog, not duplicated here.
+
+Attribution: Source — OWASP Top 10 for Agentic Applications 2026, licensed under
+CC BY-SA 4.0.

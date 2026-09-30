@@ -1,0 +1,58 @@
+{
+  "_meta": {
+    "upstreamRef": "MindForge-2025-test",
+    "source": "MAS/ABS MindForge AI Risk Management (test fixture)"
+  },
+  "risks": [
+    {
+      "code": "MF-R-FB-1",
+      "title": "Biased model outcomes across customer segments",
+      "category": "Fairness & Bias",
+      "summary": "Model decisions differ unfairly across protected customer groups.",
+      "description": "The AI system produces systematically different outcomes for comparable customers in different demographic segments, creating fairness risk.",
+      "frameworkRefs": { "ABS Top-10 GenAI": ["yes"] },
+      "relatedRiskCodes": [],
+      "sourceUrl": "https://www.mas.gov.sg/mindforge"
+    },
+    {
+      "code": "MF-R-RS-1",
+      "title": "Model output instability under input drift",
+      "category": "Robustness & Stability",
+      "summary": "Output quality degrades when production inputs drift from training distribution.",
+      "description": "The AI system is sensitive to distribution shift, producing unstable or degraded outputs as real-world inputs diverge from the training data.",
+      "frameworkRefs": {},
+      "relatedRiskCodes": [],
+      "sourceUrl": "https://www.mas.gov.sg/mindforge"
+    }
+  ],
+  "mitigations": [
+    {
+      "code": "C7-P1",
+      "title": "Pre-deployment fairness evaluation",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Evaluate model fairness across segments before deployment.",
+      "description": "Consideration C7 — Model Development & Validation. Assess model outcomes across customer segments and document fairness findings prior to release.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C7 — Model Development & Validation"]
+      },
+      "mitigatesRiskCodes": ["MF-R-FB-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.mas.gov.sg/mindforge"
+    },
+    {
+      "code": "C7-P2",
+      "title": "Robustness and stability testing",
+      "category": "3. AI Lifecycle Management",
+      "summary": "Test model stability under input drift before deployment.",
+      "description": "Consideration C7 — Model Development & Validation. Test model behaviour under distribution shift and document robustness findings prior to release.",
+      "frameworkRefs": {
+        "MindForge Section": ["3. AI Lifecycle Management"],
+        "MindForge Consideration": ["C7 — Model Development & Validation"]
+      },
+      "mitigatesRiskCodes": ["MF-R-RS-1"],
+      "relatedMitigationCodes": [],
+      "sourceUrl": "https://www.mas.gov.sg/mindforge"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+enum WorkflowState {
+  open
+  completed
+  cancelled
+}
+
+enum StepDecision {
+  pending
+  approved
+  rejected
+  requested_changes
+}
+
+model WorkflowTemplate {
+  id          String   @id @default(cuid())
+  orgId       String
+  name        String
+  description String  @default("")
+  isDefault   Boolean @default(false)
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  org   Organization           @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  steps WorkflowTemplateStep[]
+
+  @@unique([orgId, name])
+  @@index([orgId])
+  @@map("workflow_template")
+}
+
+model WorkflowTemplateStep {
+  id             String  @id @default(cuid())
+  templateId     String
+  stepIndex      Int
+  stepName       String
+  assigneeRole   String?
+  assigneeUserId String?
+  instructions   String?
+
+  template WorkflowTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@unique([templateId, stepIndex])
+  @@index([templateId])
+  @@map("workflow_template_step")
+}
+
+model WorkflowInstance {
+  id          String        @id @default(cuid())
+  orgId       String
+  usecaseId   String
+  template    String
+  templateId  String?
+  currentStep Int           @default(0)
+  state       WorkflowState @default(open)
+  createdAt   DateTime      @default(now())
+  closedAt    DateTime?
+
+  org     Organization   @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usecase AiUsecase      @relation(fields: [usecaseId], references: [id], onDelete: Cascade)
+  steps   WorkflowStep[]
+
+  @@index([orgId])
+  @@index([state])
+  @@index([usecaseId])
+  @@index([templateId])
+  @@map("workflow_instance")
+}
+
+model WorkflowStep {
+  id             String        @id @default(cuid())
+  instanceId     String
+  stepIndex      Int
+  stepName       String
+  assigneeRole   String?
+  assigneeUserId String?
+  decidedById    String?
+  decision       StepDecision  @default(pending)
+  comment        String        @default("") @db.Text
+  decidedAt      DateTime?
+
+  instance WorkflowInstance @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+  decidedBy User?           @relation("StepDecider", fields: [decidedById], references: [id])
+
+  @@unique([instanceId, stepIndex])
+  @@index([assigneeUserId])
+  @@index([decidedById])
+  @@map("workflow_step")
+}

@@ -1,0 +1,13 @@
+AI Verify Testing Framework (AIVTF) — Process Checklist
+Source: Infocomm Media Development Authority (IMDA) & AI Verify Foundation.
+
+The catalog content in aivtf-catalog.json (principles, outcomes, process
+descriptions, evidence guidance) is derived from the publicly published AIVTF
+Process Checklist workbook and framework PDF published by the AI Verify
+Foundation (https://aiverifyfoundation.sg/). Attribution to IMDA and the AI
+Verify Foundation. The source workbook and PDF are not redistributed in this
+repository; download them from the AI Verify Foundation to re-run
+scripts/extract-aivtf-catalog.py.
+
+This file documents provenance; consult the original publication for the
+authoritative framework text and any usage terms.

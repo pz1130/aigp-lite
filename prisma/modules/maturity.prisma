@@ -1,0 +1,38 @@
+enum Pillar {
+  mandate_and_scope
+  structure_and_roles
+  processes
+  decision_rights
+  culture
+  communication
+}
+
+model GovernanceMaturityAssessment {
+  id         String   @id @default(cuid())
+  orgId      String
+  pillar     Pillar
+  scoreInt   Int
+  maxScore   Int
+  details    Json
+  byUserId   String
+  ts         DateTime @default(now())
+
+  org    Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  byUser User         @relation("MaturityAuthor", fields: [byUserId], references: [id])
+
+  @@index([orgId, pillar, ts(sort: Desc)])
+  @@map("governance_maturity_assessment")
+}
+
+model GovernanceScoreSnapshot {
+  id         String   @id @default(cuid())
+  orgId      String
+  overall    Int
+  dimensions Json
+  ts         DateTime @default(now())
+
+  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, ts(sort: Desc)])
+  @@map("governance_score_snapshot")
+}

@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "upstreamRef": "asi-test",
+    "source": "test",
+    "license": "test",
+    "note": "test"
+  },
+  "sections": [
+    {
+      "num": 901,
+      "key": "asi-test-a",
+      "asiCode": "asi-test-1",
+      "title": "Test Section A",
+      "order": 1,
+      "items": [
+        {
+          "code": "ASITESTA-T1",
+          "order": 1,
+          "guidance": "g1",
+          "text": "Attempt one"
+        },
+        {
+          "code": "ASITESTA-T2",
+          "order": 2,
+          "guidance": null,
+          "text": "Attempt two"
+        }
+      ]
+    },
+    {
+      "num": 902,
+      "key": "asi-test-b",
+      "asiCode": "asi-test-2",
+      "title": "Test Section B",
+      "order": 2,
+      "items": [
+        {
+          "code": "ASITESTB-T1",
+          "order": 1,
+          "guidance": null,
+          "text": "Attempt three"
+        }
+      ]
+    }
+  ]
+}

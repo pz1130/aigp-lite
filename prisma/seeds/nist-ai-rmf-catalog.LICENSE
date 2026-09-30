@@ -1,0 +1,33 @@
+NIST AI Risk Management Framework (AI RMF 1.0) catalog
+======================================================
+
+Source
+------
+NIST AI Risk Management Framework (AI RMF 1.0), NIST AI 100-1, January 2023.
+https://www.nist.gov/itl/ai-risk-management-framework
+https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf
+Playbook: https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook
+
+Copyright / licensing status
+----------------------------
+The NIST AI RMF is a work of the U.S. federal government and is in the public
+domain in the United States (17 U.S.C. § 105). NIST publications are not subject
+to copyright in the U.S. and may be freely reproduced.
+
+What this catalog contains
+--------------------------
+- The AI RMF function / category / subcategory CODES (e.g. GOVERN-1.1,
+  MAP-2.3, MEASURE-2.6, MANAGE-4.3). These are NIST's identifiers.
+- ORIGINAL one-line summaries and descriptions authored for this project. They
+  paraphrase the intent of each subcategory; they are NOT verbatim NIST text.
+- `frameworkRefs` cross-references to other catalogs (FINOS AIGF, MITRE ATLAS)
+  that are our own editorial mapping, not part of the NIST publication.
+
+Even though the NIST text is public domain and could be quoted directly, we use
+our own wording so the catalog stays consistent in tone and length with the
+other framework catalogs in this repository.
+
+Attribution
+-----------
+Where this catalog is surfaced to users, attribute the source as:
+"Based on the NIST AI Risk Management Framework (AI RMF 1.0), NIST AI 100-1."
