@@ -3,3 +3,6 @@
 /docs/superpowers export-ignore
 /docs/reference/aivtf export-ignore
 /Figure_1_*.png export-ignore
+# Dependency updates are raised and merged in the development repo only; the
+# public mirror receives them through the snapshot sync.
+/.github/dependabot.yml export-ignore
