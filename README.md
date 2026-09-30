@@ -1,5 +1,9 @@
 # AIGP-Lite
 
+[![CI](https://github.com/pz1130/aigp-lite/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pz1130/aigp-lite/actions/workflows/ci.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/pz1130/aigp-lite)](https://github.com/pz1130/aigp-lite/releases/latest)
+
 Modular AI Governance Platform aligned with the EU AI Act, NIST AI RMF, and
 ISO/IEC 42001. Ships built-in control/risk catalogs from FINOS AIGF, NIST AI
 RMF, ISO 42001 (Annex A), MITRE ATLAS, EU AI Act (Reg. 2024/1689), MAS/ABS

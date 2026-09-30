@@ -1,0 +1,55 @@
+name: Bug report
+description: Something does not work as documented.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Security problems: please **do not** file a public issue. Report them
+        privately as described in [SECURITY.md](https://github.com/pz1130/aigp-lite/blob/main/SECURITY.md).
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Release tag or commit SHA.
+      placeholder: v0.24.0
+    validations:
+      required: true
+  - type: dropdown
+    id: deployment
+    attributes:
+      label: How are you running it?
+      options:
+        - docker compose (dev)
+        - docker compose + docker-compose.prod.yml
+        - npm run dev / npm start
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: module
+    attributes:
+      label: Affected module or page
+      placeholder: e.g. Incidents, Trust Center, /api/v1/...
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to ...
+        2. Click ...
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs. actual behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Remove secrets, tokens and personal data before pasting.
+      render: text
