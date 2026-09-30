@@ -62,9 +62,12 @@ so multi-replica deployments need no shared session store (`docs/admin/README.md
 
 **Threats considered:**
 
-- _Credential stuffing / brute force_ — authentication and runtime LLM limits
-  still belong at the reverse-proxy/API-key layer; public Trust Center and
-  external-report endpoints now use an optional Redis-backed application limit.
+- _Credential stuffing / brute force_ — email + password sign-in is throttled
+  per client IP (20 / 15 min) and per account (10 / 15 min) in
+  `src/lib/auth/login-rate-limit.ts`; public Trust Center and external-report
+  endpoints use the same optional Redis-backed limiter. The per-account bucket
+  means an attacker can temporarily lock a known account out of password
+  sign-in (SSO is unaffected) — accepted in exchange for bounding guessing.
 - _Token theft via XSS_ — JWT is delivered as an HTTP-only cookie by
   NextAuth; combined with the CSP below, reduces (not eliminates) the blast
   radius of a script-injection bug.
@@ -268,10 +271,11 @@ mandatory on download.
 These are deliberate, not oversights — listed so a security reviewer doesn't
 have to rediscover them:
 
-- **Authentication and runtime LLM rate limiting remain deployment concerns.**
-  Configure the reverse proxy for `/api/auth/*` and use API-key budget controls
-  for `/api/runtime/llm`. Public Trust Center and external-report endpoints use
-  the optional Redis-backed limiter in `src/lib/rate-limit/tokenBucket.ts`.
+- **General request-volume and runtime LLM rate limiting remain deployment
+  concerns.** Configure the reverse proxy for overall request rates and use
+  API-key budget controls for `/api/runtime/llm`. Password sign-in, public
+  Trust Center and external-report endpoints use the optional Redis-backed
+  limiter in `src/lib/rate-limit/tokenBucket.ts`.
 - **Key rotation requires an operator-run maintenance step.** Use the built-in
   `pnpm crypto:rotate-key` script with the documented dual-key contract before
   cutting over `AIGP_ENCRYPTION_KEY`; verify `failed=0` and remove the old key

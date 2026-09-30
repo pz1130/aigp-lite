@@ -230,3 +230,22 @@ export const trustViewRateLimiter = new RateLimiter(
   },
   "trust-view",
 );
+
+// Credentials sign-in: 20 attempts / 15 minutes / IP, and 10 attempts /
+// 15 minutes / account, so a single client can't brute-force passwords and
+// a botnet can't hammer one account from many IPs.
+export const loginIpRateLimiter = new RateLimiter(
+  {
+    requestsPerMinute: 20,
+    windowMs: 900_000,
+  },
+  "login-ip",
+);
+
+export const loginEmailRateLimiter = new RateLimiter(
+  {
+    requestsPerMinute: 10,
+    windowMs: 900_000,
+  },
+  "login-email",
+);

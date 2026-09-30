@@ -2,6 +2,7 @@ import NextAuth, { type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { prisma } from "@/lib/db";
 import { verifyPassword } from "./password";
+import { consumeLoginAttempt, LoginRateLimited } from "./login-rate-limit";
 import { oidcProvider } from "./sso/provider";
 import { provisionOidcUser } from "./sso/jit";
 import { resolveProviderConfig } from "./sso/store";
@@ -12,12 +13,15 @@ const credentialsProvider = Credentials({
     email: { label: "Email", type: "email" },
     password: { label: "Password", type: "password" },
   },
-  async authorize(creds) {
+  async authorize(creds, request) {
     const email = String(creds?.email ?? "")
       .toLowerCase()
       .trim();
     const password = String(creds?.password ?? "");
     if (!email || !password) return null;
+    if (!(await consumeLoginAttempt(email, request))) {
+      throw new LoginRateLimited();
+    }
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user?.passwordHash) return null;
     if (!(await verifyPassword(user.passwordHash, password))) return null;

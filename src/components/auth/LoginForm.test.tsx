@@ -37,6 +37,7 @@ const messages = {
   },
   errors: {
     invalidCredentials: "Invalid email or password.",
+    tooManyAttempts: "Too many sign-in attempts.",
     unexpected: "Something went wrong.",
   },
 };
@@ -84,6 +85,29 @@ describe("LoginForm (glass)", () => {
     });
     expect(alertSpy).not.toHaveBeenCalled();
     alertSpy.mockRestore();
+  });
+
+  it("shows the rate-limit banner when sign-in is throttled", async () => {
+    vi.mocked(signIn).mockResolvedValue({
+      error: "CredentialsSignin",
+      code: "rate_limited",
+      status: 401,
+      ok: false,
+      url: null,
+    });
+    renderForm();
+    fireEvent.change(screen.getByLabelText("Email"), {
+      target: { value: "a@b.co" },
+    });
+    fireEvent.change(screen.getByLabelText("Password"), {
+      target: { value: "secret" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Sign in" }));
+    await waitFor(() => {
+      expect(screen.getByRole("alert").textContent).toContain(
+        "Too many sign-in attempts.",
+      );
+    });
   });
 
   it("shows the 'unexpected' banner when signIn throws", async () => {

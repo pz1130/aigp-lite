@@ -78,9 +78,12 @@ must match the public origin, or sign-in callbacks will fail.
 
 ## Not covered by this override
 
-- **Login rate limiting.** The credentials sign-in endpoint has no built-in
-  throttle yet. Rate-limit `/api/auth/*` at the reverse proxy (for example nginx
-  `limit_req` or Caddy `rate_limit`) until the app enforces one itself.
+- **Edge rate limiting.** Email + password sign-in is throttled in the app
+  (20 attempts per 15 minutes per client IP, 10 per 15 minutes per account;
+  shared across instances when `REDIS_URL` is set). The per-IP bucket keys on
+  `X-Forwarded-For`, so have the reverse proxy set that header. General
+  request-volume limits (for example nginx `limit_req` or Caddy `rate_limit`)
+  still belong at the proxy.
 - **Backups.** Snapshot the `aigp_pg` and `aigp_storage` volumes; see the
   [admin guide](admin/README.md).
 - **Managed services.** For Kubernetes or managed Postgres/Redis, set the same

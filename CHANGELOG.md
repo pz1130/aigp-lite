@@ -1,3 +1,10 @@
+## Unreleased
+
+### Security
+
+- **Login rate limiting.** Email + password sign-in is throttled to 20 attempts per 15 minutes per client IP and 10 per 15 minutes per account, using the existing token-bucket limiter (Redis-backed when `REDIS_URL` is set, fails closed in production if Redis is down). The login form shows a distinct "too many attempts" message.
+- **CodeQL** static analysis runs on every push and pull request to `main`, and weekly.
+
 ## v0.24.0 — 2026-09-30
 
 First public release, published at https://github.com/pz1130/aigp-lite under

@@ -245,6 +245,7 @@
   },
   "errors": {
     "invalidCredentials": "Invalid email or password.",
+    "tooManyAttempts": "Too many sign-in attempts. Please wait a few minutes and try again.",
     "emailTaken": "This email is already registered.",
     "unexpected": "Something went wrong."
   },

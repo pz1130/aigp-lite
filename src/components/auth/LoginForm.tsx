@@ -63,7 +63,11 @@ export function LoginForm({
     try {
       const res = await signIn("credentials", { ...values, redirect: false });
       if (res?.error) {
-        setServerError(tErr("invalidCredentials"));
+        setServerError(
+          res.code === "rate_limited"
+            ? tErr("tooManyAttempts")
+            : tErr("invalidCredentials"),
+        );
         return;
       }
       router.push("/");

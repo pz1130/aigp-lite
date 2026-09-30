@@ -245,6 +245,7 @@
   },
   "errors": {
     "invalidCredentials": "邮箱或密码不正确。",
+    "tooManyAttempts": "登录尝试次数过多，请稍等几分钟后再试。",
     "emailTaken": "该邮箱已注册。",
     "unexpected": "出了点问题。"
   },
