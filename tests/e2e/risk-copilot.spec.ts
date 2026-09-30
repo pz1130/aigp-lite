@@ -25,10 +25,15 @@ test.describe("risk-copilot E2E", () => {
       page.getByRole("heading", { name: /AI Risk Suggestions/i }),
     ).toBeVisible({ timeout: 10_000 });
 
-    // The suggest button should be present
-    const suggestBtn = page.getByRole("button", {
-      name: /Suggest risks with AI|Re-run/i,
-    });
+    // The suggest button should be present. Scoped to the panel header: other
+    // panels on the detail page render their own "Re-run" button once they
+    // have results, which made the page-wide locator ambiguous.
+    const suggestBtn = page
+      .locator("header")
+      .filter({
+        has: page.getByRole("heading", { name: /AI Risk Suggestions/i }),
+      })
+      .getByRole("button", { name: /Suggest risks with AI|Re-run/i });
     await expect(suggestBtn).toBeVisible();
   });
 
@@ -52,9 +57,12 @@ test.describe("risk-copilot E2E", () => {
       page.getByRole("heading", { name: /AI Risk Suggestions/i }),
     ).toBeVisible({ timeout: 10_000 });
 
-    const suggestBtn = page.getByRole("button", {
-      name: /Suggest risks with AI|Re-run/i,
-    });
+    const suggestBtn = page
+      .locator("header")
+      .filter({
+        has: page.getByRole("heading", { name: /AI Risk Suggestions/i }),
+      })
+      .getByRole("button", { name: /Suggest risks with AI|Re-run/i });
     await expect(suggestBtn).toBeDisabled();
 
     await ctx.close();
