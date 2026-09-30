@@ -76,7 +76,7 @@
     "dotenv": "^17.4.2",
     "eventsource-parser": "^3.1.0",
     "exceljs": "^4.4.0",
-    "ioredis": "5.11.1",
+    "ioredis": "6.0.0",
     "json-logic-js": "^2.0.5",
     "jszip": "^3.10.1",
     "lucide-react": "^1.31.0",
