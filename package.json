@@ -62,7 +62,7 @@
     "@radix-ui/react-toast": "^1.2.23",
     "@radix-ui/react-tooltip": "^1.2.16",
     "@react-pdf/renderer": "^4.6.0",
-    "@sentry/nextjs": "^10.69.0",
+    "@sentry/nextjs": "^11.0.0",
     "@tanstack/react-query": "^5.101.4",
     "@trpc/client": "^11.18.0",
     "@trpc/react-query": "^11.18.0",
