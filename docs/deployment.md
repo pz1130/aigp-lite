@@ -33,11 +33,16 @@ Put these in a `.env` next to the compose files (never commit it), or inject the
 from your secret manager:
 
 ```bash
-POSTGRES_PASSWORD=$(openssl rand -base64 24)
+POSTGRES_PASSWORD=$(openssl rand -hex 32)
 NEXTAUTH_SECRET=$(openssl rand -base64 32)
 AIGP_ENCRYPTION_KEY=$(openssl rand -base64 32)
 NEXTAUTH_URL=https://aigp.example.com
 ```
+
+`POSTGRES_PASSWORD` is inserted verbatim into the `DATABASE_URL` connection string,
+so it must be URL-safe. Hex output is. A base64 password can contain `/`, `+` or
+`=`, which breaks URL parsing and stops `migrate`, `web` and `worker` from
+connecting. If you bring your own password, restrict it to `A-Z a-z 0-9 - . _ ~`.
 
 `POSTGRES_PASSWORD` is applied by the Postgres image **only when the data volume is
 first initialised**. If you are converting an existing dev volume, change the

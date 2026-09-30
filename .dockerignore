@@ -1,9 +1,27 @@
 node_modules
 .next
 .git
-.env
-.env.local
 storage
 playwright-report
 test-results
 coverage
+sbom.json
+*.tsbuildinfo
+
+# Secrets: every env file except the committed template
+.env*
+!.env.example
+
+# Local-only reference material that must never ship in an image
+*_ndx.*
+portfolio/
+Figure_1_*.png
+docs/superpowers
+docs/reference/aivtf
+
+# Local editor / agent tooling state
+.DS_Store
+.claude
+.playwright-mcp
+.superpowers
+.figma-source
