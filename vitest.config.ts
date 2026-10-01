@@ -41,6 +41,29 @@ export default defineConfig({
     },
     setupFiles: ["./vitest.setup.ts"],
     globalSetup: ["./tests/unit-global-setup.ts"],
+    // Off unless `--coverage` is passed (npm run test:coverage / CI `test` job).
+    coverage: {
+      provider: "v8",
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: ["src/**/*.test.{ts,tsx}", "src/**/*.d.ts", "src/generated/**"],
+      reporter: ["text-summary", "json-summary", "html"],
+      // Ratchet floors ~1 point under the 2026-10-01 baseline (all 50.9 / lib
+      // 75.4 statements). UI is covered by E2E, so the global floor stays low
+      // and src/lib carries the real bar. Raise these as coverage grows; never
+      // lower them to make a PR pass.
+      thresholds: {
+        statements: 50,
+        branches: 40,
+        functions: 42,
+        lines: 50,
+        "src/lib/**": {
+          statements: 74,
+          branches: 63,
+          functions: 75,
+          lines: 75,
+        },
+      },
+    },
   },
   resolve: { alias: { "@": path.resolve(configDir, "./src") } },
 });

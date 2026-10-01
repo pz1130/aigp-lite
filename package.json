@@ -16,10 +16,12 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --configLoader runner",
     "test:watch": "vitest --configLoader runner",
+    "test:coverage": "vitest run --configLoader runner --coverage",
     "e2e": "playwright test",
     "prisma:generate": "node prisma/build-schema.mjs && prisma generate",
     "prisma:migrate": "node prisma/build-schema.mjs && prisma migrate dev",
     "prisma:deploy": "node prisma/build-schema.mjs && prisma migrate deploy",
+    "prisma:drift": "node prisma/build-schema.mjs && prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --exit-code",
     "prisma:seed": "tsx prisma/seed.ts",
     "prisma:studio": "node prisma/build-schema.mjs && prisma studio",
     "openapi:export": "tsx scripts/openapi-export.ts",
@@ -114,7 +116,8 @@
     "@types/react-dom": "^19.3.0",
     "@types/swagger-ui-react": "^5.18.0",
     "@vitejs/plugin-react": "^6.1.1",
-    "@vitest/ui": "^5.0.2",
+    "@vitest/coverage-v8": "^5.0.3",
+    "@vitest/ui": "^5.0.3",
     "eslint": "^10.11.0",
     "eslint-config-next": "^16.3.6",
     "gray-matter": "^4.0.3",
@@ -127,7 +130,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.70.1",
     "vite": "^8.3.1",
-    "vitest": "^5.0.2"
+    "vitest": "^5.0.3"
   },
   "overrides": {
     "deepmerge-ts": "^8.0.2",

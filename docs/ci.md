@@ -271,3 +271,43 @@ assembled into `prisma/schema.prisma` by `prisma/build-schema.mjs`. CI runs
 `npm run prisma:generate` (build + `prisma generate`) then `npm run prisma:deploy`
 (build + `prisma migrate deploy`). Migration failures are **not** swallowed — if
 they were, the suite would explode downstream with "table does not exist".
+
+## Schema drift check
+
+Right after migrations apply, the `test` job runs `npm run prisma:drift`:
+`prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma
+--exit-code`. The freshly migrated database holds exactly what the
+migrations build, so any difference from the merged schema means a model
+change shipped without its migration (or a migration without its model change).
+Exit `2` fails the job and the step log prints the diff; fix it with
+`npm run prisma:migrate -- --name <change>` and commit the generated migration.
+
+It runs in `test` only — `test-no-redis` applies the same migrations to the same
+schema, so a second check would add nothing. Run it locally against any
+database that has had `npm run prisma:deploy` applied.
+
+## Coverage gate
+
+The `test` job runs the suite as `npm run test:coverage` (v8 provider) and
+uploads `coverage/` as the `coverage-report` artifact (HTML report under
+`coverage/index.html`). The denominator is every file under `src/` except tests,
+`.d.ts` and `src/generated/`, so untested files count as 0% rather than being
+silently left out.
+
+Floors live in `vitest.config.ts` → `test.coverage.thresholds` and sit about one
+point under the baseline measured on 2026-10-01:
+
+| Scope        | Statements | Branches | Functions | Lines | Floor (S/B/F/L)   |
+| ------------ | ---------- | -------- | --------- | ----- | ----------------- |
+| all of `src` | 50.9       | 41.1     | 43.2      | 51.4  | 50 / 40 / 42 / 50 |
+| `src/lib/**` | 75.4       | 64.3     | 76.6      | 76.7  | 74 / 63 / 75 / 75 |
+
+The global number is low because pages and components (`src/app`,
+`src/components`) are covered by the Playwright E2E job, not by unit tests;
+`src/lib` is where business logic lives and carries the real bar. Treat the
+floors as a ratchet: raise them when coverage climbs, and never lower them to
+get a PR through — add tests instead.
+
+It runs in `test` only. `test-no-redis` skips the queue/worker tests, so its
+numbers would be lower and a second gate would just be noise. A local run takes
+about 3–4 minutes and needs the same scratch Postgres/Redis as `npm test`.

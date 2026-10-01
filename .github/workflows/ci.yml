@@ -67,6 +67,15 @@ jobs:
         # unit suite explodes downstream with "table does not exist".
         run: npm run prisma:deploy
 
+      - name: Check schema drift
+        env:
+          DATABASE_URL: postgresql://aigp:aigp_test@localhost:5432/aigp_test
+        # The DB now holds exactly what the migrations build; diff it against the
+        # merged schema.prisma. Exit 2 = a model change shipped without its
+        # migration (or vice versa) — run `npm run prisma:migrate` and commit the
+        # generated migration. Runs in this leg only; the schema is the same in both.
+        run: npm run prisma:drift
+
       - name: Run type check
         run: npx tsc --noEmit
 
@@ -81,7 +90,18 @@ jobs:
           # only runs here (skipIf(!REDIS_URL)); it proves the worker drains a job
           # end-to-end. See docs/ci.md.
           REDIS_URL: redis://localhost:6379
-        run: npx vitest run --configLoader runner
+        # Coverage runs in this leg only (the no-Redis leg skips the queue/worker
+        # tests and would read lower). Floors live in vitest.config.ts; dropping
+        # below them fails the step. See docs/ci.md.
+        run: npm run test:coverage
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
 
   test-no-redis:
     name: Test Suite (no Redis / inline fallback)

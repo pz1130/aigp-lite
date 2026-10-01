@@ -151,10 +151,12 @@ mapping them to ProviderConnection rows requires explicit operator choice.
 | `npm run dev`                        | Next.js dev server (port **3001**)                                   |
 | `npm run build` / `npm start`        | Production build + serve                                             |
 | `npm test`                           | Vitest unit tests                                                    |
+| `npm run test:coverage`              | Unit tests + v8 coverage; fails below the floors in vitest.config.ts |
 | `npm run e2e`                        | Playwright end-to-end                                                |
 | `npm run typecheck`                  | `tsc --noEmit`                                                       |
 | `npm run lint`                       | ESLint + Prettier checks                                             |
 | `npm run prisma:migrate`             | Build merged schema + run migrations                                 |
+| `npm run prisma:drift`               | Fail if migrations and merged schema disagree (needs a migrated DB)  |
 | `npm run prisma:seed`                | Insert demo org + role users                                         |
 | `npm run prisma:studio`              | Open Prisma Studio                                                   |
 | `npm run openapi:export`             | Regenerate `openapi.json`                                            |
