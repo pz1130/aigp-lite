@@ -213,8 +213,12 @@ export const inventoryRouter = router({
   modelVersionList: orgProcedure
     .input(z.object({ usecaseId: z.string() }))
     .query(async ({ ctx, input }) =>
+      // AiModelVersion has no orgId, so scope it through its parent usecase.
       ctx.db.aiModelVersion.findMany({
-        where: { usecaseId: input.usecaseId },
+        where: {
+          usecaseId: input.usecaseId,
+          usecase: { orgId: ctx.session.orgId },
+        },
         orderBy: { createdAt: "desc" },
       }),
     ),
@@ -255,8 +259,17 @@ export const inventoryRouter = router({
     .mutation(async ({ ctx, input }) => {
       assertPermission(ctx.session.role, "inventory.write");
       const { id, ...rest } = input;
-      const before = await ctx.db.aiModelVersion.findUnique({ where: { id } });
+      const before = await ctx.db.aiModelVersion.findFirst({
+        where: { id, usecase: { orgId: ctx.session.orgId } },
+      });
       if (!before) throw new TRPCError({ code: "NOT_FOUND" });
+      if (rest.usecaseId !== undefined && rest.usecaseId !== before.usecaseId) {
+        const target = await ctx.db.aiUsecase.findFirst({
+          where: { id: rest.usecaseId },
+          select: { id: true },
+        });
+        if (!target) throw new TRPCError({ code: "NOT_FOUND" });
+      }
       const after = await ctx.db.aiModelVersion.update({
         where: { id },
         data: rest,

@@ -24,6 +24,13 @@ export const evidenceRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       assertPermission(ctx.session.role, "evidence.write");
+      if (input.usecaseId) {
+        const usecase = await ctx.db.aiUsecase.findFirst({
+          where: { id: input.usecaseId },
+          select: { id: true },
+        });
+        if (!usecase) throw new TRPCError({ code: "NOT_FOUND" });
+      }
 
       const { path, sha256, bytes } = await store(
         ctx.session.orgId,

@@ -47,8 +47,8 @@ export default defineConfig({
       include: ["src/**/*.{ts,tsx}"],
       exclude: ["src/**/*.test.{ts,tsx}", "src/**/*.d.ts", "src/generated/**"],
       reporter: ["text-summary", "json-summary", "html"],
-      // Ratchet floors ~1 point under the 2026-10-01 baseline (all 50.9 / lib
-      // 75.4 statements). UI is covered by E2E, so the global floor stays low
+      // Ratchet floors ~1 point under the latest baseline (2026-10-01, after the
+      // openapi/data-lineage/evidence tests: all 51.4 / lib 76.5 statements). UI is covered by E2E, so the global floor stays low
       // and src/lib carries the real bar. Raise these as coverage grows; never
       // lower them to make a PR pass.
       thresholds: {
@@ -57,10 +57,10 @@ export default defineConfig({
         functions: 42,
         lines: 50,
         "src/lib/**": {
-          statements: 74,
+          statements: 75,
           branches: 63,
-          functions: 75,
-          lines: 75,
+          functions: 77,
+          lines: 76,
         },
       },
     },
