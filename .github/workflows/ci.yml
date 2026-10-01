@@ -257,6 +257,18 @@ jobs:
       - name: Check imports
         run: npx eslint src --ext .ts,.tsx
 
+  sast:
+    name: SAST (Semgrep)
+    # Runs on both repos: the private dev repo has no GitHub Advanced Security,
+    # so CodeQL (codeql.yml) only scans the public mirror after a sync. This job
+    # gates PRs where they are reviewed. Rulesets + engine version live in the
+    # `sast` npm script so local runs match CI. See docs/ci.md.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Scan with Semgrep
+        run: npm run sast
+
   build:
     name: Production Build
     runs-on: ubuntu-latest

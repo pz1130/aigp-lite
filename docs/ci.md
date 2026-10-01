@@ -311,3 +311,26 @@ get a PR through — add tests instead.
 It runs in `test` only. `test-no-redis` skips the queue/worker tests, so its
 numbers would be lower and a second gate would just be noise. A local run takes
 about 3–4 minutes and needs the same scratch Postgres/Redis as `npm test`.
+
+## SAST (Semgrep)
+
+The `sast` job runs `npm run sast`: Semgrep CE in the pinned
+`semgrep/semgrep` Docker image with the public `p/javascript`, `p/typescript`,
+`p/react`, `p/nodejs` and `p/secrets` rulesets. No Semgrep account or token is
+needed and metrics are off. Any finding fails the job (`--error`). Paths it skips
+are in `.semgrepignore`; Semgrep also only scans files tracked by git.
+
+Why it exists alongside CodeQL: `codeql.yml` only runs on the public mirror
+(code scanning is free for public repos only), so on the private dev repo a
+problem would surface only after a sync. Semgrep gates the PR itself. CodeQL
+stays as the deeper, dataflow-based second pass on the public repo; triage its
+alerts in the public repo's Security tab.
+
+When a finding is a false positive, suppress it on that line with
+`// nosemgrep: <rule-id>` plus a short reason, and say why in the PR. Don't
+widen `.semgrepignore` to hide real code. The rulesets come from the Semgrep
+Registry at scan time, so a ruleset update can occasionally flag existing code
+on an unrelated PR; fix or suppress it there. Bumping the engine means changing
+the image tag in the `sast` script.
+
+A local run takes about a minute.

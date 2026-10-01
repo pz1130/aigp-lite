@@ -1,20 +1,27 @@
-import { Inter, JetBrains_Mono, IBM_Plex_Sans } from "next/font/google";
+import localFont from "next/font/local";
 
-export const fontSans = Inter({
-  subsets: ["latin"],
+// Self-hosted so `next build` never fetches from Google Fonts (a transient
+// fetch failure used to break CI builds). The files are the latin-subset
+// variable woff2s Google serves, unmodified; licenses (SIL OFL 1.1) sit next
+// to them in src/assets/fonts/.
+
+export const fontSans = localFont({
+  src: "../assets/fonts/inter-latin-var.woff2",
+  weight: "100 900",
   display: "swap",
   variable: "--font-sans-loaded",
 });
 
-export const fontMono = JetBrains_Mono({
-  subsets: ["latin"],
+export const fontMono = localFont({
+  src: "../assets/fonts/jetbrains-mono-latin-var.woff2",
+  weight: "100 800",
   display: "swap",
   variable: "--font-mono-loaded",
 });
 
-export const fontTabular = IBM_Plex_Sans({
-  weight: ["400", "500"],
-  subsets: ["latin"],
+export const fontTabular = localFont({
+  src: "../assets/fonts/ibm-plex-sans-latin-var.woff2",
+  weight: "100 700",
   display: "swap",
   variable: "--font-tabular-loaded",
 });

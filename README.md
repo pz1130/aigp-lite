@@ -152,6 +152,7 @@ mapping them to ProviderConnection rows requires explicit operator choice.
 | `npm run build` / `npm start`        | Production build + serve                                             |
 | `npm test`                           | Vitest unit tests                                                    |
 | `npm run test:coverage`              | Unit tests + v8 coverage; fails below the floors in vitest.config.ts |
+| `npm run sast`                       | Semgrep static analysis (needs Docker); fails on any finding         |
 | `npm run e2e`                        | Playwright end-to-end                                                |
 | `npm run typecheck`                  | `tsc --noEmit`                                                       |
 | `npm run lint`                       | ESLint + Prettier checks                                             |

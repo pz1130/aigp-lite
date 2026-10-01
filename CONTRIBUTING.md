@@ -32,7 +32,8 @@ npm test            # needs TEST_DATABASE_URL pointing at a scratch database
 Add or update tests with every behaviour change. Schema changes need a Prisma
 migration; CI fails the `test` job (`npm run prisma:drift`) if
 `prisma/schema.prisma` and the migrations disagree. CI also enforces coverage
-floors (`npm run test:coverage`); see [docs/ci.md](docs/ci.md#coverage-gate).
+floors (`npm run test:coverage`); see [docs/ci.md](docs/ci.md#coverage-gate),
+and a Semgrep scan (`npm run sast`, needs Docker) that fails on any finding.
 
 ## Pull requests
 

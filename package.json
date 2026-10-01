@@ -41,6 +41,7 @@
     "asi:import": "tsx prisma/seeds/owasp-asi-importer.ts",
     "agentic-governance:import": "tsx prisma/seeds/agentic-governance-importer.ts",
     "frameworks:status": "tsx scripts/frameworks-status.ts",
+    "sast": "docker run --rm -v \"$PWD:/src\" -w /src semgrep/semgrep:1.177.0 semgrep scan --config p/javascript --config p/typescript --config p/react --config p/nodejs --config p/secrets --metrics=off --error",
     "sbom:generate": "cyclonedx-npm --omit dev --output-file sbom.json --ignore-npm-errors",
     "worker": "tsx src/worker/index.ts",
     "worker:smoke": "vitest run --configLoader runner src/worker/smoke.test.ts"

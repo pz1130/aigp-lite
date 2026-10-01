@@ -38,7 +38,7 @@ function loadKey(): Buffer {
 
 export function encryptJsonWithKey(key: Buffer, payload: unknown): Buffer {
   const iv = randomBytes(IV_LEN);
-  const cipher = createCipheriv(ALGO, key, iv);
+  const cipher = createCipheriv(ALGO, key, iv, { authTagLength: TAG_LEN });
   const plaintext = Buffer.from(JSON.stringify(payload), "utf8");
   const ciphertext = Buffer.concat([cipher.update(plaintext), cipher.final()]);
   const tag = cipher.getAuthTag();
@@ -54,7 +54,8 @@ export function decryptJsonWithKey<T = unknown>(
   const iv = buf.subarray(0, IV_LEN);
   const tag = buf.subarray(buf.length - TAG_LEN);
   const ciphertext = buf.subarray(IV_LEN, buf.length - TAG_LEN);
-  const decipher = createDecipheriv(ALGO, key, iv);
+  // Pin the tag length so a truncated tag is rejected, not accepted as shorter.
+  const decipher = createDecipheriv(ALGO, key, iv, { authTagLength: TAG_LEN });
   decipher.setAuthTag(tag);
   const plaintext = Buffer.concat([
     decipher.update(ciphertext),
