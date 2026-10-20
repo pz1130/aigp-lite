@@ -1,4 +1,3 @@
-import { createParser, type EventSourceMessage } from "eventsource-parser";
 import { safeFetch } from "@/lib/egress/guard";
 import type {
   ProviderAdapter,
@@ -7,6 +6,7 @@ import type {
   PingResult,
   ResponseFormat,
 } from "./types";
+import { openAIChatFields, parseOpenAIStream } from "./openai-chat";
 
 export interface OpenAIAdapterOptions {
   /** Send `response_format: json_schema` when the caller asks for it. */
@@ -27,7 +27,7 @@ export function createOpenAIAdapter({
         },
         body: JSON.stringify({
           model: opts.model,
-          messages: opts.messages,
+          ...openAIChatFields(opts),
           stream: true,
           stream_options: { include_usage: true },
           ...(structuredOutputs && opts.responseFormat
@@ -39,37 +39,7 @@ export function createOpenAIAdapter({
         const text = await res.text().catch(() => "");
         throw new Error(`openai ${res.status}: ${text.slice(0, 200)}`);
       }
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let usage: { input: number; output: number } | undefined;
-      const events: EventSourceMessage[] = [];
-      const parser = createParser({ onEvent: (e) => events.push(e) });
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        parser.feed(decoder.decode(value));
-        while (events.length) {
-          const ev = events.shift()!;
-          if (ev.data === "[DONE]") {
-            yield { delta: "", done: true, usage };
-            return;
-          }
-          try {
-            const obj = JSON.parse(ev.data);
-            if (obj.usage)
-              usage = {
-                input: obj.usage.prompt_tokens,
-                output: obj.usage.completion_tokens,
-              };
-            const delta = obj.choices?.[0]?.delta?.content;
-            if (typeof delta === "string" && delta)
-              yield { delta, done: false };
-          } catch {
-            /* keepalive */
-          }
-        }
-      }
-      yield { delta: "", done: true, usage };
+      yield* parseOpenAIStream(res.body);
     },
 
     async ping(opts: AdapterStreamOpts): Promise<PingResult> {

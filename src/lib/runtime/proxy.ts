@@ -5,7 +5,7 @@ import type {
   Hit,
 } from "@/lib/policy-engine/types";
 import { getReliableAdapter } from "./providers/registry";
-import type { ChatMessage } from "./providers/types";
+import { contentText, type ChatMessage } from "./providers/types";
 import type { ProviderType } from "@/lib/prisma";
 
 export interface ProxyInput {
@@ -36,7 +36,7 @@ export interface ProxyEvent {
 
 export async function* runProxy(input: ProxyInput): AsyncIterable<ProxyEvent> {
   const inputText = input.messages
-    .map((m) => `${m.role}: ${m.content}`)
+    .map((m) => `${m.role}: ${contentText(m.content)}`)
     .join("\n");
   const inputHits = evaluate(input.policies, {
     ...input.evalCtxBase,
