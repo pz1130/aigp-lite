@@ -445,6 +445,10 @@ vulnerability/usage-violation intake + triage → incident escalation) ·
 **Usage Insights** (Clio-style privacy-preserving usage themes — PII scrub,
 k-anonymity suppression). See `docs/2026-07-07-anthropic-alignment-roadmap.md`.
 
+**Next up:** follow-up work after the AI provider-connection changes (tool-call
+policy evaluation, MCP gateway, tracing, pgvector, new catalogs and more) is
+tracked by priority in `docs/2026-10-20-ai-platform-roadmap.md`.
+
 测试基线：unit 1940/1940 · typecheck 0 errors.
 
 ## Setting up ServiceNow bidirectional sync (M11+)
