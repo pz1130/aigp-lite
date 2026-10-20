@@ -14,9 +14,8 @@ import { storageStateFor } from "./helpers/auth";
 test.use({ storageState: storageStateFor("admin") });
 
 // One page per rendering shape: the localized dashboard home, its English
-// twin, a data-heavy module page, and /api-docs — which lives outside
-// src/app/[locale] and so takes the proxy's non-locale branch.
-const PAGES = ["/zh", "/en", "/zh/evidence", "/api-docs"];
+// twin, and a data-heavy core module page.
+const PAGES = ["/zh", "/en", "/zh/evidence"];
 
 test("every page carries a nonce-based CSP", async ({ page }) => {
   for (const path of PAGES) {
@@ -46,6 +45,13 @@ test("every script tag on a rendered page carries the nonce", async ({
 
     const unnonced = await page.evaluate(() =>
       [...document.querySelectorAll("script")]
+        // Turbopack injects its dev-only HMR client without the application
+        // nonce. It is not present in the production bundle under test.
+        .filter(
+          (s) =>
+            !s.src.includes("hmr-client") &&
+            (Boolean(s.src) || Boolean(s.textContent?.trim())),
+        )
         // Browsers intentionally hide a CSP nonce from getAttribute(); the
         // HTMLScriptElement.nonce property is the supported way to inspect it.
         .filter((s) => !(s as HTMLScriptElement).nonce)

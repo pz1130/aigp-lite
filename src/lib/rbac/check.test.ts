@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { assertPermission, hasPermission } from "./check";
 import { ForbiddenError } from "@/lib/errors";
+import { ROLES } from "./roles";
 
 describe("rbac", () => {
   it("admin has every permission", () => {
@@ -28,6 +29,15 @@ describe("rbac", () => {
   it("risk_officer can write risk and policy", () => {
     expect(hasPermission("risk_officer", "risk.write")).toBe(true);
     expect(hasPermission("risk_officer", "policy.write")).toBe(true);
+  });
+
+  it("only admin can edit the shared risk catalog", () => {
+    expect(hasPermission("admin", "risk-catalog.write")).toBe(true);
+    expect(hasPermission("admin", "risk-catalog.delete")).toBe(true);
+    for (const role of ROLES.filter((r) => r !== "admin")) {
+      expect(hasPermission(role, "risk-catalog.write")).toBe(false);
+      expect(hasPermission(role, "risk-catalog.delete")).toBe(false);
+    }
   });
 
   it("assertPermission throws ForbiddenError when denied", () => {

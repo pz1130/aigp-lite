@@ -34,6 +34,11 @@ const schema = z.object({
   modelCardMd: z.string().default(""),
   intendedUseMd: z.string().default(""),
   prohibitedUseMd: z.string().default(""),
+  euAiActCategory: z
+    .enum(["prohibited", "high", "limited", "minimal", "unknown"])
+    .default("unknown"),
+  containsPii: z.boolean().default(false),
+  dataSensitivity: z.enum(["low", "medium", "high"]).nullable().default(null),
 });
 // resolvers v5 types the resolver by the schema's input (defaults optional)
 // and output (defaults applied) separately; useForm needs both generics.
@@ -48,6 +53,7 @@ export function UsecaseForm({
   id?: string;
 }) {
   const t = useTranslations("inventory");
+  const tClassification = useTranslations("inventory.classification");
   const router = useRouter();
   const create = trpc.inventory.create.useMutation();
   const update = trpc.inventory.update.useMutation();
@@ -66,6 +72,9 @@ export function UsecaseForm({
       modelCardMd: "",
       intendedUseMd: "",
       prohibitedUseMd: "",
+      euAiActCategory: "unknown",
+      containsPii: false,
+      dataSensitivity: null,
       ...initial,
     },
   });
@@ -148,6 +157,61 @@ export function UsecaseForm({
           </label>
         </div>
       </div>
+      <div className="grid grid-cols-2 gap-3">
+        <label className="block text-sm">
+          {tClassification("field.euAiAct")}
+          <Select
+            value={watch("euAiActCategory")}
+            onValueChange={(value) =>
+              setValue("euAiActCategory", value as Form["euAiActCategory"], {
+                shouldDirty: true,
+              })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {(
+                ["unknown", "minimal", "limited", "high", "prohibited"] as const
+              ).map((category) => (
+                <SelectItem key={category} value={category}>
+                  {tClassification(`euAct.${category}`)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </label>
+        <label className="block text-sm">
+          {tClassification("field.dataSensitivity")}
+          <Select
+            value={watch("dataSensitivity") ?? "none"}
+            onValueChange={(value) =>
+              setValue(
+                "dataSensitivity",
+                value === "none" ? null : (value as Form["dataSensitivity"]),
+                { shouldDirty: true },
+              )
+            }
+          >
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">—</SelectItem>
+              {(["low", "medium", "high"] as const).map((level) => (
+                <SelectItem key={level} value={level}>
+                  {tClassification(`sensitivity.${level}`)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </label>
+      </div>
+      <label className="flex items-center gap-2 text-sm">
+        <input type="checkbox" {...register("containsPii")} />
+        {tClassification("field.containsPii")}
+      </label>
       <div>
         <div className="mb-1.5 flex items-center justify-between gap-2">
           <label className="text-sm">{t("fields.description")}</label>

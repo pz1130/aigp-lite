@@ -1,9 +1,20 @@
+import { createHmac } from "node:crypto";
 import { CredentialsSignin } from "next-auth";
-import { hashIp } from "@/lib/external-reports/anti-abuse";
 import {
   loginEmailRateLimiter,
   loginIpRateLimiter,
 } from "@/lib/rate-limit/tokenBucket";
+
+function hashIp(ip: string | null | undefined): string {
+  const secret =
+    process.env.AIGP_ENCRYPTION_KEY ??
+    process.env.AIGP_ENCRYPTION_SEED ??
+    "aigp-dev-default";
+  return createHmac("sha256", secret)
+    .update(`ip:${ip ?? "unknown"}`)
+    .digest("base64url")
+    .slice(0, 32);
+}
 
 /**
  * Thrown from the Credentials `authorize` callback when a sign-in attempt is

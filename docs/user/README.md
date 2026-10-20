@@ -73,23 +73,26 @@ URL 前缀 `/zh` 表示中文界面，`/en` 表示英文界面，可在登录后
 
 R = 读 · W = 写 · D = 删除
 
-| 资源                     | admin | risk_officer | ai_owner | auditor | viewer |
-| ------------------------ | ----- | ------------ | -------- | ------- | ------ |
-| AI 资产登记（inventory） | RWD   | R            | RWD      | R       | R      |
-| 风险与合规（risk）       | RWD   | RWD          | R        | R       | R      |
-| 治理成熟度（maturity）   | RWD   | RW           | R        | R       | R      |
-| 策略与运行时（policy）   | RWD   | RWD          | RWD      | R       | R      |
-| 审批流程（workflow）     | RWD   | RW           | RW       | R       | R      |
-| 证据管理（evidence）     | RWD   | RW           | RW       | R       | R      |
-| 数据血缘（data_lineage） | RWD   | R            | RW       | R       | R      |
-| 审计日志（audit）        | RWD   | R            | R        | R       | R      |
-| 集成管理（integrations） | RWD   | R            | RW       | R       | R      |
-| 服务商（provider）       | RWD   | R            | R        | R       | R      |
-| 安全事件（incident）     | RWD   | RWD          | RW       | R       | R      |
-| 合规报告（reports）      | RWD   | RWD          | R        | RW      | R      |
-| 成本管理（finops）       | RWD   | RW           | R        | R       | R      |
-| AI 信任（redteam）       | RWD   | RW           | RW       | R       | R      |
-| 组织（org）              | RWD   | R            | R        | R       | R      |
+| 资源                       | admin | risk_officer | ai_owner | auditor | viewer |
+| -------------------------- | ----- | ------------ | -------- | ------- | ------ |
+| AI 资产登记（inventory）   | RWD   | R            | RWD      | R       | R      |
+| 风险与合规（risk）         | RWD   | RWD          | R        | R       | R      |
+| 风险框架库（risk-catalog） | RWD   | —            | —        | —       | —      |
+| 治理成熟度（maturity）     | RWD   | RW           | R        | R       | R      |
+| 策略与运行时（policy）     | RWD   | RWD          | RWD      | R       | R      |
+| 审批流程（workflow）       | RWD   | RW           | RW       | R       | R      |
+| 证据管理（evidence）       | RWD   | RW           | RW       | R       | R      |
+| 数据血缘（data_lineage）   | RWD   | R            | RW       | R       | R      |
+| 审计日志（audit）          | RWD   | R            | R        | R       | R      |
+| 集成管理（integrations）   | RWD   | R            | RW       | R       | R      |
+| 服务商（provider）         | RWD   | R            | R        | R       | R      |
+| 安全事件（incident）       | RWD   | RWD          | RW       | R       | R      |
+| 合规报告（reports）        | RWD   | RWD          | R        | RW      | R      |
+| 成本管理（finops）         | RWD   | RW           | R        | R       | R      |
+| AI 信任（redteam）         | RWD   | RW           | RW       | R       | R      |
+| 组织（org）                | RWD   | R            | R        | R       | R      |
+
+风险框架库（框架与控制项）是所有组织共用的全局目录，只有 admin 能新建、编辑、删除或导入；其他角色照常可以读取，并在自己组织的用例上设置控制项状态（属于 risk.write）。
 
 ### 角色画像
 

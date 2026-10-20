@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 // We test the re-export shim via the incidents path; internal implementation
 // lives in @/lib/observability/metrics but we re-export from incidents/metrics.
-import * as IncidentsMetrics from "@/lib/incidents/metrics";
+import * as IncidentsMetrics from "@/lib/observability/metrics";
 
 const { count, gauge, distribution, timing, metric } = IncidentsMetrics;
 

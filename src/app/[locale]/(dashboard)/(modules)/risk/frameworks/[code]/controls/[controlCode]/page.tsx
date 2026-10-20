@@ -25,7 +25,7 @@ export default async function ControlDetailPage({
   if (!fw || fw.controls.length === 0) notFound();
 
   const control = fw.controls[0];
-  const canWrite = hasPermission(ctx.role, "risk.write");
+  const canWrite = hasPermission(ctx.role, "risk-catalog.write");
 
   return (
     <>

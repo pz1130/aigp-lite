@@ -1,51 +1,102 @@
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/routing";
+import { requireSession } from "@/lib/auth/session";
+import { withOrg } from "@/lib/db/orgIsolation";
+import { prisma } from "@/lib/db";
 import { PageHeader } from "@/components/page/PageHeader";
-import { AttentionPanel } from "@/components/dashboard/AttentionPanel";
-import { LiveKpiCard } from "@/components/dashboard/LiveKpiCard";
-import { MaturityRadarCard } from "@/components/dashboard/MaturityRadarCard";
-import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex items-center gap-3 mb-3">
-      <span className="text-[11px] font-semibold italic text-secondary/70 tracking-wide">
-        {children}
-      </span>
-      <div className="flex-1 h-px bg-gradient-to-r from-border-default/30 to-transparent" />
-    </div>
-  );
-}
+import { Card, CardBody, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { MyTasks } from "@/components/inventory/MyTasks";
+import {
+  ClipboardCheck,
+  FileCheck2,
+  FileText,
+  ShieldCheck,
+} from "lucide-react";
 
 export default async function DashboardPage() {
+  const ctx = await requireSession();
+  const db = withOrg(prisma, ctx.orgId);
   const t = await getTranslations("dashboard");
+
+  const [usecases, evidence, approvals, audit] = await Promise.all([
+    db.aiUsecase.count(),
+    db.evidence.count(),
+    db.workflowInstance.count({ where: { state: "open" } }),
+    db.auditLog.count(),
+  ]);
+
+  const cards = [
+    {
+      href: "/inventory",
+      label: t("overview.usecases"),
+      value: usecases,
+      icon: FileText,
+    },
+    {
+      href: "/risk",
+      label: t("overview.controls"),
+      value: t("overview.reviewFrameworks"),
+      icon: ShieldCheck,
+    },
+    {
+      href: "/evidence",
+      label: t("overview.evidence"),
+      value: evidence,
+      icon: FileCheck2,
+    },
+    {
+      href: "/workflow",
+      label: t("overview.pendingApprovals"),
+      value: approvals,
+      icon: ClipboardCheck,
+    },
+  ] as const;
+
   return (
     <div className="space-y-8">
-      <PageHeader title={t("title")} description={t("description")} />
+      <PageHeader
+        title={t("title")}
+        description={t("description")}
+        action={
+          <Link href="/inventory/new">
+            <Button>{t("overview.addUsecase")}</Button>
+          </Link>
+        }
+      />
 
-      <AttentionPanel />
-
-      {/* KPI Metrics */}
-      <section>
-        <SectionLabel>This week</SectionLabel>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <LiveKpiCard kind="calls" />
-          <LiveKpiCard kind="blocked" />
-          <LiveKpiCard kind="spend" />
-          <LiveKpiCard kind="maturity" />
-        </div>
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {cards.map(({ href, label, value, icon: Icon }) => (
+          <Link key={href} href={href}>
+            <Card className="h-full hover:border-accent/50">
+              <CardBody className="space-y-3">
+                <Icon size={18} className="text-accent" />
+                <div>
+                  <CardTitle className="text-sm">{label}</CardTitle>
+                  <p className="mt-1 text-2xl font-semibold text-primary">
+                    {value}
+                  </p>
+                </div>
+              </CardBody>
+            </Card>
+          </Link>
+        ))}
       </section>
 
-      {/* Lower row */}
-      <section className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-        <div className="lg:col-span-2 space-y-3">
-          <SectionLabel>Recent activity</SectionLabel>
-          <ActivityFeed />
-        </div>
-        <div className="lg:col-span-3 space-y-3">
-          <SectionLabel>Governance score</SectionLabel>
-          <MaturityRadarCard />
-        </div>
-      </section>
+      <MyTasks session={ctx} />
+      <Card>
+        <CardBody className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <CardTitle>{t("overview.auditTitle")}</CardTitle>
+            <p className="mt-1 text-sm text-secondary">
+              {t("overview.auditDescription", { count: audit })}
+            </p>
+          </div>
+          <Link href="/audit">
+            <Button variant="secondary">{t("overview.viewAudit")}</Button>
+          </Link>
+        </CardBody>
+      </Card>
     </div>
   );
 }

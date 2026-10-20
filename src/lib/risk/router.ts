@@ -266,11 +266,13 @@ export const riskRouter = router({
   }),
 
   // ── Framework CRUD ──────────────────────────────────────────────────
+  // Frameworks and controls are a global catalog shared by every tenant, so
+  // all writes below need "risk-catalog.*", which only admin holds.
 
   frameworkCreate: orgProcedure
     .input(frameworkCreate)
     .mutation(async ({ ctx, input }) => {
-      assertPermission(ctx.session.role, "risk.write");
+      assertPermission(ctx.session.role, "risk-catalog.write");
       const existing = await ctx.db.riskFramework.findUnique({
         where: { code: input.code },
       });
@@ -298,7 +300,7 @@ export const riskRouter = router({
   frameworkUpdate: orgProcedure
     .input(frameworkUpdate)
     .mutation(async ({ ctx, input }) => {
-      assertPermission(ctx.session.role, "risk.write");
+      assertPermission(ctx.session.role, "risk-catalog.write");
       const before = await ctx.db.riskFramework.findUnique({
         where: { id: input.id },
       });
@@ -333,7 +335,7 @@ export const riskRouter = router({
   frameworkDelete: orgProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      assertPermission(ctx.session.role, "risk.delete");
+      assertPermission(ctx.session.role, "risk-catalog.delete");
       const before = await ctx.db.riskFramework.findUnique({
         where: { id: input.id },
         include: { controls: true },
@@ -360,7 +362,7 @@ export const riskRouter = router({
   controlCreate: orgProcedure
     .input(controlCreate)
     .mutation(async ({ ctx, input }) => {
-      assertPermission(ctx.session.role, "risk.write");
+      assertPermission(ctx.session.role, "risk-catalog.write");
       const fw = await ctx.db.riskFramework.findUnique({
         where: { id: input.frameworkId },
       });
@@ -402,7 +404,7 @@ export const riskRouter = router({
   controlUpdate: orgProcedure
     .input(controlUpdate)
     .mutation(async ({ ctx, input }) => {
-      assertPermission(ctx.session.role, "risk.write");
+      assertPermission(ctx.session.role, "risk-catalog.write");
       const before = await ctx.db.riskControl.findUnique({
         where: { id: input.id },
       });
@@ -442,7 +444,7 @@ export const riskRouter = router({
   controlDelete: orgProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      assertPermission(ctx.session.role, "risk.delete");
+      assertPermission(ctx.session.role, "risk-catalog.delete");
       const before = await ctx.db.riskControl.findUnique({
         where: { id: input.id },
       });
@@ -491,7 +493,7 @@ export const riskRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      assertPermission(ctx.session.role, "risk.write");
+      assertPermission(ctx.session.role, "risk-catalog.write");
       const fw = await ctx.db.riskFramework.findUnique({
         where: { id: input.frameworkId },
       });

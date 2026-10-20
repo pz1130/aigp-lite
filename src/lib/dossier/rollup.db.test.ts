@@ -49,8 +49,8 @@ describe("buildReadinessRollup", () => {
     const { org, user } = await seedOrg();
     const db = withOrg(prisma, org.id);
 
-    // 1) High-risk, production: classified + risk assessment present, but no FRIA and no red-team
-    //    -> not_ready, blocked, isHighRisk, blockingCheckIds include fria + redteam.
+    // 1) High-risk, production: classified + risk assessment present, but no FRIA
+    //    -> not_ready, blocked, isHighRisk, blockingCheckIds includes fria.
     const highRisk = await makeUsecase(
       org.id,
       user.id,
@@ -123,9 +123,7 @@ describe("buildReadinessRollup", () => {
       lowBlocked.id,
     ]);
     expect(rollup.blocked[0].isHighRisk).toBe(true);
-    expect(rollup.blocked[0].blockingCheckIds).toEqual(
-      expect.arrayContaining(["fria", "redteam"]),
-    );
+    expect(rollup.blocked[0].blockingCheckIds).toEqual(["fria"]);
     expect(rollup.blocked[0].euAiActCategory).toBe("high");
     expect(rollup.blocked.map((b) => b.usecaseId)).not.toContain(
       conditional.id,

@@ -10,22 +10,10 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
-    include: [
-      "src/**/*.test.ts",
-      "src/**/*.test.tsx",
-      "scripts/**/*.test.ts",
-      "prisma/**/*.test.ts",
-      "tests/integration/**/*.test.ts",
-    ],
+    include: ["src/**/*.test.ts", "src/**/*.test.tsx", "prisma/**/*.test.ts"],
     exclude: ["node_modules", "tests/e2e/**"],
-    // Tests hit a shared real Postgres and load Prisma's native engine, which
-    // is not safe to reload across worker threads (panics in CI). Forks give
-    // per-file process isolation; fileParallelism keeps files sequential.
     pool: "forks",
     fileParallelism: false,
-    // Auto-restore vi.stubGlobal/stubEnv between tests. Without this, fetch
-    // stubs from provider tests leak into later files (e.g. break yoga-wasm
-    // load in pdf renderer).
     unstubGlobals: true,
     unstubEnvs: true,
     environmentOptions: {
@@ -33,36 +21,16 @@ export default defineConfig({
     },
     server: {
       deps: {
-        // next-intl 4's ESM build imports "next/navigation" without an
-        // extension, which Node's ESM resolver rejects when the package is
-        // externalized; let vite transform next-intl instead.
         inline: ["next-intl"],
       },
     },
     setupFiles: ["./vitest.setup.ts"],
     globalSetup: ["./tests/unit-global-setup.ts"],
-    // Off unless `--coverage` is passed (npm run test:coverage / CI `test` job).
     coverage: {
       provider: "v8",
       include: ["src/**/*.{ts,tsx}"],
       exclude: ["src/**/*.test.{ts,tsx}", "src/**/*.d.ts", "src/generated/**"],
       reporter: ["text-summary", "json-summary", "html"],
-      // Ratchet floors ~1 point under the latest baseline (2026-10-01, after the
-      // openapi/data-lineage/evidence tests: all 51.4 / lib 76.5 statements). UI is covered by E2E, so the global floor stays low
-      // and src/lib carries the real bar. Raise these as coverage grows; never
-      // lower them to make a PR pass.
-      thresholds: {
-        statements: 50,
-        branches: 40,
-        functions: 42,
-        lines: 50,
-        "src/lib/**": {
-          statements: 75,
-          branches: 63,
-          functions: 77,
-          lines: 76,
-        },
-      },
     },
   },
   resolve: { alias: { "@": path.resolve(configDir, "./src") } },

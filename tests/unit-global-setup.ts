@@ -17,6 +17,12 @@ import { execFileSync } from "node:child_process";
  */
 export default async function setup() {
   const testUrl = process.env.TEST_DATABASE_URL;
+  if (!testUrl && !process.env.DATABASE_URL) {
+    console.warn(
+      "[vitest] DATABASE_URL is not set; skipping database cleanup.",
+    );
+    return;
+  }
   if (testUrl) {
     process.env.DATABASE_URL = testUrl;
     // Keep the dedicated test database aligned with the current migration set.
@@ -49,11 +55,39 @@ export default async function setup() {
       }
     }
 
-    const rows = await prisma.$queryRaw<Array<{ tablename: string }>>`
-      SELECT tablename FROM pg_tables
-      WHERE schemaname = 'public'
-        AND tablename NOT LIKE '\\_prisma_%'
-    `;
+    let rows: Array<{ tablename: string }>;
+    try {
+      rows = await prisma.$queryRaw<Array<{ tablename: string }>>`
+        SELECT tablename FROM pg_tables
+        WHERE schemaname = 'public'
+          AND tablename NOT LIKE '\\_prisma_%'
+      `;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      const code =
+        typeof error === "object" && error !== null
+          ? String((error as { code?: unknown }).code ?? "")
+          : "";
+      const constructorName =
+        typeof error === "object" && error !== null
+          ? error.constructor?.name
+          : "";
+      if (
+        code === "P1001" ||
+        code === "P1000" ||
+        code === "P2010" ||
+        /ECONNREFUSED|Can't reach database server|Authentication failed|SASL|P1001/i.test(
+          message,
+        ) ||
+        (!testUrl && constructorName === "PrismaClientKnownRequestError")
+      ) {
+        console.warn(
+          "[vitest] PostgreSQL is unavailable; skipping database cleanup.",
+        );
+        return;
+      }
+      throw error;
+    }
     if (rows.length === 0) return;
     const quoted = rows.map((r) => `"${r.tablename}"`).join(", ");
     await prisma.$executeRawUnsafe(

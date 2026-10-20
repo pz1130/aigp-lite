@@ -41,6 +41,9 @@ export const RESOURCES = [
   "alignment-audit",
   "usage-insights",
   "trust-center",
+  // The framework/control catalog is shared by every tenant, so editing it is
+  // admin-only; per-org control statuses stay under "risk".
+  "risk-catalog",
 ] as const;
 export type Resource = (typeof RESOURCES)[number];
 

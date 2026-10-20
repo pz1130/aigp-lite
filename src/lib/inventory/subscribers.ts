@@ -1,14 +1,11 @@
 import { prisma } from "@/lib/db";
 import { usecaseEvents } from "@/lib/events/bus";
 import type { UsecaseEventPayload } from "@/lib/events/bus";
-import { runAnalysisInBackground } from "./analyze";
-import { scheduleAnalysisDebounced } from "./analyze/debounce";
-
-const ANALYSIS_DISABLED = process.env.NODE_ENV === "test";
 
 /**
  * Subscribes to usecase.approved events and promotes the usecase's
- * lifecycleStage from development → production.
+ * lifecycleStage from development → production. AI analysis is intentionally
+ * not automatic in Core; classification is entered during inventory setup.
  */
 function handleUsecaseApproved(payload: UsecaseEventPayload) {
   const { orgId, usecaseId } = payload;
@@ -25,26 +22,4 @@ function handleUsecaseApproved(payload: UsecaseEventPayload) {
     );
 }
 
-function handleUsecaseCreated(payload: UsecaseEventPayload) {
-  if (ANALYSIS_DISABLED) return;
-  runAnalysisInBackground({
-    orgId: payload.orgId,
-    usecaseId: payload.usecaseId,
-    reason: "auto_created",
-    actorId: payload.byUserId,
-  });
-}
-
-function handleUsecaseUpdated(payload: UsecaseEventPayload) {
-  if (ANALYSIS_DISABLED) return;
-  scheduleAnalysisDebounced({
-    orgId: payload.orgId,
-    usecaseId: payload.usecaseId,
-    reason: "auto_updated",
-    actorId: payload.byUserId,
-  });
-}
-
 usecaseEvents.onApproved(handleUsecaseApproved);
-usecaseEvents.onCreated(handleUsecaseCreated);
-usecaseEvents.onUpdated(handleUsecaseUpdated);

@@ -52,7 +52,7 @@ describe("dossier router", () => {
     const { uc, caller } = await seedUsecase("get");
     const res = await caller.dossier.get({ usecaseId: uc.id });
     expect(res.snapshot.system.id).toBe(uc.id);
-    expect(res.readiness.checks).toHaveLength(15);
+    expect(res.readiness.checks).toHaveLength(6);
     // unclassified -> classified check fails -> not_ready
     expect(res.readiness.state).toBe("not_ready");
   });

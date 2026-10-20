@@ -10,7 +10,6 @@ import { locales } from "@/i18n/config";
 import { CommandPaletteTrigger } from "./CommandPaletteTrigger";
 import { ThemeToggle } from "./ThemeToggle";
 import { UserMenu } from "./UserMenu";
-import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { OrganizationSwitcher } from "./OrganizationSwitcher";
 
 function stripLocalePrefix(pathname: string): string {
@@ -59,7 +58,6 @@ export async function Topbar() {
       <div className="flex-1" />
 
       <div className="relative flex items-center gap-0.5">
-        <NotificationBell />
         <ThemeToggle />
         <UserMenu email={ctx.email} role={ctx.role} />
       </div>

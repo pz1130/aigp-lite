@@ -18,10 +18,6 @@ FROM base AS migrate
 # migrate service runs migrations + seed against the live db.
 CMD ["sh", "-c", "node prisma/build-schema.mjs && npx prisma migrate deploy && npm run prisma:seed"]
 
-FROM base AS worker
-# Runs the long-lived queue consumer. Uses tsx (resolves @/* aliases) against
-# full source from the base stage, which already has devDeps + generated client.
-CMD ["sh", "-c", "node prisma/build-schema.mjs && npx tsx src/worker/index.ts"]
 
 FROM base AS builder
 RUN npm run build

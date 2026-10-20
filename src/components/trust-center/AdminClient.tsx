@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { trpc } from "@/lib/trpc/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,11 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { TrustPublicView } from "@/components/trust-center/PublicView";
-import { TrustConfidentialView } from "@/components/trust-center/ConfidentialView";
-import type {
-  TrustConfidentialPayload,
-  TrustPublicPayload,
-} from "@/lib/trust-center/aggregate";
+import type { TrustPublicPayload } from "@/lib/trust-center/aggregate";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -31,37 +27,17 @@ function isPublicPayload(value: unknown): value is TrustPublicPayload {
   );
 }
 
-function isConfidentialPayload(
-  value: unknown,
-): value is TrustConfidentialPayload {
-  if (!isRecord(value)) return false;
-  return (
-    Array.isArray(value.systems) &&
-    Array.isArray(value.readiness) &&
-    Array.isArray(value.transparencyReports) &&
-    Array.isArray(value.attestations) &&
-    isRecord(value.sbom)
-  );
-}
-
 function TwinDraftPreview({
   snapshotId,
   displayName,
-  slug,
-  locale,
   contactEmail,
-  versions,
 }: {
   snapshotId: string;
   displayName: string;
-  slug: string;
-  locale: string;
   contactEmail: string | null;
-  versions: number[];
 }) {
   const t = useTranslations("trustCenter.admin");
   const tPublic = useTranslations("trustCenter.public");
-  const tFull = useTranslations("trustCenter.full");
   const snapshotQuery = trpc.trustCenter.getSnapshot.useQuery({
     id: snapshotId,
   });
@@ -70,11 +46,6 @@ function TwinDraftPreview({
 
   const publicPayload = isPublicPayload(snapshot.publicPayload)
     ? snapshot.publicPayload
-    : null;
-  const confidentialPayload = isConfidentialPayload(
-    snapshot.confidentialPayload,
-  )
-    ? snapshot.confidentialPayload
     : null;
   const version = snapshot.version ?? 0;
   const publishedAt = snapshot.publishedAt;
@@ -129,46 +100,18 @@ function TwinDraftPreview({
           />
         </div>
       ) : null}
-      {confidentialPayload ? (
-        <div className="rounded border">
-          <h3 className="border-b px-4 py-2 text-sm font-medium">
-            {t("previewConfidential")}
-          </h3>
-          <TrustConfidentialView
-            slug={slug}
-            locale={locale}
-            displayName={displayName}
-            version={version}
-            versions={versions}
-            payload={confidentialPayload}
-            labels={{
-              heading: tFull("heading"),
-              notice: tFull("notice"),
-              versions: tFull("versions"),
-              readiness: tFull("readiness"),
-              attestations: tFull("attestations"),
-              download: tFull("download"),
-              sbom: tFull("sbom"),
-              transparency: tFull("transparency"),
-            }}
-          />
-        </div>
-      ) : null}
     </section>
   );
 }
 
 export function TrustCenterAdminClient() {
   const t = useTranslations("trustCenter.admin");
-  const locale = useLocale();
   const utils = trpc.useUtils();
 
   const profileQuery = trpc.trustCenter.getProfile.useQuery();
   const snapshots = trpc.trustCenter.listSnapshots.useQuery();
-  const tokens = trpc.trustCenter.listTokens.useQuery();
   const usecases = trpc.inventory.list.useQuery();
 
-  const [issuedRaw, setIssuedRaw] = useState<string | null>(null);
   const [selected, setSelected] = useState<string[]>([]);
   const [previewId, setPreviewId] = useState<string | null>(null);
   const [formHydrated, setFormHydrated] = useState(false);
@@ -179,7 +122,6 @@ export function TrustCenterAdminClient() {
     contactEmail: "",
     enabled: false,
   });
-  const [tokenLabel, setTokenLabel] = useState("");
 
   useEffect(() => {
     const p = profileQuery.data?.profile;
@@ -228,23 +170,6 @@ export function TrustCenterAdminClient() {
       invalidateAll();
     },
   });
-  const issueToken = trpc.trustCenter.issueToken.useMutation({
-    onSuccess: (res) => {
-      setIssuedRaw(res.raw);
-      invalidateAll();
-    },
-  });
-  const revokeToken = trpc.trustCenter.revokeToken.useMutation({
-    onSuccess: invalidateAll,
-  });
-
-  const profile = profileQuery.data?.profile ?? null;
-  const previewVersions = (snapshots.data ?? []).flatMap((s) =>
-    s.version !== null &&
-    (s.status === "published" || s.status === "superseded")
-      ? [s.version]
-      : [],
-  );
   const contactEmail = form.contactEmail === "" ? null : form.contactEmail;
 
   return (
@@ -369,61 +294,9 @@ export function TrustCenterAdminClient() {
           <TwinDraftPreview
             snapshotId={previewId}
             displayName={form.displayName}
-            slug={form.slug}
-            locale={locale}
             contactEmail={contactEmail}
-            versions={previewVersions}
           />
         ) : null}
-      </section>
-
-      <section className="space-y-3">
-        <h2 className="text-lg font-medium">{t("tokensHeading")}</h2>
-        <Input
-          placeholder={t("tokenLabel")}
-          value={tokenLabel}
-          onChange={(e) => setTokenLabel(e.target.value)}
-        />
-        <Button
-          disabled={tokenLabel.length === 0}
-          onClick={() =>
-            issueToken.mutate({
-              label: tokenLabel,
-              recipientEmail: null,
-              expiresAt: null,
-            })
-          }
-        >
-          {t("issueToken")}
-        </Button>
-        {issuedRaw && profile ? (
-          <div className="rounded border px-4 py-3 text-sm">
-            <p>{t("tokenShownOnce")}</p>
-            <code className="break-all">{`/trust/${profile.slug}/k/${issuedRaw}`}</code>
-          </div>
-        ) : null}
-        <ul className="space-y-2 text-sm">
-          {(tokens.data ?? []).map((tok) => (
-            <li key={tok.id} className="flex items-center gap-3">
-              <code>{tok.tokenPrefix}…</code>
-              <span>{tok.label}</span>
-              <span>
-                {t("useCount")}: {tok.useCount}
-              </span>
-              {tok.revokedAt ? (
-                <Badge>{t("revoked")}</Badge>
-              ) : (
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => revokeToken.mutate({ id: tok.id })}
-                >
-                  {t("revoke")}
-                </Button>
-              )}
-            </li>
-          ))}
-        </ul>
       </section>
     </div>
   );

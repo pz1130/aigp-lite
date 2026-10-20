@@ -4,9 +4,10 @@ import {
   getCatalog,
 } from "@/lib/frontier-risk-tier/catalog";
 import { deriveEffectiveTier } from "@/lib/frontier-risk-tier/effective-tier";
-import { ALIGNMENT_AUDIT_MAX_AGE_DAYS } from "@/lib/alignment-audit/config";
 import { formatModelRef } from "./approval-fingerprint";
 import type { DossierSnapshot, GoLiveCurrent } from "./types";
+
+const ALIGNMENT_AUDIT_MAX_AGE_DAYS = 180;
 
 export async function buildDossierSnapshot(
   db: OrgScopedClient,

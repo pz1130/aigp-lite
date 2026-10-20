@@ -95,31 +95,6 @@ export default async function globalSetup(_config: FullConfig) {
       // eslint-disable-next-line no-console
       console.log(`[e2e] storageState saved for ${role}`);
     }
-
-    // Ensure Demo Org has an embedding-capable provider so dedup tests can run.
-    // The demo provider "mock-local" exists in the Demo Org from the main seed;
-    // we add supportsEmbeddings here (idempotent, no-op if already set).
-    const demoOrg = await prisma.organization.findFirst({
-      where: { name: "Demo Org" },
-    });
-    if (demoOrg) {
-      const demoConn = await prisma.providerConnection.findFirst({
-        where: { name: "mock-local", orgId: demoOrg.id },
-      });
-      if (demoConn) {
-        const cfg = (demoConn.config as Record<string, unknown>) ?? {};
-        if (!cfg.supportsEmbeddings) {
-          await prisma.providerConnection.update({
-            where: { id: demoConn.id },
-            data: { config: { ...cfg, supportsEmbeddings: true } },
-          });
-          // eslint-disable-next-line no-console
-          console.log(
-            "[e2e] enabled supportsEmbeddings on Demo Org's mock-local connection",
-          );
-        }
-      }
-    }
   } finally {
     await prisma.$disconnect();
   }

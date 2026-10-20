@@ -5,9 +5,16 @@ import { assertPermission } from "@/lib/rbac/check";
 import { usecaseEvents } from "@/lib/events/bus";
 import { workflowEvents } from "@/lib/events/workflow-bus";
 import { recheckStaleApproval } from "@/lib/dossier/stale-approval";
-import { runAnalysis } from "./analyze";
 import { TRPCError } from "@trpc/server";
 import type { Prisma } from "@/lib/prisma";
+
+const classificationFields = {
+  euAiActCategory: z
+    .enum(["prohibited", "high", "limited", "minimal", "unknown"])
+    .optional(),
+  containsPii: z.boolean().optional(),
+  dataSensitivity: z.enum(["low", "medium", "high"]).nullable().optional(),
+};
 
 const usecaseCreate = z.object({
   name: z.string().min(1).max(120),
@@ -22,6 +29,7 @@ const usecaseCreate = z.object({
   modelCardMd: z.string().max(50000).default(""),
   intendedUseMd: z.string().max(2000).default(""),
   prohibitedUseMd: z.string().max(2000).default(""),
+  ...classificationFields,
 });
 
 const usecaseUpdate = usecaseCreate.partial().extend({
@@ -58,12 +66,27 @@ export const inventoryRouter = router({
   create: orgProcedure.input(usecaseCreate).mutation(async ({ ctx, input }) => {
     assertPermission(ctx.session.role, "inventory.write");
     // withOrg() injects orgId; Prisma's static type still demands it.
+    const { euAiActCategory, containsPii, dataSensitivity, ...usecaseInput } =
+      input;
     const created = await ctx.db.aiUsecase.create({
       data: {
-        ...input,
+        ...usecaseInput,
         orgId: ctx.session.orgId,
         ownerId: ctx.session.userId,
       } satisfies Prisma.AiUsecaseUncheckedCreateInput,
+    });
+    await ctx.db.usecaseClassification.create({
+      data: {
+        orgId: ctx.session.orgId,
+        usecaseId: created.id,
+        euAiActCategory: euAiActCategory ?? "unknown",
+        containsPii: containsPii ?? false,
+        dataSensitivity: dataSensitivity ?? null,
+        complianceTags: [],
+        suggestedRisks: [],
+        summary: "Manually classified in the AI inventory.",
+        generatedReason: "manual",
+      },
     });
     await writeAudit({
       orgId: ctx.session.orgId,
@@ -88,7 +111,8 @@ export const inventoryRouter = router({
       where: { id: input.id },
     });
     if (!before) throw new TRPCError({ code: "NOT_FOUND" });
-    const { id, ...rest } = input;
+    const { id, euAiActCategory, containsPii, dataSensitivity, ...rest } =
+      input;
     // Reinstating a deprecated system to an active stage clears the deprecation
     // metadata; deprecated -> retired keeps it as history.
     const data: Prisma.AiUsecaseUncheckedUpdateInput = { ...rest };
@@ -106,6 +130,33 @@ export const inventoryRouter = router({
       where: { id },
       data,
     });
+    if (
+      euAiActCategory !== undefined ||
+      containsPii !== undefined ||
+      dataSensitivity !== undefined
+    ) {
+      await ctx.db.usecaseClassification.upsert({
+        where: { usecaseId: id },
+        create: {
+          orgId: ctx.session.orgId,
+          usecaseId: id,
+          euAiActCategory: euAiActCategory ?? "unknown",
+          containsPii: containsPii ?? false,
+          dataSensitivity: dataSensitivity ?? null,
+          complianceTags: [],
+          suggestedRisks: [],
+          summary: "Manually classified in the AI inventory.",
+          generatedReason: "manual",
+        },
+        update: {
+          ...(euAiActCategory !== undefined ? { euAiActCategory } : {}),
+          ...(containsPii !== undefined ? { containsPii } : {}),
+          ...(dataSensitivity !== undefined ? { dataSensitivity } : {}),
+          generatedAt: new Date(),
+          generatedReason: "manual",
+        },
+      });
+    }
     await writeAudit({
       orgId: ctx.session.orgId,
       actorId: ctx.session.userId,
@@ -213,12 +264,8 @@ export const inventoryRouter = router({
   modelVersionList: orgProcedure
     .input(z.object({ usecaseId: z.string() }))
     .query(async ({ ctx, input }) =>
-      // AiModelVersion has no orgId, so scope it through its parent usecase.
       ctx.db.aiModelVersion.findMany({
-        where: {
-          usecaseId: input.usecaseId,
-          usecase: { orgId: ctx.session.orgId },
-        },
+        where: { usecaseId: input.usecaseId },
         orderBy: { createdAt: "desc" },
       }),
     ),
@@ -259,17 +306,8 @@ export const inventoryRouter = router({
     .mutation(async ({ ctx, input }) => {
       assertPermission(ctx.session.role, "inventory.write");
       const { id, ...rest } = input;
-      const before = await ctx.db.aiModelVersion.findFirst({
-        where: { id, usecase: { orgId: ctx.session.orgId } },
-      });
+      const before = await ctx.db.aiModelVersion.findUnique({ where: { id } });
       if (!before) throw new TRPCError({ code: "NOT_FOUND" });
-      if (rest.usecaseId !== undefined && rest.usecaseId !== before.usecaseId) {
-        const target = await ctx.db.aiUsecase.findFirst({
-          where: { id: rest.usecaseId },
-          select: { id: true },
-        });
-        if (!target) throw new TRPCError({ code: "NOT_FOUND" });
-      }
       const after = await ctx.db.aiModelVersion.update({
         where: { id },
         data: rest,
@@ -289,66 +327,4 @@ export const inventoryRouter = router({
       });
       return after;
     }),
-
-  // ── Classification (LLM-assisted analysis) ──────────────────────────────────
-
-  classification: orgProcedure
-    .input(z.object({ usecaseId: z.string() }))
-    .query(async ({ ctx, input }) =>
-      ctx.db.usecaseClassification.findUnique({
-        where: { usecaseId: input.usecaseId },
-      }),
-    ),
-
-  analyze: orgProcedure
-    .input(z.object({ usecaseId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      assertPermission(ctx.session.role, "inventory.write");
-      const u = await ctx.db.aiUsecase.findUnique({
-        where: { id: input.usecaseId },
-      });
-      if (!u) throw new TRPCError({ code: "NOT_FOUND" });
-      await runAnalysis({
-        orgId: ctx.session.orgId,
-        usecaseId: input.usecaseId,
-        reason: "manual",
-        actorId: ctx.session.userId,
-      });
-      return { ok: true as const, queued: true as const };
-    }),
-
-  analyzeUnanalyzed: orgProcedure.mutation(async ({ ctx }) => {
-    assertPermission(ctx.session.role, "inventory.write");
-    const rows = await ctx.db.aiUsecase.findMany({
-      where: { classification: null },
-      select: { id: true },
-    });
-    const errors: string[] = [];
-    for (const row of rows) {
-      try {
-        await runAnalysis({
-          orgId: ctx.session.orgId,
-          usecaseId: row.id,
-          reason: "manual",
-          actorId: ctx.session.userId,
-        });
-      } catch (err) {
-        errors.push(err instanceof Error ? err.message : String(err));
-      }
-    }
-    if (errors.length > 0) {
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: `${errors.length}/${rows.length} analyses failed: ${errors[0]}`,
-      });
-    }
-    return { ok: true as const, queued: rows.length };
-  }),
-
-  unanalyzedCount: orgProcedure.query(async ({ ctx }) => {
-    const count = await ctx.db.aiUsecase.count({
-      where: { classification: null },
-    });
-    return { count };
-  }),
 });

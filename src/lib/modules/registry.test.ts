@@ -51,14 +51,9 @@ describe("registry registration guard", () => {
     "../../app/[locale]/(dashboard)/(modules)",
   );
 
-  // module.config.ts files that intentionally exist but are NOT sidebar
-  // entries. asi-redteam-checklist is a "card" (rendered on the /redteam
-  // page, not the sidebar); its config file is vestigial and imported
-  // nowhere. Add a slug here ONLY with a one-line reason — that comment is
-  // the reviewable record of a deliberate exclusion.
-  const ALLOWED_UNREGISTERED = new Set<string>([
-    "asi-redteam-checklist", // card on /redteam, not a sidebar module
-  ]);
+  // Every remaining module.config.ts is a first-release sidebar entry. Keep
+  // this set for future deliberate exceptions, with a one-line reason each.
+  const ALLOWED_UNREGISTERED = new Set<string>();
 
   // Read the slug straight from each config's source rather than importing
   // it: the on-disk path contains spaces, "[locale]", and "(dashboard)",

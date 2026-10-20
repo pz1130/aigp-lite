@@ -1,6 +1,6 @@
 import { getTranslations, getLocale } from "next-intl/server";
 import { headers } from "next/headers";
-import { LayoutDashboard, Shield } from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
 import { MODULES } from "@/lib/modules/registry";
 import { Icon } from "@/components/ui/icon";
 import { locales } from "@/i18n/config";
@@ -51,19 +51,6 @@ export async function Sidebar() {
         >
           <LayoutDashboard size={14} className="shrink-0 opacity-70" />
           <span>{t("dashboard")}</span>
-        </a>
-
-        <a
-          href="/posture"
-          className={`group flex items-center gap-2.5 h-8 px-2.5 rounded-md text-[13px] font-medium transition-all duration-150 animate-fade-in-up ${
-            pathname === "/posture"
-              ? "bg-accent/12 text-accent shadow-sm shadow-[rgba(50,168,82,0.15)]"
-              : "text-secondary/80 hover:text-primary hover:bg-muted/60"
-          }`}
-          style={{ animationDelay: nextDelay() }}
-        >
-          <Shield size={14} className="shrink-0 opacity-70" />
-          <span>{t("posture")}</span>
         </a>
 
         {GROUP_ORDER.map((group) => {

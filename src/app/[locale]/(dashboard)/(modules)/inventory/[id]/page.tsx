@@ -5,14 +5,9 @@ import { withOrg } from "@/lib/db/orgIsolation";
 import { prisma } from "@/lib/db";
 import { ModelCard } from "@/components/inventory/ModelCard";
 import { ModelVersions } from "@/components/inventory/ModelVersions";
-import { UsecaseClassificationCard } from "@/components/inventory/UsecaseClassificationCard";
-import { UsecaseMaterialityCard } from "@/components/inventory/UsecaseMaterialityCard";
-import { UsecaseFairnessCard } from "@/components/inventory/UsecaseFairnessCard";
-import { UsecaseVendorsCard } from "@/components/inventory/UsecaseVendorsCard";
 import { PageHeader } from "@/components/page/PageHeader";
 import { DetailLayout } from "@/components/page/DetailLayout";
 import { Badge } from "@/components/ui/badge";
-import { UsecaseDataSourcesSection } from "@/components/data-lineage/UsecaseDataSourcesSection";
 import { FriaTab } from "@/components/fria/FriaTab";
 import { formatDate } from "@/lib/format/intl";
 import { getTranslations } from "next-intl/server";
@@ -20,18 +15,15 @@ import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { DeleteUsecaseButton } from "@/components/inventory/DeleteUsecaseButton";
 import { hasPermission } from "@/lib/rbac/check";
-import { RiskCopilotPanel } from "./RiskCopilotPanel";
-import { LinkedRisksPanel } from "./LinkedRisksPanel";
-import { RedteamAttestationsPanel } from "./RedteamAttestationsPanel";
 import { buildDossierSnapshot } from "@/lib/dossier/aggregate";
 import { evaluateReadiness } from "@/lib/dossier/readiness";
 import { recheckStaleApproval } from "@/lib/dossier/stale-approval";
 import { ReadinessBanner } from "./_dossier/ReadinessBanner";
 import { ReadinessChecklist } from "./_dossier/ReadinessChecklist";
 import { GoLivePanel } from "./_dossier/GoLivePanel";
-import { SystemCardExport } from "./_dossier/SystemCardExport";
 import { DeprecatePanel } from "./_dossier/DeprecatePanel";
 import { daysToSunset } from "@/lib/inventory/sunset";
+import { NextActions } from "@/components/inventory/NextActions";
 
 export default async function UsecaseDetail({
   params,
@@ -55,61 +47,27 @@ export default async function UsecaseDetail({
   const main = (
     <>
       <ReadinessBanner readiness={readiness} capability={snapshot.capability} />
-      <div className="flex justify-end">
-        <SystemCardExport usecaseId={id} />
-      </div>
+      <NextActions snapshot={snapshot} readiness={readiness} role={ctx.role} />
       <section className="space-y-3">
         <ReadinessChecklist readiness={readiness} />
       </section>
 
-      <section className="space-y-4">
+      <section id="documentation" className="space-y-4">
         {sys.description && <p className="text-secondary">{sys.description}</p>}
         <h2 className="text-lg font-semibold">{t("fields.modelCard")}</h2>
         <ModelCard md={sys.modelCardMd} emptyText={t("noModelCard")} />
+        {canAttest && (
+          <Link
+            href={`/inventory/${id}/edit`}
+            className="text-sm text-accent hover:underline"
+          >
+            {t("edit")} · {t("fields.modelCard")}
+          </Link>
+        )}
         <ModelVersions usecaseId={id} />
       </section>
 
-      <UsecaseClassificationCard usecaseId={id} />
-
-      <UsecaseMaterialityCard
-        usecaseId={id}
-        canWrite={hasPermission(ctx.role, "materiality.write")}
-      />
-
-      <UsecaseFairnessCard
-        usecaseId={id}
-        canWrite={hasPermission(ctx.role, "fairness.write")}
-      />
-
-      <UsecaseVendorsCard usecaseId={id} />
-
-      <UsecaseDataSourcesSection usecaseId={id} />
-
-      <RiskCopilotPanel
-        usecaseId={id}
-        canWrite={hasPermission(ctx.role, "risk.write")}
-        descriptionLength={(sys.description ?? "").length}
-      />
-      <LinkedRisksPanel
-        usecaseId={id}
-        canWrite={hasPermission(ctx.role, "risk.write")}
-      />
-
       <FriaTab usecaseId={id} />
-
-      <RedteamAttestationsPanel
-        usecaseId={id}
-        canWrite={hasPermission(ctx.role, "redteam.write")}
-      />
-
-      <section className="rounded-lg border border-border-default p-4">
-        <Link
-          href="/aivtf"
-          className="text-accent hover:underline text-sm font-medium"
-        >
-          AIVTF Checklist →
-        </Link>
-      </section>
     </>
   );
 
@@ -154,14 +112,16 @@ export default async function UsecaseDetail({
       ) : (
         canAttest && <DeprecatePanel usecaseId={sys.id} />
       )}
-      <GoLivePanel
-        usecaseId={snapshot.system.id}
-        readiness={readiness}
-        current={snapshot.goLive}
-        oversightAttested={snapshot.system.humanOversightAttested}
-        canApprove={canApprove}
-        canAttest={canAttest}
-      />
+      <div id="go-live">
+        <GoLivePanel
+          usecaseId={snapshot.system.id}
+          readiness={readiness}
+          current={snapshot.goLive}
+          oversightAttested={snapshot.system.humanOversightAttested}
+          canApprove={canApprove}
+          canAttest={canAttest}
+        />
+      </div>
 
       <div className="rounded-lg border border-border-default p-4 space-y-4">
         <div className="flex items-center justify-between">

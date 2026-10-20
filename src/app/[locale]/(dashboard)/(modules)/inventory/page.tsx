@@ -6,7 +6,6 @@ import {
   UsecaseTable,
   type UsecaseTableRow,
 } from "@/components/inventory/UsecaseTable";
-import { AnalyzeAllButton } from "@/components/inventory/AnalyzeAllButton";
 import { PageHeader } from "@/components/page/PageHeader";
 import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
@@ -43,12 +42,9 @@ export default async function InventoryPage({
           </Link>
         }
         action={
-          <div className="flex items-center gap-2">
-            <AnalyzeAllButton />
-            <Link href="/inventory/new">
-              <Button size="sm">+ {t("new")}</Button>
-            </Link>
-          </div>
+          <Link href="/inventory/new">
+            <Button size="sm">+ {t("new")}</Button>
+          </Link>
         }
       />
       <UsecaseTable rows={rows satisfies UsecaseTableRow[]} locale={locale} />

@@ -22,7 +22,7 @@ export default async function RiskPage() {
   const ctx = await requireSession();
   const db = withOrg(prisma, ctx.orgId);
   const t = await getTranslations("risk");
-  const canWrite = hasPermission(ctx.role, "risk.write");
+  const canWrite = hasPermission(ctx.role, "risk-catalog.write");
   const [frameworks, usecases] = await Promise.all([
     db.riskFramework.findMany({
       include: { controls: true },

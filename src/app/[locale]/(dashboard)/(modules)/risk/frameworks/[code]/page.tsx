@@ -26,8 +26,8 @@ export default async function FrameworkControlsPage({
   });
   if (!fw) notFound();
 
-  const canWrite = hasPermission(ctx.role, "risk.write");
-  const canDelete = hasPermission(ctx.role, "risk.delete");
+  const canWrite = hasPermission(ctx.role, "risk-catalog.write");
+  const canDelete = hasPermission(ctx.role, "risk-catalog.delete");
 
   return (
     <>

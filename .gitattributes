@@ -6,3 +6,5 @@
 # Dependency updates are raised and merged in the development repo only; the
 # public mirror receives them through the snapshot sync.
 /.github/dependabot.yml export-ignore
+/scripts/core-overrides export-ignore
+/scripts/export-core.mjs export-ignore

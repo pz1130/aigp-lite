@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { requireSession } from "@/lib/auth/session";
 import { withOrg } from "@/lib/db/orgIsolation";
 import { prisma } from "@/lib/db";
+import { hasPermission } from "@/lib/rbac/check";
 import { FrameworkForm } from "@/components/risk/FrameworkForm";
 import { PageHeader } from "@/components/page/PageHeader";
 
@@ -13,6 +14,7 @@ export default async function EditFrameworkPage({
 }) {
   const { code } = await params;
   const ctx = await requireSession();
+  if (!hasPermission(ctx.role, "risk-catalog.write")) notFound();
   const db = withOrg(prisma, ctx.orgId);
   const t = await getTranslations("risk");
 

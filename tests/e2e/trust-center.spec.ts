@@ -20,12 +20,12 @@ async function ensureUsecase() {
   });
 }
 
-// The whole chain in one spec: publish -> public visible -> /full 404s ->
-// redeem -> visible -> revoke -> 404 immediately.
+// The first release covers public publication. Confidential dossier links are
+// deliberately outside the Core scope.
 // Run locally with `npm run prisma:seed && npm run e2e --
 // tests/e2e/trust-center.spec.ts`.
 // Admin chrome is next-intl on /zh/trust-center — use zh placeholders/labels.
-test("trust center: publish, redeem, revoke", async ({ page, request }) => {
+test("trust center: publish and expose public profile", async ({ page }) => {
   test.setTimeout(90_000);
   await ensureUsecase();
   const slug = "e2e-" + Date.now().toString(36);
@@ -75,44 +75,11 @@ test("trust center: publish, redeem, revoke", async ({ page, request }) => {
   await published;
   await expect(page.getByText("published").first()).toBeVisible();
 
-  // Public tier is visible to an anonymous visitor.
+  // Public profile is visible to an anonymous visitor.
   const anon = await page.context().browser()!.newContext();
   const anonPage = await anon.newPage();
   await anonPage.goto(`/zh/trust/${slug}`);
   await expect(anonPage.getByText("E2E Corp")).toBeVisible();
 
-  // Confidential tier is not.
-  const denied = await anonPage.goto(`/zh/trust/${slug}/full`);
-  expect(denied?.status()).toBe(404);
-
-  // Issue a link and redeem it. Issued URL uses the refetched profile slug.
-  await page.getByPlaceholder("标签").fill("E2E reviewer");
-  const issued = page.waitForResponse(
-    (r) => r.url().includes("trustCenter.issueToken") && r.ok(),
-  );
-  await page.getByRole("button", { name: "签发访问链接" }).click();
-  await issued;
-  const issuedCode = page
-    .locator("code")
-    .filter({ hasText: `/trust/${slug}/k/` });
-  await expect(issuedCode).toBeVisible({ timeout: 15_000 });
-  const linkText = await issuedCode.innerText();
-  await anonPage.goto(`/zh${linkText}`);
-  await expect(anonPage).toHaveURL(new RegExp(`/trust/${slug}/full$`));
-  await expect(
-    anonPage.getByText(/Confidential dossier|机密档案/),
-  ).toBeVisible();
-
-  // Revoke takes effect on the very next request.
-  const revoked = page.waitForResponse(
-    (r) => r.url().includes("trustCenter.revokeToken") && r.ok(),
-  );
-  await page.getByRole("button", { name: "吊销" }).first().click();
-  await revoked;
-  await expect(page.getByText("已吊销").first()).toBeVisible();
-  const afterRevoke = await anonPage.goto(`/zh/trust/${slug}/full`);
-  expect(afterRevoke?.status()).toBe(404);
-
   await anon.close();
-  expect(request).toBeTruthy();
 });

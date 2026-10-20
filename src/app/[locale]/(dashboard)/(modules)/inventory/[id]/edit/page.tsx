@@ -14,7 +14,10 @@ export default async function EditUsecase({
   const { id } = await params;
   const ctx = await requireSession();
   const db = withOrg(prisma, ctx.orgId);
-  const u = await db.aiUsecase.findUnique({ where: { id } });
+  const u = await db.aiUsecase.findUnique({
+    where: { id },
+    include: { classification: true },
+  });
   if (!u) notFound();
   const t = await getTranslations("inventory");
 
@@ -34,6 +37,18 @@ export default async function EditUsecase({
           modelCardMd: u.modelCardMd,
           intendedUseMd: u.intendedUseMd,
           prohibitedUseMd: u.prohibitedUseMd,
+          euAiActCategory:
+            (u.classification?.euAiActCategory as
+              | "prohibited"
+              | "high"
+              | "limited"
+              | "minimal"
+              | "unknown"
+              | undefined) ?? "unknown",
+          containsPii: u.classification?.containsPii ?? false,
+          dataSensitivity:
+            (u.classification?.dataSensitivity as
+              "low" | "medium" | "high" | null | undefined) ?? null,
         }}
       />
     </>

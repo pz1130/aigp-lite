@@ -1,17 +1,4 @@
-import {
-  describe,
-  it,
-  expect,
-  beforeAll,
-  beforeEach,
-  afterAll,
-  vi,
-} from "vitest";
-
-vi.mock("./analyze", () => ({
-  runAnalysisInBackground: vi.fn(),
-  runAnalysis: vi.fn().mockResolvedValue(undefined),
-}));
+import { describe, it, expect, beforeAll, beforeEach, afterAll } from "vitest";
 
 import { prisma } from "@/lib/db";
 import { hashPassword } from "@/lib/auth/password";
@@ -120,9 +107,22 @@ describe("inventory.router", () => {
       deploymentType: "built",
       description: "Summarizes long PDFs.",
       modelCardMd: "",
+      euAiActCategory: "minimal",
+      containsPii: false,
+      dataSensitivity: "low",
     });
     expect(out.id).toBeTruthy();
     expect(out.lifecycleStage).toBe("proposed");
+    await expect(
+      prisma.usecaseClassification.findUnique({
+        where: { usecaseId: out.id },
+      }),
+    ).resolves.toMatchObject({
+      euAiActCategory: "minimal",
+      containsPii: false,
+      dataSensitivity: "low",
+      generatedReason: "manual",
+    });
   });
 
   it("viewer cannot create", async () => {
@@ -156,133 +156,5 @@ describe("inventory.router", () => {
     });
     const auditAfter = await prisma.auditLog.count();
     expect(auditAfter).toBeGreaterThanOrEqual(auditBefore + 1);
-  });
-
-  // ── Classification / Analysis procedures ────────────────────────────────
-
-  it("classification returns null when no analysis exists", async () => {
-    const caller = inventoryRouter.createCaller(ownerCtx);
-    const created = await caller.create({
-      name: "No Analysis",
-      autonomyLevel: "assistant",
-      deploymentType: "built",
-      description: "",
-      modelCardMd: "",
-    });
-    const result = await caller.classification({ usecaseId: created.id });
-    expect(result).toBeNull();
-  });
-
-  it("classification returns data after persist", async () => {
-    const caller = inventoryRouter.createCaller(ownerCtx);
-    const created = await caller.create({
-      name: "Has Analysis",
-      autonomyLevel: "assistant",
-      deploymentType: "built",
-      description: "",
-      modelCardMd: "",
-    });
-    await prisma.usecaseClassification.create({
-      data: {
-        orgId,
-        usecaseId: created.id,
-        domain: "finance",
-        containsPii: false,
-        dataSensitivity: "low",
-        automatedDecisionMaking: false,
-        euAiActCategory: "minimal",
-        complianceTags: [],
-        suggestedRisks: [],
-        summary: "Test summary",
-        modelProvider: "openai",
-        modelName: "gpt-4o-mini",
-        confidence: 0.9,
-        generatedReason: "manual",
-      },
-    });
-    const result = await caller.classification({ usecaseId: created.id });
-    expect(result).not.toBeNull();
-    expect(result!.domain).toBe("finance");
-    expect(result!.summary).toBe("Test summary");
-  });
-
-  it("analyze returns queued:true for ai_owner", async () => {
-    const caller = inventoryRouter.createCaller(ownerCtx);
-    const created = await caller.create({
-      name: "Analyze Me",
-      autonomyLevel: "assistant",
-      deploymentType: "built",
-      description: "",
-      modelCardMd: "",
-    });
-    const result = await caller.analyze({ usecaseId: created.id });
-    expect(result).toEqual({ ok: true, queued: true });
-  });
-
-  it("viewer cannot call analyze", async () => {
-    const caller = inventoryRouter.createCaller(viewerCtx);
-    await expect(caller.analyze({ usecaseId: "fake-id" })).rejects.toThrow(
-      /lacks "inventory\.write"/,
-    );
-  });
-
-  it("unanalyzedCount returns correct count", async () => {
-    const caller = inventoryRouter.createCaller(ownerCtx);
-    const created = await caller.create({
-      name: "Counted",
-      autonomyLevel: "assistant",
-      deploymentType: "built",
-      description: "",
-      modelCardMd: "",
-    });
-    const before = await caller.unanalyzedCount();
-    expect(before.count).toBeGreaterThanOrEqual(1);
-
-    await prisma.usecaseClassification.create({
-      data: {
-        orgId,
-        usecaseId: created.id,
-        domain: "test",
-        containsPii: false,
-        dataSensitivity: "low",
-        automatedDecisionMaking: false,
-        euAiActCategory: "minimal",
-        complianceTags: [],
-        suggestedRisks: [],
-        summary: "s",
-        modelProvider: "openai",
-        modelName: "gpt-4o-mini",
-        confidence: 0.5,
-        generatedReason: "manual",
-      },
-    });
-    const after = await caller.unanalyzedCount();
-    expect(after.count).toBe(before.count - 1);
-  });
-
-  it("analyzeUnanalyzed returns queued count and calls runAnalysis per row", async () => {
-    const { runAnalysis } = await import("./analyze");
-    const mockRun = vi.mocked(runAnalysis);
-    mockRun.mockClear();
-
-    const caller = inventoryRouter.createCaller(ownerCtx);
-    await caller.create({
-      name: "Bulk1",
-      autonomyLevel: "assistant",
-      deploymentType: "built",
-      description: "",
-      modelCardMd: "",
-    });
-    await caller.create({
-      name: "Bulk2",
-      autonomyLevel: "assistant",
-      deploymentType: "built",
-      description: "",
-      modelCardMd: "",
-    });
-
-    const result = await caller.analyzeUnanalyzed();
-    expect(result.queued).toBeGreaterThanOrEqual(2);
-    expect(mockRun).toHaveBeenCalledTimes(result.queued);
   });
 });

@@ -7,9 +7,7 @@ export function BadgeFor({ slug }: { slug: string }) {
       ? (trpc.workflow.pendingCount?.useQuery?.()?.data ?? 0)
       : slug === "risk"
         ? (trpc.risk.highRiskCount?.useQuery?.()?.data ?? 0)
-        : slug === "incidents"
-          ? (trpc.incident.openCount?.useQuery?.()?.data ?? 0)
-          : 0;
+        : 0;
 
   if (q === 0) return null;
 
@@ -17,7 +15,6 @@ export function BadgeFor({ slug }: { slug: string }) {
     {
       workflow: "bg-accent/15 text-accent",
       risk: "bg-danger/15 text-danger",
-      incidents: "bg-warn/15 text-warn",
     }[slug] ?? "bg-muted text-tertiary";
 
   return (

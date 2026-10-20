@@ -322,7 +322,6 @@ jobs:
         # cost little more than their own CMD layer. docker-compose ships them.
         run: |
           docker build --build-arg NODE_VERSION=${{ steps.node.outputs.version }} --target migrate --tag aigp-lite-migrate:ci .
-          docker build --build-arg NODE_VERSION=${{ steps.node.outputs.version }} --target worker --tag aigp-lite-worker:ci .
 
       - name: Smoke-test the runner container
         # The build above only proves the image assembles; this proves
