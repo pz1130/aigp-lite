@@ -5,6 +5,7 @@ import {
   type ProviderAdapter,
   type AdapterStreamOpts,
   type ChatMessage,
+  type ContentPart,
   type StreamChunk,
   type PingResult,
   type TokenUsage,
@@ -23,19 +24,53 @@ function asNonNegativeNumber(value: unknown): number | undefined {
     : undefined;
 }
 
-function anthropicContent(content: ChatMessage["content"]) {
-  if (typeof content === "string") return content;
-  return content.map((p) =>
-    p.type === "text"
-      ? { type: "text", text: p.text }
-      : {
-          type: "image",
-          source:
-            p.data !== undefined
-              ? { type: "base64", media_type: p.mediaType, data: p.data }
-              : { type: "url", url: p.url },
-        },
-  );
+function anthropicPart(p: ContentPart) {
+  if (p.type === "text") return { type: "text", text: p.text };
+  if (p.type === "tool_result")
+    return {
+      type: "tool_result",
+      tool_use_id: p.toolCallId,
+      content: p.content,
+      ...(p.isError ? { is_error: true } : {}),
+    };
+  return {
+    type: "image",
+    source:
+      p.data !== undefined
+        ? { type: "base64", media_type: p.mediaType, data: p.data }
+        : { type: "url", url: p.url },
+  };
+}
+
+function parseToolInput(args: string): unknown {
+  try {
+    return JSON.parse(args);
+  } catch {
+    return {};
+  }
+}
+
+function anthropicContent(m: ChatMessage) {
+  if (!m.toolCalls?.length) {
+    return typeof m.content === "string"
+      ? m.content
+      : m.content.map(anthropicPart);
+  }
+  const parts =
+    typeof m.content === "string"
+      ? m.content
+        ? [{ type: "text", text: m.content }]
+        : []
+      : m.content.map(anthropicPart);
+  return [
+    ...parts,
+    ...m.toolCalls.map((c) => ({
+      type: "tool_use",
+      id: c.id,
+      name: c.name,
+      input: parseToolInput(c.arguments),
+    })),
+  ];
 }
 
 export interface AnthropicAdapterOptions {
@@ -62,7 +97,7 @@ export function createAnthropicAdapter({
           model: opts.model,
           messages: otherMsgs.map((m) => ({
             role: m.role,
-            content: anthropicContent(m.content),
+            content: anthropicContent(m),
           })),
           system: systemMsg ? contentText(systemMsg.content) : undefined,
           stream: true,

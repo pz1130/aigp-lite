@@ -403,3 +403,177 @@ describe("gemini capabilities", () => {
     });
   });
 });
+
+const TOOL_ROUND: ChatMessage[] = [
+  { role: "user", content: "weather in Oslo?" },
+  {
+    role: "assistant",
+    content: "Checking.",
+    toolCalls: [
+      {
+        id: "c1",
+        name: "get_weather",
+        arguments: '{"city":"Oslo"}',
+        signature: "sig-1",
+      },
+    ],
+  },
+  {
+    role: "user",
+    content: [
+      {
+        type: "tool_result",
+        toolCallId: "c1",
+        name: "get_weather",
+        content: "12C",
+      },
+      {
+        type: "tool_result",
+        toolCallId: "c2",
+        name: "get_weather",
+        content: "timeout",
+        isError: true,
+      },
+      { type: "text", text: "and tomorrow?" },
+    ],
+  },
+];
+
+describe("tool result passback", () => {
+  it.each([
+    ["openai", createOpenAIAdapter(), {}],
+    ["azure-openai", azureOpenAIAdapter, AZURE_CONFIG],
+  ] as const)(
+    "%s sends tool_calls and tool messages",
+    async (_n, adapter, config) => {
+      const body = await requestBody(adapter, {
+        config,
+        messages: TOOL_ROUND,
+        tools: [TOOL],
+      });
+      expect(body.messages).toEqual([
+        { role: "user", content: "weather in Oslo?" },
+        {
+          role: "assistant",
+          content: "Checking.",
+          tool_calls: [
+            {
+              id: "c1",
+              type: "function",
+              function: { name: "get_weather", arguments: '{"city":"Oslo"}' },
+            },
+          ],
+        },
+        { role: "tool", tool_call_id: "c1", content: "12C" },
+        { role: "tool", tool_call_id: "c2", content: "timeout" },
+        { role: "user", content: [{ type: "text", text: "and tomorrow?" }] },
+      ]);
+    },
+  );
+
+  it("openai sends null content for an assistant turn with only tool calls", async () => {
+    const body = await requestBody(createOpenAIAdapter(), {
+      messages: [
+        {
+          role: "assistant",
+          content: "",
+          toolCalls: [{ id: "c1", name: "now", arguments: "{}" }],
+        },
+      ],
+    });
+    expect((body.messages as Record<string, unknown>[])[0].content).toBeNull();
+  });
+
+  it("anthropic sends tool_use and tool_result blocks", async () => {
+    const body = await requestBody(createAnthropicAdapter(), {
+      messages: TOOL_ROUND,
+      tools: [TOOL],
+    });
+    expect(body.messages).toEqual([
+      { role: "user", content: "weather in Oslo?" },
+      {
+        role: "assistant",
+        content: [
+          { type: "text", text: "Checking." },
+          {
+            type: "tool_use",
+            id: "c1",
+            name: "get_weather",
+            input: { city: "Oslo" },
+          },
+        ],
+      },
+      {
+        role: "user",
+        content: [
+          { type: "tool_result", tool_use_id: "c1", content: "12C" },
+          {
+            type: "tool_result",
+            tool_use_id: "c2",
+            content: "timeout",
+            is_error: true,
+          },
+          { type: "text", text: "and tomorrow?" },
+        ],
+      },
+    ]);
+  });
+
+  it("gemini sends functionCall with its thought signature and functionResponse", async () => {
+    const body = await requestBody(googleGeminiAdapter, {
+      messages: TOOL_ROUND,
+      tools: [TOOL],
+    });
+    expect(body.contents).toEqual([
+      { role: "user", parts: [{ text: "weather in Oslo?" }] },
+      {
+        role: "model",
+        parts: [
+          { text: "Checking." },
+          {
+            functionCall: { name: "get_weather", args: { city: "Oslo" } },
+            thoughtSignature: "sig-1",
+          },
+        ],
+      },
+      {
+        role: "user",
+        parts: [
+          {
+            functionResponse: {
+              name: "get_weather",
+              response: { result: "12C" },
+            },
+          },
+          {
+            functionResponse: {
+              name: "get_weather",
+              response: { error: "timeout" },
+            },
+          },
+          { text: "and tomorrow?" },
+        ],
+      },
+    ]);
+  });
+
+  it("gemini keeps the thought signature of a streamed functionCall", async () => {
+    stubFetch([
+      data({
+        candidates: [
+          {
+            content: {
+              parts: [
+                { functionCall: { name: "now" }, thoughtSignature: "sig-9" },
+              ],
+            },
+          },
+        ],
+      }),
+    ]);
+    const chunks = await collect(googleGeminiAdapter, { tools: [TOOL] });
+    expect(chunks.flatMap((c) => c.toolCalls ?? [])).toEqual([
+      { id: "call_0", name: "now", arguments: "{}", signature: "sig-9" },
+    ]);
+  });
+});

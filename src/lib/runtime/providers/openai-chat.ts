@@ -1,10 +1,15 @@
 import { createParser, type EventSourceMessage } from "eventsource-parser";
-import type {
-  AdapterStreamOpts,
-  ChatMessage,
-  StreamChunk,
-  TokenUsage,
-  ToolCall,
+import {
+  contentText,
+  type AdapterStreamOpts,
+  type ChatMessage,
+  type ContentPart,
+  type ImagePart,
+  type StreamChunk,
+  type TextPart,
+  type TokenUsage,
+  type ToolCall,
+  type ToolResultPart,
 } from "./types";
 
 /**
@@ -12,7 +17,7 @@ import type {
  * OpenAI adapters, which speak the same wire format.
  */
 
-function toOpenAIContent(content: ChatMessage["content"]) {
+function toOpenAIContent(content: string | (TextPart | ImagePart)[]) {
   if (typeof content === "string") return content;
   return content.map((p) =>
     p.type === "text"
@@ -29,13 +34,48 @@ function toOpenAIContent(content: ChatMessage["content"]) {
   );
 }
 
+function isToolResult(p: ContentPart): p is ToolResultPart {
+  return p.type === "tool_result";
+}
+
+/** One message, or several: each tool result is its own `tool` message. */
+function toOpenAIMessages(m: ChatMessage): Record<string, unknown>[] {
+  if (m.role === "assistant" && m.toolCalls?.length) {
+    return [
+      {
+        role: m.role,
+        content: contentText(m.content) || null,
+        tool_calls: m.toolCalls.map((c) => ({
+          id: c.id,
+          type: "function",
+          function: { name: c.name, arguments: c.arguments },
+        })),
+      },
+    ];
+  }
+  if (typeof m.content === "string")
+    return [{ role: m.role, content: m.content }];
+  const results = m.content.filter(isToolResult);
+  const rest = m.content.filter(
+    (p): p is TextPart | ImagePart => !isToolResult(p),
+  );
+  return [
+    // Tool messages must directly follow the assistant's tool_calls.
+    ...results.map((r) => ({
+      role: "tool",
+      tool_call_id: r.toolCallId,
+      content: r.content,
+    })),
+    ...(rest.length > 0 || results.length === 0
+      ? [{ role: m.role, content: toOpenAIContent(rest) }]
+      : []),
+  ];
+}
+
 /** Messages and tools in Chat Completions form. */
 export function openAIChatFields(opts: AdapterStreamOpts) {
   return {
-    messages: opts.messages.map((m) => ({
-      role: m.role,
-      content: toOpenAIContent(m.content),
-    })),
+    messages: opts.messages.flatMap(toOpenAIMessages),
     ...(opts.tools?.length
       ? {
           tools: opts.tools.map((t) => ({

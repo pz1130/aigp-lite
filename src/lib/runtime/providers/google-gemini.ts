@@ -6,20 +6,48 @@ import type {
   StreamChunk,
   PingResult,
   ChatMessage,
+  ContentPart,
   TokenUsage,
   ToolCall,
 } from "./types";
 import { contentText } from "./types";
 
-function geminiParts(content: ChatMessage["content"]) {
-  if (typeof content === "string") return [{ text: content }];
-  return content.map((p) =>
-    p.type === "text"
-      ? { text: p.text }
-      : p.data !== undefined
-        ? { inlineData: { mimeType: p.mediaType, data: p.data } }
-        : { fileData: { fileUri: p.url, mimeType: p.mediaType } },
-  );
+function geminiPart(p: ContentPart) {
+  if (p.type === "text") return { text: p.text };
+  if (p.type === "tool_result")
+    return {
+      functionResponse: {
+        name: p.name,
+        response: p.isError ? { error: p.content } : { result: p.content },
+      },
+    };
+  return p.data !== undefined
+    ? { inlineData: { mimeType: p.mediaType, data: p.data } }
+    : { fileData: { fileUri: p.url, mimeType: p.mediaType } };
+}
+
+function parseArgs(args: string): unknown {
+  try {
+    return JSON.parse(args);
+  } catch {
+    return {};
+  }
+}
+
+function geminiParts(m: ChatMessage) {
+  const parts =
+    typeof m.content === "string"
+      ? m.content || !m.toolCalls?.length
+        ? [{ text: m.content }]
+        : []
+      : m.content.map(geminiPart);
+  return [
+    ...parts,
+    ...(m.toolCalls ?? []).map((c) => ({
+      functionCall: { name: c.name, args: parseArgs(c.arguments) },
+      ...(c.signature ? { thoughtSignature: c.signature } : {}),
+    })),
+  ];
 }
 
 function toGemini(messages: ChatMessage[]) {
@@ -28,7 +56,7 @@ function toGemini(messages: ChatMessage[]) {
   return {
     contents: others.map((m) => ({
       role: m.role === "assistant" ? "model" : "user",
-      parts: geminiParts(m.content),
+      parts: geminiParts(m),
     })),
     systemInstruction: systemMsg
       ? { parts: [{ text: contentText(systemMsg.content) }] }
@@ -112,6 +140,9 @@ export const googleGeminiAdapter: ProviderAdapter = {
                   id: p.functionCall.id ?? `call_${callSeq++}`,
                   name: p.functionCall.name,
                   arguments: JSON.stringify(p.functionCall.args ?? {}),
+                  ...(typeof p.thoughtSignature === "string"
+                    ? { signature: p.thoughtSignature }
+                    : {}),
                 });
               }
             }

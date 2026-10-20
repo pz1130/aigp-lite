@@ -12,19 +12,35 @@ export interface ImagePart {
   url?: string;
 }
 
-export type ContentPart = TextPart | ImagePart;
+/**
+ * The result of a tool call, sent back in a user message. Adapters move it
+ * to wherever their provider expects it (OpenAI: a `tool` role message).
+ */
+export interface ToolResultPart {
+  type: "tool_result";
+  toolCallId: string;
+  /** The called tool's name; Gemini matches results by name, not id. */
+  name: string;
+  content: string;
+  isError?: boolean;
+}
+
+export type ContentPart = TextPart | ImagePart | ToolResultPart;
 
 export interface ChatMessage {
   role: "system" | "user" | "assistant";
   content: string | ContentPart[];
+  /** Calls the assistant made in this turn, replayed on the next request. */
+  toolCalls?: ToolCall[];
 }
 
-/** The text of a message, ignoring non-text parts. */
+/** The text of a message (tool results included), ignoring images. */
 export function contentText(content: ChatMessage["content"]): string {
   if (typeof content === "string") return content;
   return content
-    .filter((p): p is TextPart => p.type === "text")
-    .map((p) => p.text)
+    .map((p) =>
+      p.type === "text" ? p.text : p.type === "tool_result" ? p.content : "",
+    )
     .join("");
 }
 
@@ -40,6 +56,8 @@ export interface ToolCall {
   id: string;
   name: string;
   arguments: string;
+  /** Opaque token that must be sent back with the call (Gemini thought signature). */
+  signature?: string;
 }
 
 /**
