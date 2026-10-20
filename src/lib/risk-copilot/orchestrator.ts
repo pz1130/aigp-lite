@@ -11,10 +11,17 @@ import {
   type CatalogEntry,
   type PromptInput,
 } from "./prompt";
-import { callCopilotLlm, type LlmCallResult } from "./llm-client";
+import {
+  callCopilotLlm,
+  isCopilotEnabledForOrg,
+  type LlmCallResult,
+} from "./llm-client";
 import { validateSuggestions, type CatalogIndex } from "./validate";
-import { isCopilotEnabled, getCatalogTokenBudget } from "./config";
+import { getCatalogTokenBudget } from "./config";
 import { selectCatalogWithinBudget } from "./catalog-budget";
+import { jsonResponseFormat } from "@/lib/runtime/providers/response-format";
+
+const RESPONSE_FORMAT = jsonResponseFormat("risk_suggestions", llmOutputSchema);
 
 export type SuggestRisksArgs = {
   orgId: string;
@@ -60,7 +67,7 @@ export async function suggestRisks(
 }
 
 async function runInner(args: SuggestRisksArgs): Promise<SuggestRisksResult> {
-  if (!isCopilotEnabled()) {
+  if (!(await isCopilotEnabledForOrg(args.orgId))) {
     return failedResult({ errorMessage: "copilot_disabled" });
   }
 
@@ -132,6 +139,7 @@ async function runInner(args: SuggestRisksArgs): Promise<SuggestRisksResult> {
   const sys = buildSystemPrompt(promptInput);
 
   const a1 = await runAttempt(
+    args.orgId,
     sys,
     promptInput,
     catalogIndex,
@@ -151,6 +159,7 @@ async function runInner(args: SuggestRisksArgs): Promise<SuggestRisksResult> {
       a1.diagnostics,
     );
     const a2 = await runAttempt(
+      args.orgId,
       retrySys,
       promptInput,
       catalogIndex,
@@ -230,6 +239,7 @@ type Attempt = {
 };
 
 async function runAttempt(
+  orgId: string,
   systemPrompt: string,
   promptInput: PromptInput,
   catalog: CatalogIndex,
@@ -237,7 +247,12 @@ async function runAttempt(
 ): Promise<Attempt> {
   let llm: LlmCallResult;
   try {
-    llm = await callCopilotLlm(systemPrompt, userMessage);
+    llm = await callCopilotLlm(
+      orgId,
+      systemPrompt,
+      userMessage,
+      RESPONSE_FORMAT,
+    );
   } catch (err) {
     return {
       status: "failed",

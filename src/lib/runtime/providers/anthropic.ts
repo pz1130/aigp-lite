@@ -1,10 +1,15 @@
 import { createParser, type EventSourceMessage } from "eventsource-parser";
 import { safeFetch } from "@/lib/egress/guard";
-import type {
-  ProviderAdapter,
-  AdapterStreamOpts,
-  StreamChunk,
-  PingResult,
+import {
+  contentText,
+  type ProviderAdapter,
+  type AdapterStreamOpts,
+  type ChatMessage,
+  type ContentPart,
+  type StreamChunk,
+  type PingResult,
+  type TokenUsage,
+  type ToolCall,
 } from "./types";
 
 function asRecord(value: unknown): Record<string, unknown> | null {
@@ -19,7 +24,63 @@ function asNonNegativeNumber(value: unknown): number | undefined {
     : undefined;
 }
 
-export function createAnthropicAdapter(): ProviderAdapter {
+function anthropicPart(p: ContentPart) {
+  if (p.type === "text") return { type: "text", text: p.text };
+  if (p.type === "tool_result")
+    return {
+      type: "tool_result",
+      tool_use_id: p.toolCallId,
+      content: p.content,
+      ...(p.isError ? { is_error: true } : {}),
+    };
+  return {
+    type: "image",
+    source:
+      p.data !== undefined
+        ? { type: "base64", media_type: p.mediaType, data: p.data }
+        : { type: "url", url: p.url },
+  };
+}
+
+function parseToolInput(args: string): unknown {
+  try {
+    return JSON.parse(args);
+  } catch {
+    return {};
+  }
+}
+
+function anthropicContent(m: ChatMessage) {
+  if (!m.toolCalls?.length) {
+    return typeof m.content === "string"
+      ? m.content
+      : m.content.map(anthropicPart);
+  }
+  const parts =
+    typeof m.content === "string"
+      ? m.content
+        ? [{ type: "text", text: m.content }]
+        : []
+      : m.content.map(anthropicPart);
+  return [
+    ...parts,
+    ...m.toolCalls.map((c) => ({
+      type: "tool_use",
+      id: c.id,
+      name: c.name,
+      input: parseToolInput(c.arguments),
+    })),
+  ];
+}
+
+export interface AnthropicAdapterOptions {
+  /** Send `output_config.format` when the caller asks for it. */
+  structuredOutputs?: boolean;
+}
+
+export function createAnthropicAdapter({
+  structuredOutputs = true,
+}: AnthropicAdapterOptions = {}): ProviderAdapter {
   return {
     async *streamChat(opts: AdapterStreamOpts): AsyncIterable<StreamChunk> {
       const systemMsg = opts.messages.find((m) => m.role === "system");
@@ -36,11 +97,30 @@ export function createAnthropicAdapter(): ProviderAdapter {
           model: opts.model,
           messages: otherMsgs.map((m) => ({
             role: m.role,
-            content: m.content,
+            content: anthropicContent(m),
           })),
-          system: systemMsg?.content,
+          system: systemMsg ? contentText(systemMsg.content) : undefined,
           stream: true,
           max_tokens: 4096,
+          ...(opts.tools?.length
+            ? {
+                tools: opts.tools.map((t) => ({
+                  name: t.name,
+                  description: t.description,
+                  input_schema: t.inputSchema,
+                })),
+              }
+            : {}),
+          ...(structuredOutputs && opts.responseFormat
+            ? {
+                output_config: {
+                  format: {
+                    type: "json_schema",
+                    schema: opts.responseFormat.schema,
+                  },
+                },
+              }
+            : {}),
         }),
       });
       if (!res.ok || !res.body) {
@@ -51,6 +131,22 @@ export function createAnthropicAdapter(): ProviderAdapter {
       const decoder = new TextDecoder();
       let inputTokens = 0;
       let outputTokens = 0;
+      let cacheRead: number | undefined;
+      let cacheWrite: number | undefined;
+      const readCache = (usage: Record<string, unknown> | null) => {
+        cacheRead =
+          asNonNegativeNumber(usage?.cache_read_input_tokens) ?? cacheRead;
+        cacheWrite =
+          asNonNegativeNumber(usage?.cache_creation_input_tokens) ?? cacheWrite;
+      };
+      const usage = (): TokenUsage => ({
+        input: inputTokens,
+        output: outputTokens,
+        ...(cacheRead !== undefined ? { cacheRead } : {}),
+        ...(cacheWrite !== undefined ? { cacheWrite } : {}),
+      });
+      // Tool-use blocks in progress, keyed by content block index.
+      const toolBlocks = new Map<number, ToolCall>();
       const events: EventSourceMessage[] = [];
       const parser = createParser({ onEvent: (e) => events.push(e) });
       while (true) {
@@ -70,29 +166,50 @@ export function createAnthropicAdapter(): ProviderAdapter {
             const message = asRecord(record?.message);
             const usage = asRecord(message?.usage);
             inputTokens = asNonNegativeNumber(usage?.input_tokens) ?? 0;
+            readCache(usage);
+          } else if (ev.event === "content_block_start") {
+            const block = asRecord(record?.content_block);
+            const index = record?.index;
+            if (block?.type === "tool_use" && typeof index === "number") {
+              toolBlocks.set(index, {
+                id: String(block.id ?? ""),
+                name: String(block.name ?? ""),
+                arguments: "",
+              });
+            }
           } else if (ev.event === "content_block_delta") {
             const delta = asRecord(record?.delta);
-            const text = delta?.text;
-            if (typeof text === "string") yield { delta: text, done: false };
+            const call =
+              typeof record?.index === "number"
+                ? toolBlocks.get(record.index)
+                : undefined;
+            if (call && typeof delta?.partial_json === "string") {
+              call.arguments += delta.partial_json;
+            } else if (typeof delta?.text === "string") {
+              yield { delta: delta.text, done: false };
+            }
+          } else if (ev.event === "content_block_stop") {
+            const index = record?.index;
+            const call =
+              typeof index === "number" ? toolBlocks.get(index) : undefined;
+            if (call) {
+              toolBlocks.delete(index as number);
+              // A tool with no parameters streams no input deltas.
+              if (!call.arguments) call.arguments = "{}";
+              yield { delta: "", done: false, toolCalls: [call] };
+            }
           } else if (ev.event === "message_delta") {
             const usage = asRecord(record?.usage);
             outputTokens =
               asNonNegativeNumber(usage?.output_tokens) ?? outputTokens;
+            readCache(usage);
           } else if (ev.event === "message_stop") {
-            yield {
-              delta: "",
-              done: true,
-              usage: { input: inputTokens, output: outputTokens },
-            };
+            yield { delta: "", done: true, usage: usage() };
             return;
           }
         }
       }
-      yield {
-        delta: "",
-        done: true,
-        usage: { input: inputTokens, output: outputTokens },
-      };
+      yield { delta: "", done: true, usage: usage() };
     },
 
     async ping(opts: AdapterStreamOpts): Promise<PingResult> {

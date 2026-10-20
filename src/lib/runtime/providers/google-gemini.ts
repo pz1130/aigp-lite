@@ -6,7 +6,49 @@ import type {
   StreamChunk,
   PingResult,
   ChatMessage,
+  ContentPart,
+  TokenUsage,
+  ToolCall,
 } from "./types";
+import { contentText } from "./types";
+
+function geminiPart(p: ContentPart) {
+  if (p.type === "text") return { text: p.text };
+  if (p.type === "tool_result")
+    return {
+      functionResponse: {
+        name: p.name,
+        response: p.isError ? { error: p.content } : { result: p.content },
+      },
+    };
+  return p.data !== undefined
+    ? { inlineData: { mimeType: p.mediaType, data: p.data } }
+    : { fileData: { fileUri: p.url, mimeType: p.mediaType } };
+}
+
+function parseArgs(args: string): unknown {
+  try {
+    return JSON.parse(args);
+  } catch {
+    return {};
+  }
+}
+
+function geminiParts(m: ChatMessage) {
+  const parts =
+    typeof m.content === "string"
+      ? m.content || !m.toolCalls?.length
+        ? [{ text: m.content }]
+        : []
+      : m.content.map(geminiPart);
+  return [
+    ...parts,
+    ...(m.toolCalls ?? []).map((c) => ({
+      functionCall: { name: c.name, args: parseArgs(c.arguments) },
+      ...(c.signature ? { thoughtSignature: c.signature } : {}),
+    })),
+  ];
+}
 
 function toGemini(messages: ChatMessage[]) {
   const systemMsg = messages.find((m) => m.role === "system");
@@ -14,12 +56,24 @@ function toGemini(messages: ChatMessage[]) {
   return {
     contents: others.map((m) => ({
       role: m.role === "assistant" ? "model" : "user",
-      parts: [{ text: m.content }],
+      parts: geminiParts(m),
     })),
     systemInstruction: systemMsg
-      ? { parts: [{ text: systemMsg.content }] }
+      ? { parts: [{ text: contentText(systemMsg.content) }] }
       : undefined,
   };
+}
+
+function readUsage(u: Record<string, unknown>): TokenUsage {
+  const usage: TokenUsage = {
+    input: (u.promptTokenCount as number) ?? 0,
+    output: (u.candidatesTokenCount as number) ?? 0,
+  };
+  if (typeof u.cachedContentTokenCount === "number")
+    usage.cacheRead = u.cachedContentTokenCount;
+  if (typeof u.thoughtsTokenCount === "number")
+    usage.reasoning = u.thoughtsTokenCount;
+  return usage;
 }
 
 export const googleGeminiAdapter: ProviderAdapter = {
@@ -30,7 +84,31 @@ export const googleGeminiAdapter: ProviderAdapter = {
       method: "POST",
       signal: opts.signal,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ contents, systemInstruction }),
+      body: JSON.stringify({
+        contents,
+        systemInstruction,
+        ...(opts.tools?.length
+          ? {
+              tools: [
+                {
+                  functionDeclarations: opts.tools.map((t) => ({
+                    name: t.name,
+                    description: t.description,
+                    parameters: t.inputSchema,
+                  })),
+                },
+              ],
+            }
+          : {}),
+        ...(opts.responseFormat
+          ? {
+              generationConfig: {
+                responseMimeType: "application/json",
+                responseJsonSchema: opts.responseFormat.schema,
+              },
+            }
+          : {}),
+      }),
     });
     if (!res.ok || !res.body) {
       const text = await res.text().catch(() => "");
@@ -38,7 +116,9 @@ export const googleGeminiAdapter: ProviderAdapter = {
     }
     const reader = res.body.getReader();
     const decoder = new TextDecoder();
-    let usage: { input: number; output: number } | undefined;
+    let usage: TokenUsage | undefined;
+    // Gemini function calls carry no id; number them per response.
+    let callSeq = 0;
     const events: EventSourceMessage[] = [];
     const parser = createParser({ onEvent: (e) => events.push(e) });
     while (true) {
@@ -51,17 +131,24 @@ export const googleGeminiAdapter: ProviderAdapter = {
           const obj = JSON.parse(ev.data);
           const parts = obj.candidates?.[0]?.content?.parts;
           if (Array.isArray(parts)) {
+            const toolCalls: ToolCall[] = [];
             for (const p of parts) {
               if (typeof p.text === "string" && p.text)
                 yield { delta: p.text, done: false };
+              if (typeof p.functionCall?.name === "string") {
+                toolCalls.push({
+                  id: p.functionCall.id ?? `call_${callSeq++}`,
+                  name: p.functionCall.name,
+                  arguments: JSON.stringify(p.functionCall.args ?? {}),
+                  ...(typeof p.thoughtSignature === "string"
+                    ? { signature: p.thoughtSignature }
+                    : {}),
+                });
+              }
             }
+            if (toolCalls.length) yield { delta: "", done: false, toolCalls };
           }
-          if (obj.usageMetadata) {
-            usage = {
-              input: obj.usageMetadata.promptTokenCount ?? 0,
-              output: obj.usageMetadata.candidatesTokenCount ?? 0,
-            };
-          }
+          if (obj.usageMetadata) usage = readUsage(obj.usageMetadata);
         } catch {
           /* skip */
         }

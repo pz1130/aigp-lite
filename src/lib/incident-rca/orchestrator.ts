@@ -12,9 +12,11 @@ import {
   buildRetryPrompt,
   type PromptInput,
 } from "./prompt";
-import { callRcaLlm } from "./llm-client";
+import { callRcaLlm, isRcaEnabledForOrg } from "./llm-client";
+import { jsonResponseFormat } from "@/lib/runtime/providers/response-format";
+
+const RESPONSE_FORMAT = jsonResponseFormat("incident_rca", llmOutputSchema);
 import { validateOutput } from "./validate";
-import { isRcaEnabled } from "./config";
 
 export type GenerateRcaArgs = {
   orgId: string;
@@ -61,7 +63,7 @@ export async function generateRca(
 }
 
 async function runInner(args: GenerateRcaArgs): Promise<GenerateRcaResult> {
-  if (!isRcaEnabled()) {
+  if (!(await isRcaEnabledForOrg(args.orgId))) {
     return failedResult({ errorMessage: "rca_disabled" });
   }
 
@@ -164,6 +166,7 @@ async function runInner(args: GenerateRcaArgs): Promise<GenerateRcaResult> {
   const systemPrompt = buildSystemPrompt(promptInput);
 
   const a1 = await runAttempt(
+    args.orgId,
     systemPrompt,
     promptInput,
     incident.openedAt,
@@ -183,6 +186,7 @@ async function runInner(args: GenerateRcaArgs): Promise<GenerateRcaResult> {
       a1.diagnostics,
     );
     const a2 = await runAttempt(
+      args.orgId,
       retrySys,
       promptInput,
       incident.openedAt,
@@ -259,6 +263,7 @@ type Attempt = {
 };
 
 async function runAttempt(
+  orgId: string,
   systemPrompt: string,
   promptInput: PromptInput,
   openedAt: Date,
@@ -266,7 +271,12 @@ async function runAttempt(
 ): Promise<Attempt> {
   let llm;
   try {
-    llm = await callRcaLlm(systemPrompt, "Analyse the incident above.");
+    llm = await callRcaLlm(
+      orgId,
+      systemPrompt,
+      "Analyse the incident above.",
+      RESPONSE_FORMAT,
+    );
   } catch (err) {
     return {
       status: "failed",

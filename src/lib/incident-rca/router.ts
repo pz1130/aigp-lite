@@ -4,16 +4,18 @@ import { TRPCError } from "@trpc/server";
 import { assertPermission } from "@/lib/rbac/check";
 import { writeAudit } from "@/lib/audit/log";
 import { generateRca } from "./orchestrator";
-import { isRcaEnabled } from "./config";
+import { isRcaEnabledForOrg } from "./llm-client";
 
 export const incidentRcaRouter = router({
-  isEnabled: orgProcedure.query(() => ({ enabled: isRcaEnabled() })),
+  isEnabled: orgProcedure.query(async ({ ctx }) => ({
+    enabled: await isRcaEnabledForOrg(ctx.session.orgId),
+  })),
 
   suggest: orgProcedure
     .input(z.object({ incidentId: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
       assertPermission(ctx.session.role, "incident.write");
-      if (!isRcaEnabled()) {
+      if (!(await isRcaEnabledForOrg(ctx.session.orgId))) {
         throw new TRPCError({
           code: "PRECONDITION_FAILED",
           message: "incident-rca is disabled",

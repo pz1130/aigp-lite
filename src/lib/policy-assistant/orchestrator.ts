@@ -44,7 +44,7 @@ export async function generatePolicy(
   args: GeneratePolicyArgs,
 ): Promise<GeneratePolicyReturn> {
   const systemPrompt1 = buildSystemPrompt();
-  const r1 = await tryGenerate(systemPrompt1, args.description);
+  const r1 = await tryGenerate(args.orgId, systemPrompt1, args.description);
 
   let final = r1;
   let retryCount = 0;
@@ -58,7 +58,7 @@ export async function generatePolicy(
       r1.parsed,
       r1.diagnostics,
     );
-    const r2 = await tryGenerate(systemPrompt2, args.description);
+    const r2 = await tryGenerate(args.orgId, systemPrompt2, args.description);
     retryCount = 1;
     totalInput += r2.tokens.input;
     totalOutput += r2.tokens.output;
@@ -115,12 +115,13 @@ export async function generatePolicy(
 }
 
 async function tryGenerate(
+  orgId: string,
   systemPrompt: string,
   userMessage: string,
 ): Promise<TryResult> {
   let llm: LlmCallResult;
   try {
-    llm = await callAssistantLlm(systemPrompt, userMessage);
+    llm = await callAssistantLlm(orgId, systemPrompt, userMessage);
   } catch (err) {
     return {
       status: "failed",

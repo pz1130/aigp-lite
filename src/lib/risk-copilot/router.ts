@@ -4,11 +4,14 @@ import { TRPCError } from "@trpc/server";
 import { assertPermission } from "@/lib/rbac/check";
 import { writeAudit } from "@/lib/audit/log";
 import { suggestRisks } from "./orchestrator";
-import { isCopilotEnabled, getDailyLimit } from "./config";
+import { getDailyLimit } from "./config";
+import { isCopilotEnabledForOrg } from "./llm-client";
 import type { OrgScopedClient } from "@/lib/db/orgIsolation";
 
 export const riskCopilotRouter = router({
-  isEnabled: orgProcedure.query(() => ({ enabled: isCopilotEnabled() })),
+  isEnabled: orgProcedure.query(async ({ ctx }) => ({
+    enabled: await isCopilotEnabledForOrg(ctx.session.orgId),
+  })),
 
   usageToday: orgProcedure.query(async ({ ctx }) => {
     assertPermission(ctx.session.role, "risk.read");
@@ -24,7 +27,7 @@ export const riskCopilotRouter = router({
     .input(z.object({ usecaseId: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
       assertPermission(ctx.session.role, "risk.write");
-      if (!isCopilotEnabled()) {
+      if (!(await isCopilotEnabledForOrg(ctx.session.orgId))) {
         throw new TRPCError({
           code: "PRECONDITION_FAILED",
           message: "risk-copilot is disabled",

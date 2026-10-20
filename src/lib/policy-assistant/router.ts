@@ -4,10 +4,13 @@ import { TRPCError } from "@trpc/server";
 import { assertPermission } from "@/lib/rbac/check";
 import { writeAudit } from "@/lib/audit/log";
 import { generatePolicy } from "./orchestrator";
-import { isAssistantEnabled, getDailyLimit } from "./config";
+import { getDailyLimit } from "./config";
+import { isAssistantEnabledForOrg } from "./llm-client";
 
 export const policyAssistantRouter = router({
-  isEnabled: orgProcedure.query(() => ({ enabled: isAssistantEnabled() })),
+  isEnabled: orgProcedure.query(async ({ ctx }) => ({
+    enabled: await isAssistantEnabledForOrg(ctx.session.orgId),
+  })),
 
   usageToday: orgProcedure.query(async ({ ctx }) => {
     const start = new Date();
@@ -22,7 +25,7 @@ export const policyAssistantRouter = router({
     .input(z.object({ description: z.string().min(10).max(2000) }))
     .mutation(async ({ ctx, input }) => {
       assertPermission(ctx.session.role, "policy.write");
-      if (!isAssistantEnabled()) {
+      if (!(await isAssistantEnabledForOrg(ctx.session.orgId))) {
         throw new TRPCError({
           code: "PRECONDITION_FAILED",
           message: "Assistant is disabled",

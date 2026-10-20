@@ -29,8 +29,9 @@ import {
 } from "./schema";
 import { scrubText } from "./scrub";
 import { embedText } from "@/lib/incidents/embed";
-import { isRcaEnabled } from "@/lib/incident-rca/config";
-import { callRcaLlm } from "@/lib/incident-rca/llm-client";
+import { callRcaLlm, isRcaEnabledForOrg } from "@/lib/incident-rca/llm-client";
+import { jsonResponseFormat } from "@/lib/runtime/providers/response-format";
+import type { ResponseFormat } from "@/lib/runtime/providers/types";
 
 export class UsageInsightsStateError extends Error {
   constructor(message: string) {
@@ -42,6 +43,7 @@ export class UsageInsightsStateError extends Error {
 type LlmFn = (
   system: string,
   user: string,
+  responseFormat?: ResponseFormat,
 ) => Promise<{
   rawText: string;
   inputTokens: number;
@@ -51,9 +53,18 @@ type LlmFn = (
   model: string;
 }>;
 
+const CLUSTER_FORMAT = jsonResponseFormat(
+  "usage_insight_cluster",
+  clusterOutputSchema,
+);
+const EXEC_SUMMARY_FORMAT = jsonResponseFormat(
+  "usage_insight_exec_summary",
+  execSummarySchema,
+);
+
 interface Deps {
   callLlm?: LlmFn;
-  llmEnabled?: () => boolean;
+  llmEnabled?: () => boolean | Promise<boolean>;
 }
 
 const inFlight = new Set<string>();
@@ -97,8 +108,11 @@ async function runGenerate(
   deps: Deps,
 ): Promise<{ reportId: string }> {
   const cfg = getUsageInsightsConfig();
-  const llmEnabled = deps.llmEnabled ?? isRcaEnabled;
-  const callLlm = deps.callLlm ?? callRcaLlm;
+  const llmEnabled = deps.llmEnabled ?? (() => isRcaEnabledForOrg(args.orgId));
+  const callLlm: LlmFn =
+    deps.callLlm ??
+    ((system, user, responseFormat) =>
+      callRcaLlm(args.orgId, system, user, responseFormat));
   const diagnostics: UsageDiagnostic[] = [];
   const maxInvocations = Math.max(cfg.maxInvocations, 1);
   const k = Math.max(cfg.minClusterSize, 1);
@@ -225,7 +239,7 @@ async function runGenerate(
     totalLat = 0;
   let providerType = "unknown",
     model = "unknown";
-  const enabled = llmEnabled();
+  const enabled = await llmEnabled();
   if (!enabled) {
     diagnostics.push({
       code: "llm_unavailable",
@@ -264,6 +278,7 @@ async function runGenerate(
         const res = await callLlm(
           buildClusterSystemPrompt(),
           buildClusterUserMessage(rows),
+          CLUSTER_FORMAT,
         );
         totalIn += res.inputTokens;
         totalOut += res.outputTokens;
@@ -301,7 +316,7 @@ async function runGenerate(
         built.map((b) => ({ label: b.label, count: b.invocationCount })),
         stats,
       );
-      const res = await callLlm(system, user);
+      const res = await callLlm(system, user, EXEC_SUMMARY_FORMAT);
       totalIn += res.inputTokens;
       totalOut += res.outputTokens;
       totalLat += res.latencyMs;
