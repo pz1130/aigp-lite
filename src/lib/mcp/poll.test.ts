@@ -23,10 +23,60 @@ const mockedFetch = vi.mocked(safeFetch);
 let orgId: string;
 let userId: string;
 
-const rpcOk = (tools: unknown[]) =>
-  new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result: { tools } }), {
-    status: 200,
-  });
+/**
+ * Minimal Streamable HTTP MCP server behind the mocked safeFetch: answers
+ * initialize with a session id, accepts notifications, refuses the optional
+ * GET stream, and serves `pages` of tools/list via nextCursor.
+ */
+function fakeMcpServer(pages: unknown[][], opts: { sse?: boolean } = {}) {
+  return async (_url: string, init?: RequestInit): Promise<Response> => {
+    const method = init?.method ?? "GET";
+    if (method === "GET") return new Response(null, { status: 405 });
+    if (method === "DELETE") return new Response(null, { status: 200 });
+    const msg = JSON.parse(init!.body as string);
+    if (msg.id === undefined) return new Response(null, { status: 202 });
+    let result: unknown;
+    if (msg.method === "initialize") {
+      result = {
+        protocolVersion: msg.params.protocolVersion,
+        capabilities: { tools: {} },
+        serverInfo: { name: "fake", version: "1.0.0" },
+      };
+    } else {
+      const i = msg.params?.cursor ? Number(msg.params.cursor) : 0;
+      result = {
+        tools: pages[i],
+        ...(i + 1 < pages.length ? { nextCursor: String(i + 1) } : {}),
+      };
+    }
+    const payload = JSON.stringify({ jsonrpc: "2.0", id: msg.id, result });
+    return opts.sse
+      ? new Response(`event: message\ndata: ${payload}\n\n`, {
+          status: 200,
+          headers: {
+            "content-type": "text/event-stream",
+            "mcp-session-id": "sess-1",
+          },
+        })
+      : new Response(payload, {
+          status: 200,
+          headers: {
+            "content-type": "application/json",
+            "mcp-session-id": "sess-1",
+          },
+        });
+  };
+}
+
+/** Posted JSON-RPC calls (requests and notifications) in order. */
+function postedCalls() {
+  return mockedFetch.mock.calls
+    .filter(([, init]) => init?.method === "POST")
+    .map(([, init]) => ({
+      body: JSON.parse(init!.body as string),
+      headers: new Headers(init!.headers),
+    }));
+}
 
 beforeAll(async () => {
   const org = await prisma.organization.create({
@@ -79,36 +129,67 @@ async function seedServer(
 }
 
 describe("fetchLiveTools", () => {
-  it("POSTs JSON-RPC tools/list and returns the tools array", async () => {
-    mockedFetch.mockResolvedValueOnce(rpcOk([{ name: "t1" }]));
+  it("initializes a session, then lists tools on it", async () => {
+    mockedFetch.mockImplementation(fakeMcpServer([[{ name: "t1" }]]));
     const tools = await fetchLiveTools({
       endpoint: "https://mcp.example.com",
       authTokenEnc: null,
     });
     expect(tools).toEqual([{ name: "t1" }]);
-    const [url, init] = mockedFetch.mock.calls[0]!;
-    expect(url).toBe("https://mcp.example.com");
-    expect(JSON.parse(init!.body as string).method).toBe("tools/list");
-    expect(
-      (init!.headers as Record<string, string>).Authorization,
-    ).toBeUndefined();
+    expect(mockedFetch.mock.calls[0]![0]).toBe("https://mcp.example.com/");
+    const calls = postedCalls();
+    expect(calls.map((c) => c.body.method)).toEqual([
+      "initialize",
+      "notifications/initialized",
+      "tools/list",
+    ]);
+    const list = calls[2]!;
+    expect(list.headers.get("accept")).toContain("text/event-stream");
+    expect(list.headers.get("mcp-session-id")).toBe("sess-1");
+    expect(list.headers.get("mcp-protocol-version")).toBeTruthy();
+    expect(list.headers.get("authorization")).toBeNull();
   });
 
   it("sends decrypted bearer token when authTokenEnc is set", async () => {
-    mockedFetch.mockResolvedValueOnce(rpcOk([]));
+    mockedFetch.mockImplementation(fakeMcpServer([[]]));
     const enc = new Uint8Array(encryptJson("sekret-token"));
     await fetchLiveTools({
       endpoint: "https://mcp.example.com",
       authTokenEnc: enc,
     });
-    const [, init] = mockedFetch.mock.calls[0]!;
-    expect((init!.headers as Record<string, string>).Authorization).toBe(
-      "Bearer sekret-token",
-    );
+    for (const call of postedCalls()) {
+      expect(call.headers.get("authorization")).toBe("Bearer sekret-token");
+    }
   });
 
-  it("throws on non-200 and on missing result.tools", async () => {
-    mockedFetch.mockResolvedValueOnce(new Response("nope", { status: 500 }));
+  it("follows nextCursor across pages", async () => {
+    mockedFetch.mockImplementation(
+      fakeMcpServer([[{ name: "a" }], [{ name: "b" }], [{ name: "c" }]]),
+    );
+    const tools = await fetchLiveTools({
+      endpoint: "https://mcp.example.com",
+      authTokenEnc: null,
+    });
+    expect(tools).toEqual([{ name: "a" }, { name: "b" }, { name: "c" }]);
+    const cursors = postedCalls()
+      .filter((c) => c.body.method === "tools/list")
+      .map((c) => c.body.params?.cursor);
+    expect(cursors).toEqual([undefined, "1", "2"]);
+  });
+
+  it("reads SSE (text/event-stream) responses", async () => {
+    mockedFetch.mockImplementation(
+      fakeMcpServer([[{ name: "streamed" }]], { sse: true }),
+    );
+    const tools = await fetchLiveTools({
+      endpoint: "https://mcp.example.com",
+      authTokenEnc: null,
+    });
+    expect(tools).toEqual([{ name: "streamed" }]);
+  });
+
+  it("throws when the server errors", async () => {
+    mockedFetch.mockResolvedValue(new Response("nope", { status: 500 }));
     await expect(
       fetchLiveTools({ endpoint: "https://x.example", authTokenEnc: null }),
     ).rejects.toThrow();
@@ -121,7 +202,7 @@ describe("sweepMcpDrift", () => {
     await seedServer({ name: "oauth", authType: "oauth" });
     await seedServer({ name: "stdio", transport: "stdio" });
     await seedServer({ name: "inactive", status: "inactive" });
-    mockedFetch.mockResolvedValue(rpcOk([{ name: "t1" }]));
+    mockedFetch.mockImplementation(fakeMcpServer([[{ name: "t1" }]]));
     const res = await sweepMcpDrift();
     expect(res.polled).toBe(1);
   });
@@ -129,9 +210,13 @@ describe("sweepMcpDrift", () => {
   it("one failing server does not stop the sweep", async () => {
     await seedServer({ name: "fail", endpoint: "https://fail.example" });
     await seedServer({ name: "ok", endpoint: "https://ok.example" });
-    mockedFetch
-      .mockRejectedValueOnce(new Error("ECONNREFUSED"))
-      .mockResolvedValueOnce(rpcOk([{ name: "t1" }]));
+    const ok = fakeMcpServer([[{ name: "t1" }]]);
+    mockedFetch.mockImplementation(async (url, init) => {
+      if (url.startsWith("https://fail.example")) {
+        throw new Error("ECONNREFUSED");
+      }
+      return ok(url, init);
+    });
     const res = await sweepMcpDrift();
     expect(res.failed).toBe(1);
     expect(res.polled).toBe(2);
@@ -150,7 +235,7 @@ describe("sweepMcpDrift", () => {
       tools: [{ name: "old" }],
       source: "manual",
     });
-    mockedFetch.mockResolvedValueOnce(rpcOk([{ name: "brand_new" }]));
+    mockedFetch.mockImplementation(fakeMcpServer([[{ name: "brand_new" }]]));
     const res = await sweepMcpDrift();
     expect(res.drifted).toBe(1);
   });

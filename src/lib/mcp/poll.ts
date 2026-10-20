@@ -1,30 +1,65 @@
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { safeFetch } from "@/lib/egress/guard";
 import { decryptJson } from "@/lib/crypto/secrets";
 import { recordSnapshot } from "./snapshots";
 
-/** JSON-RPC tools/list against a live http MCP server. Returns the raw tools array. */
+/** Guard against servers that hand out cursors forever. */
+const MAX_PAGES = 50;
+
+/**
+ * Deliberately loose: drift detection fingerprints whatever the server
+ * returns, so a tool that fails the SDK's strict Tool schema must still be
+ * captured rather than rejected.
+ */
+const ToolsPageSchema = z.looseObject({
+  tools: z.array(z.unknown()),
+  nextCursor: z.string().optional(),
+});
+
+/**
+ * Lists the tools of a live Streamable HTTP MCP server via the official SDK
+ * client: initialize handshake, session / protocol-version headers, JSON or
+ * SSE responses, and nextCursor pagination. Every request goes through the
+ * egress guard. Returns the raw tools array.
+ */
 export async function fetchLiveTools(server: {
   endpoint: string;
   authTokenEnc: Uint8Array | null;
 }): Promise<unknown> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
+  const headers: Record<string, string> = {};
   if (server.authTokenEnc) {
     headers.Authorization = `Bearer ${decryptJson<string>(server.authTokenEnc)}`;
   }
-  const res = await safeFetch(server.endpoint, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list" }),
-  });
-  if (!res.ok) throw new Error(`tools/list returned ${res.status}`);
-  const body = (await res.json()) as { result?: { tools?: unknown } };
-  if (!body.result || !Array.isArray(body.result.tools)) {
-    throw new Error("tools/list response missing result.tools");
+  const transport = new StreamableHTTPClientTransport(
+    new URL(server.endpoint),
+    {
+      fetch: (url, init) => safeFetch(url.toString(), init),
+      requestInit: { headers },
+    },
+  );
+  const client = new Client({ name: "aigp-lite-drift", version: "1.0.0" });
+
+  await client.connect(transport);
+  try {
+    const tools: unknown[] = [];
+    let cursor: string | undefined;
+    for (let page = 0; page < MAX_PAGES; page++) {
+      const res = await client.request(
+        { method: "tools/list", params: cursor ? { cursor } : {} },
+        ToolsPageSchema,
+      );
+      tools.push(...res.tools);
+      cursor = res.nextCursor;
+      if (!cursor) return tools;
+    }
+    throw new Error(`tools/list exceeded ${MAX_PAGES} pages`);
+  } finally {
+    await transport.terminateSession().catch(() => undefined);
+    await client.close().catch(() => undefined);
   }
-  return body.result.tools;
 }
 
 /**
