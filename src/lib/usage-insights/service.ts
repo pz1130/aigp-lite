@@ -29,8 +29,7 @@ import {
 } from "./schema";
 import { scrubText } from "./scrub";
 import { embedText } from "@/lib/incidents/embed";
-import { isRcaEnabled } from "@/lib/incident-rca/config";
-import { callRcaLlm } from "@/lib/incident-rca/llm-client";
+import { callRcaLlm, isRcaEnabledForOrg } from "@/lib/incident-rca/llm-client";
 import { jsonResponseFormat } from "@/lib/runtime/providers/response-format";
 import type { ResponseFormat } from "@/lib/runtime/providers/types";
 
@@ -65,7 +64,7 @@ const EXEC_SUMMARY_FORMAT = jsonResponseFormat(
 
 interface Deps {
   callLlm?: LlmFn;
-  llmEnabled?: () => boolean;
+  llmEnabled?: () => boolean | Promise<boolean>;
 }
 
 const inFlight = new Set<string>();
@@ -109,8 +108,11 @@ async function runGenerate(
   deps: Deps,
 ): Promise<{ reportId: string }> {
   const cfg = getUsageInsightsConfig();
-  const llmEnabled = deps.llmEnabled ?? isRcaEnabled;
-  const callLlm = deps.callLlm ?? callRcaLlm;
+  const llmEnabled = deps.llmEnabled ?? (() => isRcaEnabledForOrg(args.orgId));
+  const callLlm: LlmFn =
+    deps.callLlm ??
+    ((system, user, responseFormat) =>
+      callRcaLlm(args.orgId, system, user, responseFormat));
   const diagnostics: UsageDiagnostic[] = [];
   const maxInvocations = Math.max(cfg.maxInvocations, 1);
   const k = Math.max(cfg.minClusterSize, 1);
@@ -237,7 +239,7 @@ async function runGenerate(
     totalLat = 0;
   let providerType = "unknown",
     model = "unknown";
-  const enabled = llmEnabled();
+  const enabled = await llmEnabled();
   if (!enabled) {
     diagnostics.push({
       code: "llm_unavailable",

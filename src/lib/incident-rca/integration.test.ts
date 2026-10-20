@@ -155,7 +155,7 @@ describe("incident-rca integration", () => {
   it("sibling block included when usecase has prior incidents", async () => {
     const f = await fullFixture();
     const captures: string[] = [];
-    vi.spyOn(llm, "callRcaLlm").mockImplementation(async (sys) => {
+    vi.spyOn(llm, "callRcaLlm").mockImplementation(async (_orgId, sys) => {
       captures.push(sys);
       return {
         rawText: JSON.stringify(valid),

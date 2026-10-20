@@ -334,7 +334,7 @@ describe("suggestRisks", () => {
       usecaseId: usecase.id,
     });
 
-    const sysPrompt = spy.mock.calls[0][0];
+    const sysPrompt = spy.mock.calls[0][1];
     for (const s of sources) {
       expect(sysPrompt).toContain(`${s}-0`); // first row of each source survives
     }

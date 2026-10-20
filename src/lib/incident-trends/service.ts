@@ -22,8 +22,7 @@ import {
 import { clusterOutputSchema, execSummarySchema } from "./schema";
 import type { TrendDiagnostic } from "./schema";
 import { embedText } from "@/lib/incidents/embed";
-import { isRcaEnabled } from "@/lib/incident-rca/config";
-import { callRcaLlm } from "@/lib/incident-rca/llm-client";
+import { callRcaLlm, isRcaEnabledForOrg } from "@/lib/incident-rca/llm-client";
 import { jsonResponseFormat } from "@/lib/runtime/providers/response-format";
 import type { ResponseFormat } from "@/lib/runtime/providers/types";
 import { workflowEvents } from "@/lib/events/workflow-bus";
@@ -61,7 +60,7 @@ const EXEC_SUMMARY_FORMAT = jsonResponseFormat(
 
 interface Deps {
   callLlm?: LlmFn;
-  llmEnabled?: () => boolean;
+  llmEnabled?: () => boolean | Promise<boolean>;
 }
 
 /** In-flight lock: one generate per org at a time. */
@@ -95,8 +94,11 @@ async function runGenerate(
   deps: Deps,
 ): Promise<{ reportId: string }> {
   const cfg = getTrendsConfig();
-  const llmEnabled = deps.llmEnabled ?? isRcaEnabled;
-  const callLlm = deps.callLlm ?? callRcaLlm;
+  const llmEnabled = deps.llmEnabled ?? (() => isRcaEnabledForOrg(args.orgId));
+  const callLlm: LlmFn =
+    deps.callLlm ??
+    ((system, user, responseFormat) =>
+      callRcaLlm(args.orgId, system, user, responseFormat));
   const diagnostics: TrendDiagnostic[] = [];
 
   // Clamp floors here in the service layer (config.ts does not clamp).
@@ -213,7 +215,7 @@ async function runGenerate(
   let totalLat = 0;
   let providerType = "unknown";
   let model = "unknown";
-  const enabled = llmEnabled();
+  const enabled = await llmEnabled();
   if (!enabled) {
     diagnostics.push({
       code: "llm_unavailable",
