@@ -1,6 +1,9 @@
 import type { ProviderType } from "@/lib/prisma";
 import { getAdapter } from "@/lib/runtime/providers/registry";
-import type { AdapterStreamOpts } from "@/lib/runtime/providers/types";
+import type {
+  AdapterStreamOpts,
+  ResponseFormat,
+} from "@/lib/runtime/providers/types";
 import { getCopilotProvider, type CopilotProviderConfig } from "./config";
 
 export type LlmCallResult = {
@@ -27,6 +30,7 @@ const PROVIDER_TYPE_MAP: Record<CopilotProviderConfig["kind"], ProviderType> = {
 export async function callCopilotLlm(
   systemPrompt: string,
   userMessage: string,
+  responseFormat?: ResponseFormat,
 ): Promise<LlmCallResult> {
   const cfg = getCopilotProvider();
   const providerType = PROVIDER_TYPE_MAP[cfg.kind];
@@ -41,6 +45,7 @@ export async function callCopilotLlm(
       { role: "system", content: systemPrompt },
       { role: "user", content: userMessage },
     ],
+    responseFormat,
   };
 
   const start = Date.now();

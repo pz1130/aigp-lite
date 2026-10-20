@@ -15,6 +15,9 @@ import { callCopilotLlm, type LlmCallResult } from "./llm-client";
 import { validateSuggestions, type CatalogIndex } from "./validate";
 import { isCopilotEnabled, getCatalogTokenBudget } from "./config";
 import { selectCatalogWithinBudget } from "./catalog-budget";
+import { jsonResponseFormat } from "@/lib/runtime/providers/response-format";
+
+const RESPONSE_FORMAT = jsonResponseFormat("risk_suggestions", llmOutputSchema);
 
 export type SuggestRisksArgs = {
   orgId: string;
@@ -237,7 +240,7 @@ async function runAttempt(
 ): Promise<Attempt> {
   let llm: LlmCallResult;
   try {
-    llm = await callCopilotLlm(systemPrompt, userMessage);
+    llm = await callCopilotLlm(systemPrompt, userMessage, RESPONSE_FORMAT);
   } catch (err) {
     return {
       status: "failed",

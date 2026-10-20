@@ -30,7 +30,18 @@ export const googleGeminiAdapter: ProviderAdapter = {
       method: "POST",
       signal: opts.signal,
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ contents, systemInstruction }),
+      body: JSON.stringify({
+        contents,
+        systemInstruction,
+        ...(opts.responseFormat
+          ? {
+              generationConfig: {
+                responseMimeType: "application/json",
+                responseJsonSchema: opts.responseFormat.schema,
+              },
+            }
+          : {}),
+      }),
     });
     if (!res.ok || !res.body) {
       const text = await res.text().catch(() => "");

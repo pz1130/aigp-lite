@@ -5,9 +5,17 @@ import type {
   AdapterStreamOpts,
   StreamChunk,
   PingResult,
+  ResponseFormat,
 } from "./types";
 
-export function createOpenAIAdapter(): ProviderAdapter {
+export interface OpenAIAdapterOptions {
+  /** Send `response_format: json_schema` when the caller asks for it. */
+  structuredOutputs?: boolean;
+}
+
+export function createOpenAIAdapter({
+  structuredOutputs = true,
+}: OpenAIAdapterOptions = {}): ProviderAdapter {
   return {
     async *streamChat(opts: AdapterStreamOpts): AsyncIterable<StreamChunk> {
       const res = await safeFetch(`${opts.baseUrl}/chat/completions`, {
@@ -22,6 +30,9 @@ export function createOpenAIAdapter(): ProviderAdapter {
           messages: opts.messages,
           stream: true,
           stream_options: { include_usage: true },
+          ...(structuredOutputs && opts.responseFormat
+            ? { response_format: openAIResponseFormat(opts.responseFormat) }
+            : {}),
         }),
       });
       if (!res.ok || !res.body) {
@@ -102,5 +113,14 @@ export function createOpenAIAdapter(): ProviderAdapter {
         return { ok: false, error: String(e) };
       }
     },
+  };
+}
+
+/** OpenAI `response_format`, shared with the Azure adapter. Non-strict so
+ * optional fields are allowed; callers validate the reply anyway. */
+export function openAIResponseFormat(rf: ResponseFormat) {
+  return {
+    type: "json_schema",
+    json_schema: { name: rf.name, schema: rf.schema, strict: false },
   };
 }

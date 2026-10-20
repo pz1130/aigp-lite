@@ -24,6 +24,8 @@ import type { TrendDiagnostic } from "./schema";
 import { embedText } from "@/lib/incidents/embed";
 import { isRcaEnabled } from "@/lib/incident-rca/config";
 import { callRcaLlm } from "@/lib/incident-rca/llm-client";
+import { jsonResponseFormat } from "@/lib/runtime/providers/response-format";
+import type { ResponseFormat } from "@/lib/runtime/providers/types";
 import { workflowEvents } from "@/lib/events/workflow-bus";
 import { evaluateTrendAlerts } from "./alerts";
 import type { TrendStats, TrendDeltas } from "./stats";
@@ -38,6 +40,7 @@ export class IncidentTrendsStateError extends Error {
 type LlmFn = (
   system: string,
   user: string,
+  responseFormat?: ResponseFormat,
 ) => Promise<{
   rawText: string;
   inputTokens: number;
@@ -46,6 +49,15 @@ type LlmFn = (
   providerType: string;
   model: string;
 }>;
+
+const CLUSTER_FORMAT = jsonResponseFormat(
+  "incident_trend_cluster",
+  clusterOutputSchema,
+);
+const EXEC_SUMMARY_FORMAT = jsonResponseFormat(
+  "incident_trend_exec_summary",
+  execSummarySchema,
+);
 
 interface Deps {
   callLlm?: LlmFn;
@@ -243,6 +255,7 @@ async function runGenerate(
         const res = await callLlm(
           buildClusterSystemPrompt(),
           buildClusterUserMessage(promptIncidents),
+          CLUSTER_FORMAT,
         );
         totalIn += res.inputTokens;
         totalOut += res.outputTokens;
@@ -284,7 +297,7 @@ async function runGenerate(
         })),
         stats,
       );
-      const res = await callLlm(system, user);
+      const res = await callLlm(system, user, EXEC_SUMMARY_FORMAT);
       totalIn += res.inputTokens;
       totalOut += res.outputTokens;
       totalLat += res.latencyMs;

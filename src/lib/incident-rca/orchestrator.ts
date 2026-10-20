@@ -13,6 +13,9 @@ import {
   type PromptInput,
 } from "./prompt";
 import { callRcaLlm } from "./llm-client";
+import { jsonResponseFormat } from "@/lib/runtime/providers/response-format";
+
+const RESPONSE_FORMAT = jsonResponseFormat("incident_rca", llmOutputSchema);
 import { validateOutput } from "./validate";
 import { isRcaEnabled } from "./config";
 
@@ -266,7 +269,11 @@ async function runAttempt(
 ): Promise<Attempt> {
   let llm;
   try {
-    llm = await callRcaLlm(systemPrompt, "Analyse the incident above.");
+    llm = await callRcaLlm(
+      systemPrompt,
+      "Analyse the incident above.",
+      RESPONSE_FORMAT,
+    );
   } catch (err) {
     return {
       status: "failed",

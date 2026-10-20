@@ -19,7 +19,14 @@ function asNonNegativeNumber(value: unknown): number | undefined {
     : undefined;
 }
 
-export function createAnthropicAdapter(): ProviderAdapter {
+export interface AnthropicAdapterOptions {
+  /** Send `output_config.format` when the caller asks for it. */
+  structuredOutputs?: boolean;
+}
+
+export function createAnthropicAdapter({
+  structuredOutputs = true,
+}: AnthropicAdapterOptions = {}): ProviderAdapter {
   return {
     async *streamChat(opts: AdapterStreamOpts): AsyncIterable<StreamChunk> {
       const systemMsg = opts.messages.find((m) => m.role === "system");
@@ -41,6 +48,16 @@ export function createAnthropicAdapter(): ProviderAdapter {
           system: systemMsg?.content,
           stream: true,
           max_tokens: 4096,
+          ...(structuredOutputs && opts.responseFormat
+            ? {
+                output_config: {
+                  format: {
+                    type: "json_schema",
+                    schema: opts.responseFormat.schema,
+                  },
+                },
+              }
+            : {}),
         }),
       });
       if (!res.ok || !res.body) {

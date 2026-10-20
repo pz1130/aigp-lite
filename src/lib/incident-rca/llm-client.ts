@@ -1,6 +1,9 @@
 import type { ProviderType } from "@/lib/prisma";
 import { getAdapter } from "@/lib/runtime/providers/registry";
-import type { AdapterStreamOpts } from "@/lib/runtime/providers/types";
+import type {
+  AdapterStreamOpts,
+  ResponseFormat,
+} from "@/lib/runtime/providers/types";
 import { getRcaConfig, type RcaConfig } from "./config";
 
 export type LlmCallResult = {
@@ -27,6 +30,7 @@ const PROVIDER_TYPE_MAP: Record<RcaConfig["kind"], ProviderType> = {
 export async function callRcaLlm(
   systemPrompt: string,
   userMessage: string,
+  responseFormat?: ResponseFormat,
 ): Promise<LlmCallResult> {
   const cfg = getRcaConfig();
   const providerType = PROVIDER_TYPE_MAP[cfg.kind];
@@ -41,6 +45,7 @@ export async function callRcaLlm(
       { role: "system", content: systemPrompt },
       { role: "user", content: userMessage },
     ],
+    responseFormat,
   };
 
   const start = Date.now();

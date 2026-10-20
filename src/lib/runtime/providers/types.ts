@@ -3,6 +3,16 @@ export interface ChatMessage {
   content: string;
 }
 
+/**
+ * Ask the provider to constrain its reply to a JSON schema (native
+ * structured outputs). Adapters that cannot honour it ignore it, so callers
+ * must still parse and validate the reply themselves.
+ */
+export interface ResponseFormat {
+  name: string;
+  schema: Record<string, unknown>;
+}
+
 export interface AdapterStreamOpts {
   baseUrl: string;
   credentials: Record<string, string>;
@@ -10,6 +20,7 @@ export interface AdapterStreamOpts {
   model: string;
   messages: ChatMessage[];
   signal?: AbortSignal;
+  responseFormat?: ResponseFormat;
 }
 
 export interface StreamChunk {

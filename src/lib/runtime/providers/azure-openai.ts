@@ -6,6 +6,7 @@ import type {
   StreamChunk,
   PingResult,
 } from "./types";
+import { openAIResponseFormat } from "./openai";
 
 function buildUrl(cfg: Record<string, unknown>): string {
   const endpoint = String(cfg.endpoint ?? "");
@@ -33,6 +34,9 @@ export const azureOpenAIAdapter: ProviderAdapter = {
         messages: opts.messages,
         stream: true,
         stream_options: { include_usage: true },
+        ...(opts.responseFormat
+          ? { response_format: openAIResponseFormat(opts.responseFormat) }
+          : {}),
       }),
     });
     if (!res.ok || !res.body) {
