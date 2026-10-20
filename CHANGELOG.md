@@ -1,9 +1,21 @@
 ## Unreleased
 
+### AI & integrations
+
+- **AI features use the org's provider connections.** Incident RCA, risk copilot, policy assistant, incident trends, usage insights, inventory analysis and control import now run on the org's oldest active provider connection that has a resolvable model. They fall back to the feature's env config, so usage is billed to and governed by the org's own credentials. A feature is enabled when either source is available.
+- **Native structured outputs.** Incident RCA, risk copilot, incident trends and usage insights send their output JSON Schema in each provider's native field: `response_format` for OpenAI/Azure, `output_config.format` for Anthropic and `responseJsonSchema` for Gemini. The OpenAI/Anthropic-compatible gateways don't send it. Replies are still validated with zod.
+- **Richer provider adapters.** The adapters accept image content, tool definitions, assistant tool calls and tool results, and they surface streamed tool calls. Usage now reports cache-read, cache-write and reasoning tokens. A new `runToolLoop` helper drives multi-turn tool use and sums usage across turns. String content and plain input/output usage are unchanged.
+- **MCP drift polling uses the official MCP SDK.** It uses the Streamable HTTP client, still routed through the egress guard. `tools/list` now follows pagination (up to 50 pages) and handles SSE responses.
+
 ### Security
 
 - **Login rate limiting.** Email + password sign-in is throttled to 20 attempts per 15 minutes per client IP and 10 per 15 minutes per account, using the existing token-bucket limiter (Redis-backed when `REDIS_URL` is set, fails closed in production if Redis is down). The login form shows a distinct "too many attempts" message.
 - **CodeQL** static analysis runs on every push and pull request to `main`, and weekly.
+
+### Dependencies
+
+- Added `@modelcontextprotocol/sdk`.
+- Bumped `next` and `eslint-config-next` to 16.3.8 and `sharp` to 0.35.5, and refreshed `source-map-js` to 1.2.2. This clears the high-severity production advisories found by `npm audit`.
 
 ## v0.24.0 — 2026-09-30
 

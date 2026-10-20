@@ -212,7 +212,7 @@ describe("sweepMcpDrift", () => {
     await seedServer({ name: "ok", endpoint: "https://ok.example" });
     const ok = fakeMcpServer([[{ name: "t1" }]]);
     mockedFetch.mockImplementation(async (url, init) => {
-      if (url.startsWith("https://fail.example")) {
+      if (new URL(url).hostname === "fail.example") {
         throw new Error("ECONNREFUSED");
       }
       return ok(url, init);
