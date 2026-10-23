@@ -9,6 +9,7 @@
 
 ### Security
 
+- **Critical dependency advisories.** `next` is upgraded to 16.4.2, fixing unauthenticated RCE in the image optimization API with SVG and in `use cache` functions, plus a Server Actions DoS. `@sentry/nextjs` moves to 11.8.0, which next 16.4 needs to build. `dompurify` (pulled in by `swagger-ui-react`) is patched to 3.4.17 for critical sanitizer bypasses, and `ip-address` to 10.7.4.
 - **Login rate limiting.** Email + password sign-in is throttled to 20 attempts per 15 minutes per client IP and 10 per 15 minutes per account, using the existing token-bucket limiter (Redis-backed when `REDIS_URL` is set, fails closed in production if Redis is down). The login form shows a distinct "too many attempts" message.
 - **CodeQL** static analysis runs on every push and pull request to `main`, and weekly.
 
